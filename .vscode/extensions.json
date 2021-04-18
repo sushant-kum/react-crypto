@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "oouo-diogo-perdigao.docthis",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "edwardhjp.vscode-author-generator",
+    "knisterpeter.vscode-commitizen"
+  ]
+}

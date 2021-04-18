@@ -2,25 +2,21 @@
   "name": "react-crypto",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^12.20.10",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.2.4",
-    "web-vitals": "^1.1.1"
-  },
   "scripts": {
-    "start": "react-scripts start",
+    "prepare": "husky install",
+    "start": "npm run serve::all",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve::all": "concurrently \"npm run serve::app\"",
+    "serve::app": "react-scripts start",
+    "format": "prettier *.{css,html,js,json,md,scss,ts,tsx}",
+    "format:check": "prettier --check ./**/*.{css,html,js,json,md,scss,ts,tsx}",
+    "format:fix": "prettier --write ./**/*.{css,html,js,json,md,scss,ts,tsx}",
+    "lint": "tsc --noEmit && eslint ./**/*.{js,jsx,ts,tsx}",
+    "lint:fix": "tsc --noEmit && eslint --fix ./**/*.{js,jsx,ts,tsx}",
+    "tool::commit": "cz",
+    "tool::generate-component": "generate-react component"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +35,50 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "node-sass": "^5.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.2.4",
+    "web-vitals": "^1.1.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.41",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "concurrently": "^6.0.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.5",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "generate-react-cli": "^6.0.2",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "*.{css,html,js,json,md,scss,ts,tsx}": "prettier --write"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

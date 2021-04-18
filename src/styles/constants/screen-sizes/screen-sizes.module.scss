@@ -1,0 +1,8 @@
+@import "./screen-sizes";
+
+:export {
+  sm: $sm;
+  md: $md;
+  lg: $lg;
+  xl: $xl;
+}

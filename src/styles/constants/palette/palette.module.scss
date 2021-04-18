@@ -1,0 +1,12 @@
+@import "./palette";
+
+:export {
+  primaryLight: $primary-light;
+  primaryMain: $primary-main;
+  primaryDark: $primary-dark;
+  primaryContrastText: $primary-contrastText;
+  secondaryLight: $secondary-light;
+  secondaryMain: $secondary-main;
+  secondaryDark: $secondary-dark;
+  secondaryContrastText: $secondary-contrastText;
+}
