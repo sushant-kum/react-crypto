@@ -1,0 +1,46 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date Apr 19 2021 18:15:12 GMT+05:30
+ * @modify date Apr 19 2021 18:15:12 GMT+05:30
+ * @desc Styles for Header component
+ */
+
+@import "../../styles/constants/screen-sizes/screen-sizes";
+@import "./Header.constants";
+
+:export {
+  headerHeightSm: $header-height-sm;
+  headerHeight: $header-height;
+}
+
+.Header {
+  &__toolbar {
+    display: grid !important;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .Header {
+    &__toolbar {
+      justify-content: space-between;
+      grid-template-columns: auto auto;
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $lg) {
+  .Header {
+    &__toolbar {
+      justify-content: end;
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .Header {
+    &__toolbar {
+      justify-content: end;
+    }
+  }
+}
