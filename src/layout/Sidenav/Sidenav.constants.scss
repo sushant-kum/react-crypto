@@ -2,10 +2,13 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:26 GMT+05:30
- * @modify date Apr 19 2021 18:16:26 GMT+05:30
+ * @modify date Apr 20 2021 19:48:30 GMT+05:30
  * @desc Constants for Sidenav component styles
  */
 
 $sidenav-width-sm: 0px;
 $sidenav-width: 64px;
 $sidenav-width-expanded: 240px;
+$sidenav-expansion-duration: 0.3s;
+$sidenav-expansion-timing-function: ease-out;
+$sidenav-header-logo-size: 40px;

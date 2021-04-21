@@ -2,17 +2,162 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:39 GMT+05:30
- * @modify date Apr 19 2021 18:16:39 GMT+05:30
+ * @modify date Apr 20 2021 19:47:35 GMT+05:30
  * @desc Styles for Sidenav component
  */
 
+@import "../../styles/constants/screen-sizes/screen-sizes";
+@import "../../styles/constants/palette/palette";
+@import "../Header/Header.constants";
 @import "./SideNav.constants";
 
 :export {
   sideNavWidthSm: $sidenav-width-sm;
   sideNavWidth: $sidenav-width;
   sideNavWidthExpanded: $sidenav-width-expanded;
+  sidenavExpansionDuration: $sidenav-expansion-duration;
+  sidenavExpansionTimingFunction: $sidenav-expansion-timing-function;
+  sidenavHeaderLogoSize: $sidenav-header-logo-size;
 }
 
 .Sidenav {
+  &__drawer {
+    width: $sidenav-width;
+
+    &--xs {
+      width: $sidenav-width-expanded;
+    }
+
+    &--xs-plus {
+      transition-property: width;
+      transition-duration: $sidenav-expansion-duration;
+      transition-timing-function: $sidenav-expansion-timing-function;
+    }
+
+    &--sidenav-hovered {
+      width: $sidenav-width-expanded;
+    }
+
+    &__paper {
+      overflow-x: hidden;
+      width: $sidenav-width;
+
+      &--xs {
+        width: $sidenav-width-expanded;
+      }
+
+      &--xs-plus {
+        transition-property: width !important;
+        transition-duration: $sidenav-expansion-duration !important;
+        transition-timing-function: $sidenav-expansion-timing-function !important;
+      }
+
+      &--sidenav-hovered {
+        width: $sidenav-width-expanded;
+      }
+    }
+
+    &__header {
+      padding-left: 12px;
+      padding-right: 12px;
+      display: grid;
+      align-items: center;
+      grid-template-columns: $sidenav-header-logo-size 1fr;
+      column-gap: 12px;
+      transition-property: padding-left padding-right;
+      transition-duration: $sidenav-expansion-duration;
+      transition-timing-function: $sidenav-expansion-timing-function;
+
+      &--xs,
+      &--sidenav-hovered {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      &__logo {
+        width: $sidenav-header-logo-size;
+        height: $sidenav-header-logo-size;
+      }
+    }
+
+    &__menu {
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      &__item {
+        padding-left: calc(calc(#{$sidenav-width} - 24px) / 2) !important;
+        padding-right: calc(calc(#{$sidenav-width} - 24px) / 2) !important;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 24px 1fr;
+        column-gap: calc(calc(#{$sidenav-width} - 24px) / 2);
+        transition-property: column-gap !important;
+        transition-duration: $sidenav-expansion-duration !important;
+        transition-timing-function: $sidenav-expansion-timing-function !important;
+
+        &--xs,
+        &--sidenav-hovered {
+          column-gap: calc(calc(#{$sidenav-header-logo-size} - 24px) + 12px);
+        }
+
+        &--active-item {
+          border-left: 4px solid $primary-main !important;
+          padding-left: calc(calc(calc(#{$sidenav-width} - 24px) / 2) - 4px) !important;
+        }
+
+        &__icon {
+          min-width: unset !important;
+        }
+      }
+    }
+
+    &__text {
+      white-space: nowrap;
+      opacity: 0;
+      transition-property: opacity;
+      transition-duration: $sidenav-expansion-duration;
+      transition-timing-function: $sidenav-expansion-timing-function;
+
+      &--xs,
+      &--sidenav-hovered {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .Sidenav {
+    &__drawer {
+      &__header {
+        height: calc(#{$header-height-sm} - 1px);
+        padding-top: calc(calc(calc(#{$header-height-sm} - 1px) - #{$sidenav-header-logo-size}) / 2);
+        padding-bottom: calc(calc(calc(#{$header-height-sm} - 1px) - #{$sidenav-header-logo-size}) / 2);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $lg) {
+  .Sidenav {
+    &__drawer {
+      &__header {
+        height: calc(#{$header-height} - 1px);
+        padding-top: calc(calc(calc(#{$header-height} - 1px) - #{$sidenav-header-logo-size}) / 2);
+        padding-bottom: calc(calc(calc(#{$header-height} - 1px) - #{$sidenav-header-logo-size}) / 2);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .Sidenav {
+    &__drawer {
+      &__header {
+        height: calc(#{$header-height} - 1px);
+        padding-top: calc(calc(calc(#{$header-height} - 1px) - #{$sidenav-header-logo-size}) / 2);
+        padding-bottom: calc(calc(calc(#{$header-height} - 1px) - #{$sidenav-header-logo-size}) / 2);
+      }
+    }
+  }
 }
