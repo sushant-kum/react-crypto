@@ -6,9 +6,9 @@
  * @desc Styles for Layout component
  */
 
-@import "../../styles/constants/screen-sizes/screen-sizes";
-@import "../Header/Header.constants";
-@import "../Sidenav/Sidenav.constants";
+@import "../../styles/constants/screen-sizes/screen-sizes.scss";
+@import "../Header/Header.constants.scss";
+@import "../Sidenav/Sidenav.constants.scss";
 
 .Layout {
   min-height: 100vh;

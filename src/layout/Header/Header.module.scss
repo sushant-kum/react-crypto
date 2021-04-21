@@ -6,8 +6,8 @@
  * @desc Styles for Header component
  */
 
-@import "../../styles/constants/screen-sizes/screen-sizes";
-@import "./Header.constants";
+@import "../../styles/constants/screen-sizes/screen-sizes.scss";
+@import "./Header.constants.scss";
 
 :export {
   headerHeightSm: $header-height-sm;

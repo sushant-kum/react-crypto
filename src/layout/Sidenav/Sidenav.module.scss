@@ -6,10 +6,10 @@
  * @desc Styles for Sidenav component
  */
 
-@import "../../styles/constants/screen-sizes/screen-sizes";
-@import "../../styles/constants/palette/palette";
-@import "../Header/Header.constants";
-@import "./SideNav.constants";
+@import "../../styles/constants/screen-sizes/screen-sizes.scss";
+@import "../../styles/constants/palette/palette.scss";
+@import "../Header/Header.constants.scss";
+@import "./SideNav.constants.scss";
 
 :export {
   sideNavWidthSm: $sidenav-width-sm;
