@@ -8,8 +8,8 @@
 
 @import "../../styles/constants/screen-sizes/screen-sizes.scss";
 @import "../../styles/constants/palette/palette.scss";
-@import "../Header/Header.constants.scss";
-@import "./SideNav.constants.scss";
+@import "../../styles/constants/component-level/Header.constants.scss";
+@import "../../styles/constants/component-level/Sidenav.constants.scss";
 
 :export {
   sideNavWidthSm: $sidenav-width-sm;
@@ -108,6 +108,11 @@
         &__icon {
           min-width: unset !important;
         }
+
+        // &__text {
+        //   text-decoration: none;
+        //   color: inherit;
+        // }
       }
     }
 

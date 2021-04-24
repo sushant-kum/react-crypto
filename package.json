@@ -8,8 +8,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve::all": "concurrently \"npm run serve::app\"",
+    "serve::all": "npm run serve::app",
     "serve::app": "react-scripts start",
+    "serve:prod::app": "serve -s build",
     "format": "prettier *.{css,html,js,json,md,scss,ts,tsx}",
     "format:check": "prettier --check ./**/*.{css,html,js,json,md,scss,ts,tsx}",
     "format:fix": "prettier --write ./**/*.{css,html,js,json,md,scss,ts,tsx}",
@@ -39,6 +40,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/types": "^5.1.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -63,7 +65,6 @@
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "concurrently": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.2.0",
@@ -76,7 +77,8 @@
     "generate-react-cli": "^6.0.2",
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "serve": "^11.3.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",

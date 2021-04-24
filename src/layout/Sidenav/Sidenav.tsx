@@ -11,7 +11,6 @@ import {
   Drawer,
   Hidden,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   SwipeableDrawer,
@@ -23,6 +22,7 @@ import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import logo from "../../assets/images/logo.svg";
+import ListItemLink from "../../components/ListItemLink/ListItemLink";
 import SIDENAV_MENU_ITEMS from "../../constants/SideNav";
 import XsSideNavOpenContext from "../../contexts/XsSideNavOpen";
 import { SideNavMenuItem } from "../../models/SideNavMenuItem";
@@ -66,7 +66,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           <List className={classNames(styles.Sidenav__drawer__menu)}>
             {SIDENAV_MENU_ITEMS.map((sideNavMenuItem: SideNavMenuItem) => {
               return (
-                <ListItem
+                <ListItemLink
                   className={classNames(
                     styles.Sidenav__drawer__menu__item,
                     styles["Sidenav__drawer__menu__item--xs"],
@@ -74,11 +74,9 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                       ? styles["Sidenav__drawer__menu__item--active-item"]
                       : null
                   )}
-                  button
-                  component="a"
-                  href={sideNavMenuItem.path}
+                  to={sideNavMenuItem.path}
                   selected={location.pathname === sideNavMenuItem.path}
-                  key={sideNavMenuItem.text}
+                  key={sideNavMenuItem.path}
                 >
                   <ListItemIcon
                     className={classNames(
@@ -93,7 +91,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                   >
                     {sideNavMenuItem.text}
                   </ListItemText>
-                </ListItem>
+                </ListItemLink>
               );
             })}
           </List>
@@ -147,7 +145,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           >
             {SIDENAV_MENU_ITEMS.map((sideNavMenuItem: SideNavMenuItem) => {
               return (
-                <ListItem
+                <ListItemLink
                   className={classNames(
                     styles.Sidenav__drawer__menu__item,
                     menuHovered ? styles["Sidenav__drawer__menu__item--sidenav-hovered"] : null,
@@ -155,11 +153,9 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                       ? styles["Sidenav__drawer__menu__item--active-item"]
                       : null
                   )}
-                  button
-                  component="a"
-                  href={sideNavMenuItem.path}
+                  to={sideNavMenuItem.path}
                   selected={location.pathname === sideNavMenuItem.path}
-                  key={sideNavMenuItem.text}
+                  key={sideNavMenuItem.path}
                 >
                   <ListItemIcon
                     className={classNames(
@@ -171,13 +167,14 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
                   </ListItemIcon>
                   <ListItemText
                     className={classNames(
+                      styles.Sidenav__drawer__menu__item__text,
                       styles.Sidenav__drawer__text,
                       menuHovered ? styles["Sidenav__drawer__text--sidenav-hovered"] : null
                     )}
                   >
                     {sideNavMenuItem.text}
                   </ListItemText>
-                </ListItem>
+                </ListItemLink>
               );
             })}
           </List>
