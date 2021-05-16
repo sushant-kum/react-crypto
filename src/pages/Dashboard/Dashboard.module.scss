@@ -1,0 +1,32 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date May 16 2021 21:23:42 GMT+05:30
+ * @modify date May 16 2021 21:23:42 GMT+05:30
+ * @desc Styles for Dashboard component
+ */
+
+.Dashboard {
+  &__markets {
+    position: relative;
+
+    &__header {
+      border-radius: 4px 4px 0 0;
+
+      &__input-search {
+        &--small-screen {
+          margin: 8px 8px 0 8px;
+        }
+
+        &--large-screen {
+          position: absolute;
+          right: 8px;
+          z-index: 10;
+        }
+      }
+
+      &__tabs {
+      }
+    }
+  }
+}

@@ -2,17 +2,30 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:15:51 GMT+05:30
- * @modify date Apr 19 2021 18:15:51 GMT+05:30
+ * @modify date May 09 2021 18:34:39 GMT+05:30
  * @desc Styles for Layout component
  */
 
 @import "../../styles/constants/screen-sizes/screen-sizes.scss";
 @import "../../styles/constants/component-level/Header.constants.scss";
+@import "../../styles/constants/component-level/Layout.constants.scss";
 @import "../../styles/constants/component-level/Sidenav.constants.scss";
 
 .Layout {
   min-height: 100vh;
   display: grid;
+
+  &--xs-sidenav-open {
+    transform: scale($xs-sidenav-open-layout-scale-ratio);
+    transition-duration: $sidenav-expansion-duration;
+    transition-timing-function: $sidenav-expansion-timing-function;
+  }
+
+  &--xs-sidenav-close {
+    transform: scale(1);
+    transition-duration: $sidenav-expansion-duration;
+    transition-timing-function: $sidenav-expansion-timing-function;
+  }
 
   &__header {
     grid-area: Layout__header;
@@ -34,6 +47,14 @@
     grid-template-areas:
       "Layout__header"
       "Layout__content";
+
+    &__content {
+      padding: 8px 16px;
+
+      &__page-title {
+        margin-bottom: 8px !important;
+      }
+    }
   }
 }
 
@@ -44,6 +65,14 @@
     grid-template-areas:
       "Layout__sidenav Layout__header"
       "Layout__sidenav Layout__content";
+
+    &__content {
+      padding: 16px 32px;
+
+      &__page-title {
+        margin-bottom: 16px !important;
+      }
+    }
   }
 }
 
@@ -54,5 +83,13 @@
     grid-template-areas:
       "Layout__sidenav Layout__header"
       "Layout__sidenav Layout__content";
+
+    &__content {
+      padding: 16px 32px;
+
+      &__page-title {
+        margin-bottom: 16px !important;
+      }
+    }
   }
 }

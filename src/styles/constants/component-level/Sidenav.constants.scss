@@ -9,6 +9,6 @@
 $sidenav-width-sm: 0px;
 $sidenav-width: 64px;
 $sidenav-width-expanded: 240px;
-$sidenav-expansion-duration: 0.3s;
-$sidenav-expansion-timing-function: ease-out;
+$sidenav-expansion-duration: 300ms;
+$sidenav-expansion-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 $sidenav-header-logo-size: 40px;

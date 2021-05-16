@@ -2,12 +2,14 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:15:12 GMT+05:30
- * @modify date Apr 19 2021 18:15:12 GMT+05:30
+ * @modify date May 16 2021 21:17:04 GMT+05:30
  * @desc Styles for Header component
  */
 
 @import "../../styles/constants/screen-sizes/screen-sizes.scss";
 @import "../../styles/constants/component-level/Header.constants.scss";
+@import "../../styles/constants/component-level/Layout.constants.scss";
+@import "../../styles/constants/component-level/Sidenav.constants.scss";
 
 :export {
   headerHeightSm: $header-height-sm;
@@ -15,6 +17,32 @@
 }
 
 .Header {
+  &-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: $header-height-sm;
+
+    &--xs-sidenav-open {
+      top: -((($xs-sidenav-open-header-background-scale-ratio - $xs-sidenav-open-layout-scale-ratio) / 4) * 100vh);
+      height: calc(
+        #{$header-height-sm} + #{(
+            (($xs-sidenav-open-header-background-scale-ratio - $xs-sidenav-open-layout-scale-ratio) / 4) * 100vh
+          )}
+      );
+      transform: scale($xs-sidenav-open-header-background-scale-ratio);
+      transition-duration: $sidenav-expansion-duration !important;
+      transition-timing-function: $sidenav-expansion-timing-function !important;
+    }
+
+    &--xs-sidenav-close {
+      transform: scale(1);
+      transition-duration: $sidenav-expansion-duration !important;
+      transition-timing-function: $sidenav-expansion-timing-function !important;
+    }
+  }
+
   &__toolbar {
     display: grid !important;
   }

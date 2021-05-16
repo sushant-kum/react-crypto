@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:58 GMT+05:30
- * @modify date Apr 20 2021 19:48:46 GMT+05:30
+ * @modify date May 16 2021 21:18:44 GMT+05:30
  * @desc Sidenav component
  */
 
@@ -36,6 +36,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const [menuHovered, menuHoveredSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState<boolean>(
     false
   );
+  const sidenavExpansionDuration: number = +styles.sidenavExpansionDuration.split("ms")[0];
 
   return (
     <nav className={classNames(styles.Sidenav, props.className)} data-testid="Sidenav">
@@ -46,6 +47,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
             paper: classNames(styles.Sidenav__drawer__paper, styles["Sidenav__drawer__paper--xs"]),
           }}
           anchor="left"
+          transitionDuration={sidenavExpansionDuration}
           open={xsSideNavOpen}
           onOpen={() => xsSideNavOpenUpdate?.(true)}
           onClose={() => xsSideNavOpenUpdate?.(false)}

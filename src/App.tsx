@@ -1,4 +1,13 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date Apr 17 2021 21:24:27 GMT+05:30
+ * @modify date May 16 2021 21:24:27 GMT+05:30
+ * @desc App root component
+ */
+
 import { createMuiTheme, CssBaseline, PaletteType, Theme, ThemeProvider, useMediaQuery } from "@material-ui/core";
+import localForage from "localforage";
 import React, { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
@@ -6,7 +15,8 @@ import "./App.scss";
 import DarkModeContext, { darkModeContextInitialState } from "./contexts/DarkMode";
 import Layout from "./layout/Layout/Layout";
 import { DarkMode } from "./models/DarkMode";
-import LocalStorageKeys from "./models/LocalStorage";
+import LocalForageKeys from "./models/LocalForage";
+import Dashboard from "./pages/Dashboard/Dashboard.lazy";
 import palette from "./styles/constants/palette/palette.module.scss";
 
 const App: React.FC = () => {
@@ -15,13 +25,16 @@ const App: React.FC = () => {
     DarkMode,
     React.Dispatch<React.SetStateAction<DarkMode>>
   ] = useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
-  const darkModeSelectionUpdate: (selection: boolean) => void = (selection: boolean): void => {
+
+  const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection: DarkMode): void => {
     darkModeSelectionSet(selection);
-    window.localStorage.setItem(LocalStorageKeys.CONFIG__DARKMODE, selection ? "true" : "false");
+    localForage.setItem(LocalForageKeys.CONFIG__DARKMODE, selection);
   };
+
   const themeType: (selection: DarkMode, preference: boolean) => PaletteType | undefined = (selection, preference) => {
     return selection ?? preference ? "dark" : "light";
   };
+
   const theme: Theme = useMemo(
     () =>
       createMuiTheme({
@@ -45,9 +58,9 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
-    if (prefersDarkMode && !window.localStorage.getItem(LocalStorageKeys.CONFIG__DARKMODE)) {
-      darkModeSelectionUpdate(prefersDarkMode);
-    }
+    localForage.getItem<DarkMode>(LocalForageKeys.CONFIG__DARKMODE).then((darkMode) => {
+      darkModeSelectionUpdate(darkMode ?? prefersDarkMode);
+    });
   }, [prefersDarkMode]);
 
   return (
@@ -60,9 +73,9 @@ const App: React.FC = () => {
               <Route exact path="/">
                 <Redirect to="/dashboard" />
               </Route>
-              {/* <Route exact path="/notes">
-              <Notes />
-            </Route> */}
+              <Route exact path="/dashboard">
+                <Dashboard />
+              </Route>
             </Switch>
           </Layout>
         </DarkModeContext.Provider>

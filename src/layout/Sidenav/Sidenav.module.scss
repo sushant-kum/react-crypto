@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:39 GMT+05:30
- * @modify date Apr 20 2021 19:47:35 GMT+05:30
+ * @modify date May 09 2021 18:34:51 GMT+05:30
  * @desc Styles for Sidenav component
  */
 
@@ -26,6 +26,7 @@
 
     &--xs {
       width: $sidenav-width-expanded;
+      transition-timing-function: $sidenav-expansion-timing-function !important;
     }
 
     &--xs-plus {
@@ -40,6 +41,7 @@
 
     &__paper {
       overflow-x: hidden;
+      border-right-width: 0 !important;
       width: $sidenav-width;
 
       &--xs {

@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:15:30 GMT+05:30
- * @modify date Apr 20 2021 19:47:58 GMT+05:30
+ * @modify date May 16 2021 21:17:15 GMT+05:30
  * @desc Header component
  */
 
@@ -25,10 +25,23 @@ const Header: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
 
   return (
     <>
+      <Hidden smUp>
+        <div
+          className={classNames(
+            styles["Header-background"],
+            xsSideNavOpen
+              ? styles["Header-background--xs-sidenav-open"]
+              : styles["Header-background--xs-sidenav-close"],
+            darkModeSelection ? "MuiAppBar-colorDefault" : "MuiAppBar-colorPrimary"
+          )}
+        />
+      </Hidden>
+
       <AppBar
         className={classNames(styles.Header, props.className)}
-        color="primary"
+        color={darkModeSelection ? "default" : "primary"}
         position="sticky"
+        elevation={0}
         data-testid="Header"
       >
         <Toolbar className={styles.Header__toolbar}>
@@ -49,6 +62,7 @@ const Header: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           <Tooltip title={`Switch to ${darkModeSelection ? "light" : "dark"} mode`}>
             <IconButton
               color="inherit"
+              edge="end"
               aria-label="Toggle dark mode"
               onClick={() => darkModeSelectionUpdate?.(!darkModeSelection)}
             >
