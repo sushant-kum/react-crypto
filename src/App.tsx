@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date May 16 2021 21:24:27 GMT+05:30
+ * @modify date May 18 2021 20:03:43 GMT+05:30
  * @desc App root component
  */
 
@@ -16,7 +16,7 @@ import DarkModeContext, { darkModeContextInitialState } from "./contexts/DarkMod
 import Layout from "./layout/Layout/Layout";
 import { DarkMode } from "./models/DarkMode";
 import LocalForageKeys from "./models/LocalForage";
-import Dashboard from "./pages/Dashboard/Dashboard.lazy";
+import DashboardLazy from "./pages/Dashboard/Dashboard.lazy";
 import palette from "./styles/constants/palette/palette.module.scss";
 
 const App: React.FC = () => {
@@ -70,11 +70,10 @@ const App: React.FC = () => {
         <DarkModeContext.Provider value={{ darkModeSelection, darkModeSelectionUpdate }}>
           <Layout>
             <Switch>
-              <Route exact path="/">
-                <Redirect to="/dashboard" />
-              </Route>
+              <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+
               <Route exact path="/dashboard">
-                <Dashboard />
+                <DashboardLazy />
               </Route>
             </Switch>
           </Layout>

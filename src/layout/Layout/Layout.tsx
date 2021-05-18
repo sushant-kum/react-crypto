@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:12 GMT+05:30
- * @modify date May 09 2021 18:34:31 GMT+05:30
+ * @modify date May 18 2021 20:00:27 GMT+05:30
  * @desc Layout component
  */
 
@@ -46,7 +46,7 @@ const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = ({ children, ...prop
           {
             SIDENAV_MENU_ITEMS.filter(
               (sidenavMenuItem: SideNavMenuItem) => location.pathname === sidenavMenuItem.path
-            )[0].text
+            )[0]?.text
           }
         </Typography>
         {children}
