@@ -16,5 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "commitlint.config.js", "templates"]
+  "include": ["src", "commitlint.config.js", "templates", "tools"]
 }

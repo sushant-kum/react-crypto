@@ -2,14 +2,26 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date May 18 2021 20:03:43 GMT+05:30
+ * @modify date May 19 2021 17:02:05 GMT+05:30
  * @desc App root component
  */
 
-import { createMuiTheme, CssBaseline, PaletteType, Theme, ThemeProvider, useMediaQuery } from "@material-ui/core";
+import {
+  createMuiTheme,
+  CssBaseline,
+  IconButton,
+  PaletteType,
+  Slide,
+  Snackbar,
+  Theme,
+  ThemeProvider,
+  useMediaQuery,
+} from "@material-ui/core";
+import { CloseRounded } from "@material-ui/icons";
 import localForage from "localforage";
 import React, { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import useFetch, { UseFetch } from "use-http";
 
 import "./App.scss";
 import DarkModeContext, { darkModeContextInitialState } from "./contexts/DarkMode";
@@ -19,12 +31,23 @@ import LocalForageKeys from "./models/LocalForage";
 import DashboardLazy from "./pages/Dashboard/Dashboard.lazy";
 import palette from "./styles/constants/palette/palette.module.scss";
 
+interface VersionInfo {
+  version: string;
+  buildTimestamp: number;
+}
+
 const App: React.FC = () => {
+  const { data: versionInfo = undefined, error: versionInfoError }: UseFetch<VersionInfo> = useFetch(
+    "/assets/version-info.json",
+    {},
+    []
+  );
   const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
   const [darkModeSelection, darkModeSelectionSet]: [
     DarkMode,
     React.Dispatch<React.SetStateAction<DarkMode>>
   ] = useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
+  const [verionInfoErrorSnackbarOpen, verionInfoErrorSnackbarOpenSet] = useState<boolean>(false);
 
   const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection: DarkMode): void => {
     darkModeSelectionSet(selection);
@@ -63,6 +86,18 @@ const App: React.FC = () => {
     });
   }, [prefersDarkMode]);
 
+  useEffect(() => {
+    if (versionInfo?.version && versionInfo?.buildTimestamp) {
+      verionInfoErrorSnackbarOpenSet(false);
+      // eslint-disable-next-line no-console
+      console.log(`Version: ${versionInfo.version}, Built time: ${new Date(versionInfo.buildTimestamp)}`);
+    }
+
+    if (versionInfoError) {
+      verionInfoErrorSnackbarOpenSet(true);
+    }
+  }, [versionInfo, versionInfoError]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -79,6 +114,26 @@ const App: React.FC = () => {
           </Layout>
         </DarkModeContext.Provider>
       </BrowserRouter>
+
+      <Snackbar
+        open={verionInfoErrorSnackbarOpen}
+        onClose={() => verionInfoErrorSnackbarOpenSet(false)}
+        autoHideDuration={6000}
+        TransitionComponent={Slide}
+        message="Something went wrong! Please try again..."
+        action={
+          <>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => verionInfoErrorSnackbarOpenSet(false)}
+            >
+              <CloseRounded fontSize="small" />
+            </IconButton>
+          </>
+        }
+      />
     </ThemeProvider>
   );
 };
