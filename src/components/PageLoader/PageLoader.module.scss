@@ -1,0 +1,36 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date May 19 2021 12:54:58 GMT+05:30
+ * @modify date May 19 2021 12:54:58 GMT+05:30
+ * @desc Styles for PageLoader component
+ */
+
+@import "../../styles/constants/screen-sizes/screen-sizes.scss";
+@import "../../styles/constants/component-level/Header.constants.scss";
+
+$page-title-height: 41.6px;
+
+.PageLoader {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: $sm) {
+  .PageLoader {
+    min-height: calc(100vh - calc(calc(calc(#{$header-height-sm} + 16px) + #{$page-title-height}) + 8px));
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $lg) {
+  .PageLoader {
+    min-height: calc(100vh - calc(calc(calc(#{$header-height} + 32px) + #{$page-title-height}) + 16px));
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .PageLoader {
+    min-height: calc(100vh - calc(calc(calc(#{$header-height} + 32px) + #{$page-title-height}) + 16px));
+  }
+}
