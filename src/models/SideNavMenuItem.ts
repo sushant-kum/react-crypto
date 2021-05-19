@@ -11,7 +11,7 @@ import { ReactNode } from "react";
 /**
  * Data model for sidenav menu item
  *
- * @author Sushant Kumar<sushant.kumar@soroco.com>
+ * @author Sushant Kumar<sushant.kum96@gmail.com>
  * @export
  * @interface SideNavMenuItem
  */

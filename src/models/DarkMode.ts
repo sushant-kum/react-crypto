@@ -11,7 +11,7 @@ export type DarkMode = boolean | undefined;
 /**
  * Data model for DarkModeContext value
  *
- * @author Sushant Kumar<sushant.kumar@soroco.com>
+ * @author Sushant Kumar<sushant.kum96@gmail.com>
  * @export
  * @interface DarkModeContextValue
  */
