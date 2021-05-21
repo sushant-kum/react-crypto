@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date May 16 2021 21:23:21 GMT+05:30
+ * @modify date May 21 2021 12:34:51 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -32,15 +32,18 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const [marketsTabIndex, marketsTabIndexSet] = useState<MarketsTabIndexValues>(MarketsTabIndexValues.STARRED);
   const smallScreenWidths: Breakpoint[] = ["xs", "sm"];
 
-  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSearchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
     searchInputvalueSet(event.target.value);
   };
 
-  const handleMarketsTabIndexChange = (event: React.ChangeEvent<unknown>, index: MarketsTabIndexValues): void => {
+  const handleMarketsTabIndexChange: (event: React.ChangeEvent<unknown>, index: MarketsTabIndexValues) => void = (
+    event,
+    index
+  ) => {
     marketsTabIndexSet(index);
   };
 
-  const handleChangeIndex = (index: number): void => {
+  const handleChangeIndex: (index: number) => void = (index) => {
     marketsTabIndexSet(index);
   };
 

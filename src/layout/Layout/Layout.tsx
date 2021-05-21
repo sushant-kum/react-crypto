@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:12 GMT+05:30
- * @modify date May 18 2021 20:00:27 GMT+05:30
+ * @modify date May 21 2021 12:34:43 GMT+05:30
  * @desc Layout component
  */
 
@@ -24,7 +24,7 @@ import styles from "./Layout.module.scss";
 const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = ({ children, ...props }) => {
   const location = useLocation();
   const [xsSideNavOpen, xsSideNavOpenSet] = useState<XsSideNavOpen>(xsSideNavOpenInitialState.xsSideNavOpen);
-  const xsSideNavOpenUpdate = (state: boolean): void => {
+  const xsSideNavOpenUpdate: (state: boolean) => void = (state) => {
     xsSideNavOpenSet(state);
   };
 

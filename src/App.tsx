@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date May 19 2021 17:02:05 GMT+05:30
+ * @modify date May 21 2021 12:34:59 GMT+05:30
  * @desc App root component
  */
 
@@ -49,7 +49,7 @@ const App: React.FC = () => {
   ] = useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
   const [verionInfoErrorSnackbarOpen, verionInfoErrorSnackbarOpenSet] = useState<boolean>(false);
 
-  const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection: DarkMode): void => {
+  const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection) => {
     darkModeSelectionSet(selection);
     localForage.setItem(LocalForageKeys.CONFIG__DARKMODE, selection);
   };

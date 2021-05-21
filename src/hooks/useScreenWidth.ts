@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:16:21 GMT+05:30
- * @modify date May 16 2021 21:16:21 GMT+05:30
+ * @modify date May 21 2021 12:34:37 GMT+05:30
  * @desc Hook to get current screen with breakpoint
  */
 
@@ -11,7 +11,7 @@ import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 
 type BreakpointOrNull = Breakpoint | null;
 
-const useScreenWidth: () => Breakpoint = (): Breakpoint => {
+const useScreenWidth: () => Breakpoint = () => {
   const theme: Theme = useTheme();
   const keys: Breakpoint[] = [...theme.breakpoints.keys].reverse();
   return (

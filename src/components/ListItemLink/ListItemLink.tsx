@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 24 2021 18:14:19 GMT+05:30
- * @modify date Apr 24 2021 18:14:19 GMT+05:30
+ * @modify date May 21 2021 12:34:29 GMT+05:30
  * @desc ListItemLink
  */
 
@@ -21,11 +21,7 @@ interface ListItemLinkProps extends React.HTMLAttributes<HTMLElement> {
   component?: React.ForwardRefExoticComponent<unknown>;
 }
 
-const ListItemLink: React.FC<ListItemProps<"li", ListItemLinkProps>> = ({
-  children,
-  to,
-  ...props
-}: ListItemProps<"li", ListItemLinkProps>) => {
+const ListItemLink: React.FC<ListItemProps<"li", ListItemLinkProps>> = ({ children, to, ...props }) => {
   const renderLink = useMemo(
     () =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
