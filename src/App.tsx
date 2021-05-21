@@ -43,10 +43,8 @@ const App: React.FC = () => {
     []
   );
   const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
-  const [darkModeSelection, darkModeSelectionSet]: [
-    DarkMode,
-    React.Dispatch<React.SetStateAction<DarkMode>>
-  ] = useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
+  const [darkModeSelection, darkModeSelectionSet]: [DarkMode, React.Dispatch<React.SetStateAction<DarkMode>>] =
+    useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
   const [verionInfoErrorSnackbarOpen, verionInfoErrorSnackbarOpenSet] = useState<boolean>(false);
 
   const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection) => {

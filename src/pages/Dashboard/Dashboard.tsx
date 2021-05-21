@@ -12,7 +12,6 @@ import { ClearRounded, SearchRounded, StarRounded } from "@material-ui/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import SwipeableViews from "react-swipeable-views";
 
 import TabPanel from "../../components/TabPanel/TabPanel";
 import useScreenWidth from "../../hooks/useScreenWidth";
@@ -40,10 +39,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     event,
     index
   ) => {
-    marketsTabIndexSet(index);
-  };
-
-  const handleChangeIndex: (index: number) => void = (index) => {
     marketsTabIndexSet(index);
   };
 
@@ -101,22 +96,15 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
           </Tabs>
         </AppBar>
 
-        <SwipeableViews
-          enableMouseEvents={smallScreenWidths.includes(screenWidth)}
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={marketsTabIndex}
-          onChangeIndex={handleChangeIndex}
-        >
-          <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.STARRED} dir={theme.direction}>
-            Starred
-          </TabPanel>
-          <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.INR} dir={theme.direction}>
-            INR
-          </TabPanel>
-          <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.USDT} dir={theme.direction}>
-            USDT
-          </TabPanel>
-        </SwipeableViews>
+        <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.STARRED} dir={theme.direction}>
+          Starred
+        </TabPanel>
+        <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.INR} dir={theme.direction}>
+          INR
+        </TabPanel>
+        <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.USDT} dir={theme.direction}>
+          USDT
+        </TabPanel>
       </Paper>
     </section>
   );

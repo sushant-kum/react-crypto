@@ -14,8 +14,7 @@ export const xsSideNavOpenInitialState: XsSideNavOpenContextValue = {
   xsSideNavOpen: false,
 };
 
-const XsSideNavOpenContext: Context<XsSideNavOpenContextValue> = createContext<XsSideNavOpenContextValue>(
-  xsSideNavOpenInitialState
-);
+const XsSideNavOpenContext: Context<XsSideNavOpenContextValue> =
+  createContext<XsSideNavOpenContextValue>(xsSideNavOpenInitialState);
 
 export default XsSideNavOpenContext;

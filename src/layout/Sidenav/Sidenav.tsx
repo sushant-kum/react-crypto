@@ -33,9 +33,8 @@ import styles from "./Sidenav.module.scss";
 const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const location = useLocation();
   const { xsSideNavOpen, xsSideNavOpenUpdate } = useContext<XsSideNavOpenContextValue>(XsSideNavOpenContext);
-  const [menuHovered, menuHoveredSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState<boolean>(
-    false
-  );
+  const [menuHovered, menuHoveredSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
+    useState<boolean>(false);
   const sidenavExpansionDuration: number = +styles.sidenavExpansionDuration.split("ms")[0];
 
   return (
