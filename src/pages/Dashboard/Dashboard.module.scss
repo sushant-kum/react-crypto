@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:42 GMT+05:30
- * @modify date May 16 2021 21:23:42 GMT+05:30
+ * @modify date May 22 2021 14:27:55 GMT+05:30
  * @desc Styles for Dashboard component
  */
 
@@ -13,7 +13,13 @@
     &__header {
       border-radius: 4px 4px 0 0;
 
-      &__input-search {
+      &__toolbar {
+        display: grid;
+        column-gap: 8px;
+        align-items: center;
+        grid-template-columns: auto 48px 48px;
+        grid-template-areas: "Dashboard__markets__header__toolbar__input-search Dashboard__markets__header__toolbar__btn-auto-refresh Dashboard__markets__header__toolbar__btn-refresh";
+
         &--small-screen {
           margin: 8px 8px 0 8px;
         }
@@ -23,10 +29,45 @@
           right: 8px;
           z-index: 10;
         }
+
+        &__input-search {
+          grid-area: Dashboard__markets__header__toolbar__input-search;
+        }
+
+        &__btn-auto-refresh {
+          position: relative;
+          grid-area: Dashboard__markets__header__toolbar__btn-auto-refresh;
+
+          &__progress {
+            position: absolute;
+            top: 9%;
+            left: 9%;
+          }
+        }
+
+        &__btn-refresh {
+          grid-area: Dashboard__markets__header__toolbar__btn-refresh;
+
+          &--spinning {
+            animation-name: spin;
+            animation-duration: 500ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+          }
+        }
       }
 
       &__tabs {
       }
     }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
   }
 }

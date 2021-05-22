@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date May 21 2021 12:34:59 GMT+05:30
+ * @modify date May 22 2021 14:28:27 GMT+05:30
  * @desc App root component
  */
 
@@ -18,10 +18,10 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
+import axios, { AxiosResponse } from "axios";
 import localForage from "localforage";
 import React, { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import useFetch, { UseFetch } from "use-http";
 
 import "./App.scss";
 import DarkModeContext, { darkModeContextInitialState } from "./contexts/DarkMode";
@@ -37,11 +37,6 @@ interface VersionInfo {
 }
 
 const App: React.FC = () => {
-  const { data: versionInfo = undefined, error: versionInfoError }: UseFetch<VersionInfo> = useFetch(
-    "/assets/version-info.json",
-    {},
-    []
-  );
   const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
   const [darkModeSelection, darkModeSelectionSet]: [DarkMode, React.Dispatch<React.SetStateAction<DarkMode>>] =
     useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
@@ -85,16 +80,20 @@ const App: React.FC = () => {
   }, [prefersDarkMode]);
 
   useEffect(() => {
-    if (versionInfo?.version && versionInfo?.buildTimestamp) {
-      verionInfoErrorSnackbarOpenSet(false);
-      // eslint-disable-next-line no-console
-      console.log(`Version: ${versionInfo.version}, Built time: ${new Date(versionInfo.buildTimestamp)}`);
-    }
-
-    if (versionInfoError) {
-      verionInfoErrorSnackbarOpenSet(true);
-    }
-  }, [versionInfo, versionInfoError]);
+    axios
+      .get<VersionInfo>("/assets/version-info.json")
+      .then((res: AxiosResponse<VersionInfo>) => res.data)
+      .then((data: VersionInfo) => {
+        if (data?.version && data?.buildTimestamp) {
+          verionInfoErrorSnackbarOpenSet(false);
+          // eslint-disable-next-line no-console
+          console.log(`Version: ${data.version}, Built time: ${new Date(data.buildTimestamp)}`);
+        }
+      })
+      .catch(() => {
+        verionInfoErrorSnackbarOpenSet(true);
+      });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -118,7 +117,7 @@ const App: React.FC = () => {
         onClose={() => verionInfoErrorSnackbarOpenSet(false)}
         autoHideDuration={6000}
         TransitionComponent={Slide}
-        message="Something went wrong! Please try again..."
+        message="Something went wrong! Please refresh to try again..."
         action={
           <>
             <IconButton
