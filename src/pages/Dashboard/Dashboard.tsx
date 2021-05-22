@@ -156,8 +156,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
 
   return (
     <section className={classNames(styles.Dashboard, props.className)} data-testid="Dashboard">
-      autoRefreshCountdownPerc = {autoRefreshCountdownPerc} <br />
-      loadingMarketsData = {JSON.stringify(loadingMarketsData)} <br />
       <Paper className={styles.Dashboard__markets} elevation={0}>
         <AppBar className={styles.Dashboard__markets__header} position="static" elevation={0} color="default">
           <section
@@ -201,9 +199,13 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             <div className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}>
               {(autoRefresh || autoRefreshCountdownPerc !== 0) && (
                 <CircularProgress
-                  className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress"]}
-                  size={40}
-                  thickness={2.5}
+                  className={classNames(
+                    styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress"],
+                    !smallScreenWidths.includes(screenWidth) &&
+                      styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress--large-screen"]
+                  )}
+                  size={smallScreenWidths.includes(screenWidth) ? 30 : 40}
+                  thickness={3}
                   variant="determinate"
                   value={autoRefreshCountdownPerc}
                 />

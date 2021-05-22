@@ -6,6 +6,8 @@
  * @desc Styles for Dashboard component
  */
 
+@import "../../styles/constants/screen-sizes/screen-sizes.scss";
+
 .Dashboard {
   &__markets {
     position: relative;
@@ -17,7 +19,6 @@
         display: grid;
         column-gap: 8px;
         align-items: center;
-        grid-template-columns: auto 48px 48px;
         grid-template-areas: "Dashboard__markets__header__toolbar__input-search Dashboard__markets__header__toolbar__btn-auto-refresh Dashboard__markets__header__toolbar__btn-refresh";
 
         &--small-screen {
@@ -40,8 +41,11 @@
 
           &__progress {
             position: absolute;
-            top: 9%;
-            left: 9%;
+
+            &--large-screen {
+              top: 9%;
+              left: 9%;
+            }
           }
         }
 
@@ -49,7 +53,7 @@
           grid-area: Dashboard__markets__header__toolbar__btn-refresh;
 
           &--spinning {
-            animation-name: spin;
+            animation-name: spin-btn-refresh;
             animation-duration: 500ms;
             animation-iteration-count: infinite;
             animation-timing-function: linear;
@@ -63,7 +67,55 @@
   }
 }
 
-@keyframes spin {
+@media screen and (max-width: $sm) {
+  .Dashboard {
+    &__markets {
+      &__header {
+        &__toolbar {
+          grid-template-columns: auto 30px 30px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .Dashboard {
+    &__markets {
+      &__header {
+        &__toolbar {
+          grid-template-columns: auto 30px 30px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
+  .Dashboard {
+    &__markets {
+      &__header {
+        &__toolbar {
+          grid-template-columns: auto 48px 48px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .Dashboard {
+    &__markets {
+      &__header {
+        &__toolbar {
+          grid-template-columns: auto 48px 48px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin-btn-refresh {
   from {
     transform: rotate(0deg);
   }
