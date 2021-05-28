@@ -21,7 +21,8 @@
     "lint:fix": "tsc --noEmit && eslint --fix ./**/*.{js,jsx,ts,tsx}",
     "tool::commit": "cz",
     "tool::generate-component": "generate-react component",
-    "tool::version-info-gen": "node tools/version-info-gen/version-info-gen.tool.ts"
+    "tool::version-info-gen": "node tools/version-info-gen/version-info-gen.tool.ts",
+    "tool::bundle-analyzer": "node tools/bundle-analyzer/bundle-analyzer.tool.js"
   },
   "eslintConfig": {
     "extends": [
@@ -90,7 +91,9 @@
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
     "prettier": "^2.3.0",
-    "serve": "^11.3.2"
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "serve": "^11.3.2",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",
