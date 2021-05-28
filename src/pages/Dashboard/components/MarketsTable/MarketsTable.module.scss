@@ -1,0 +1,40 @@
+.MarketsTable {
+  &__head {
+    &__row {
+      &__cell {
+        &--starred {
+          width: 70px;
+        }
+
+        &--marketName {
+        }
+      }
+    }
+  }
+
+  &__body {
+    &__row {
+      &__cell {
+        &--no-data {
+          padding: 16px !important;
+        }
+
+        &--starred {
+          width: 70px;
+        }
+
+        &--marketName {
+          &__icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+          }
+
+          &__text {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}

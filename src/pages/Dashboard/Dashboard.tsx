@@ -35,9 +35,10 @@ import React, { useEffect, useState } from "react";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
 import useScreenWidth from "../../hooks/useScreenWidth";
-import { MarketData, MarketDataApiResponse, parseMarketDataApiResponse } from "../../models/MarketData";
 
+import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
+import { MarketData, MarketDataApiResponse, parseMarketDataApiResponse } from "./models/MarketData";
 
 enum MarketsTabIndexValues {
   STARRED = 0,
@@ -46,26 +47,30 @@ enum MarketsTabIndexValues {
 }
 
 const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
+  const SMALL_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
   const AUTO_REFRESH_DELAY_MS = 5000;
-  const AUTO_REFRESH_PROGRESS_INTREVAL_MS = 200;
+  const AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS = 200;
 
   const theme = useTheme();
   const screenWidth: Breakpoint = useScreenWidth();
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
   const [autoRefresh, autoRefreshSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(true);
+  const [loadingMarketsData, loadingMarketsDataSet]: [
+    boolean | undefined,
+    React.Dispatch<React.SetStateAction<boolean | undefined>>
+  ] = useState<boolean | undefined>(undefined);
   const [autoRefreshCountdownPerc, autoRefreshCountdownPercSet]: [
     number,
     React.Dispatch<React.SetStateAction<number>>
   ] = useState<number>(0);
   const [marketsTabIndex, marketsTabIndexSet] = useState<MarketsTabIndexValues>(MarketsTabIndexValues.STARRED);
-  const [loadingMarketsData, loadingMarketsDataSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
-    useState<boolean>(false);
-  const [marketsData, marketsDataSet]: [
-    MarketData[] | undefined,
-    React.Dispatch<React.SetStateAction<MarketData[] | undefined>>
-  ] = useState<MarketData[]>();
-  const smallScreenWidths: Breakpoint[] = ["xs", "sm"];
+  const [marketsData, marketsDataSet]: [MarketData[], React.Dispatch<React.SetStateAction<MarketData[]>>] = useState<
+    MarketData[]
+  >([]);
+  // const [starredMarkets, starredMarketsSet]: [string[], React.Dispatch<React.SetStateAction<string[]>>] = useState<
+  //   string[]
+  // >([]);
 
   const handleSearchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
     searchInputvalueSet(event.target.value);
@@ -84,75 +89,101 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     axios
       .get<MarketDataApiResponse>(buyUCoinApiEndpoint.tickerData)
       .then((res: AxiosResponse<MarketDataApiResponse>) => res.data)
-      .then((data: MarketDataApiResponse) => {
+      .then((res: MarketDataApiResponse) => {
         loadingMarketsDataSet(false);
 
-        if (data.status === "success") {
-          marketsDataSet(parseMarketDataApiResponse(data));
+        if (res.status === "success" && res.data.length > 0) {
+          marketsDataSet((currentMarketsData: MarketData[]) => {
+            const starredMarkets: string[] = currentMarketsData
+              ? currentMarketsData
+                  .filter((marketData) => marketData.starred)
+                  .map((marketData) => marketData.name.market)
+              : [];
+
+            return parseMarketDataApiResponse(res, starredMarkets);
+          });
         }
       });
   };
 
-  const filterMarketData: (forTab: MarketsTabIndexValues) => MarketData[] | undefined = (forTab) => {
-    return marketsData?.filter((marketData: MarketData) => {
-      let filterIn = true;
+  const filterMarketData: (forTab: MarketsTabIndexValues) => MarketData[] = (forTab) => {
+    return marketsData !== undefined
+      ? marketsData.filter((marketData: MarketData) => {
+          let filterIn = true;
 
-      switch (forTab) {
-        case MarketsTabIndexValues.STARRED:
-          if (!marketData.starred) {
+          switch (forTab) {
+            case MarketsTabIndexValues.STARRED:
+              if (!marketData.starred) {
+                filterIn = false;
+              }
+              break;
+
+            case MarketsTabIndexValues.INR:
+              if (marketData.name.quotationCurrency !== "INR") {
+                filterIn = false;
+              }
+              break;
+
+            case MarketsTabIndexValues.USDT:
+              if (marketData.name.quotationCurrency !== "USDT") {
+                filterIn = false;
+              }
+              break;
+
+            default:
+          }
+
+          if (
+            searchInputvalue &&
+            !(
+              marketData.name.exchangingCurrency.toLowerCase().includes(searchInputvalue.toLowerCase()) ||
+              marketData.name.quotationCurrency.toLowerCase().includes(searchInputvalue.toLowerCase())
+            )
+          ) {
             filterIn = false;
           }
-          break;
 
-        case MarketsTabIndexValues.INR:
-          if (marketData.name.quotationCurrency !== "INR") {
-            filterIn = false;
-          }
-          break;
+          return filterIn;
+        })
+      : [];
+  };
 
-        case MarketsTabIndexValues.USDT:
-          if (marketData.name.quotationCurrency !== "USDT") {
-            filterIn = false;
-          }
-          break;
+  const setMarketStar: (market: string, starred: boolean) => void = (market, starred) => {
+    marketsDataSet((currentMarketsData: MarketData[] | undefined) => {
+      const currentMarketsDataCopy: MarketData[] = JSON.parse(JSON.stringify(currentMarketsData));
 
-        default:
-      }
+      currentMarketsDataCopy.forEach((marketData: MarketData) => {
+        if (marketData.name.market === market) {
+          // eslint-disable-next-line no-param-reassign
+          marketData.starred = starred;
+        }
+      });
 
-      if (
-        searchInputvalue &&
-        !(
-          marketData.name.exchangingCurrency.toLowerCase().includes(searchInputvalue.toLowerCase()) ||
-          marketData.name.quotationCurrency.toLowerCase().includes(searchInputvalue.toLowerCase())
-        )
-      ) {
-        filterIn = false;
-      }
-
-      return filterIn;
+      return currentMarketsDataCopy;
     });
   };
 
   useEffect(() => {
-    fetchMarketsData();
-  }, []);
+    if (loadingMarketsData === undefined) {
+      fetchMarketsData();
+    }
 
-  useEffect(() => {
-    if (marketsData !== undefined && marketsData.length > 0 && autoRefresh) {
+    if (autoRefresh && loadingMarketsData === false) {
       autoRefreshCountdownPercSet(100);
 
       const autoRefreshCountdownPercInterval: NodeJS.Timeout = setInterval(() => {
         autoRefreshCountdownPercSet(
-          (value: number) => value - (AUTO_REFRESH_PROGRESS_INTREVAL_MS / AUTO_REFRESH_DELAY_MS) * 100
+          (value: number) => value - (AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS / AUTO_REFRESH_DELAY_MS) * 100
         );
-      }, AUTO_REFRESH_PROGRESS_INTREVAL_MS);
+      }, AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS);
 
       setTimeout(() => {
         clearInterval(autoRefreshCountdownPercInterval);
         fetchMarketsData();
       }, AUTO_REFRESH_DELAY_MS);
     }
-  }, [marketsData, autoRefresh]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRefresh, loadingMarketsData]);
 
   return (
     <section className={classNames(styles.Dashboard, props.className)} data-testid="Dashboard">
@@ -161,7 +192,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
           <section
             className={classNames(
               styles.Dashboard__markets__header__toolbar,
-              smallScreenWidths.includes(screenWidth)
+              SMALL_SCREEN_WIDTHS.includes(screenWidth)
                 ? styles["Dashboard__markets__header__toolbar--small-screen"]
                 : styles["Dashboard__markets__header__toolbar--large-screen"]
             )}
@@ -171,7 +202,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               label="Search"
               size="small"
               value={searchInputvalue}
-              variant={smallScreenWidths.includes(screenWidth) ? "outlined" : "standard"}
+              variant={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "outlined" : "standard"}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -196,47 +227,51 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               onChange={handleSearchInputChange}
             />
 
-            <div className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}>
-              {(autoRefresh || autoRefreshCountdownPerc !== 0) && (
-                <CircularProgress
-                  className={classNames(
-                    styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress"],
-                    !smallScreenWidths.includes(screenWidth) &&
-                      styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress--large-screen"]
-                  )}
-                  size={smallScreenWidths.includes(screenWidth) ? 30 : 40}
-                  thickness={3}
-                  variant="determinate"
-                  value={autoRefreshCountdownPerc}
-                />
-              )}
+            <Tooltip arrow title={`${autoRefresh ? "Disable" : "Enable"} auto refresh`}>
+              <div className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}>
+                {(autoRefresh || autoRefreshCountdownPerc !== 0) && (
+                  <CircularProgress
+                    className={classNames(
+                      styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress"],
+                      !SMALL_SCREEN_WIDTHS.includes(screenWidth) &&
+                        styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress--large-screen"]
+                    )}
+                    size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? 30 : 40}
+                    thickness={3}
+                    variant="determinate"
+                    value={autoRefreshCountdownPerc}
+                  />
+                )}
 
-              <Tooltip arrow title={`${autoRefresh ? "Disable" : "Enable"} auto refresh`}>
                 <IconButton
+                  className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}
                   aria-label="clear search input"
-                  size={smallScreenWidths.includes(screenWidth) ? "small" : "medium"}
+                  size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
+                  disabled={loadingMarketsData}
                   onClick={() => autoRefreshSet((currentAutoRefresh: boolean) => !currentAutoRefresh)}
                 >
                   {autoRefresh ? <PauseRounded /> : <PlayArrowRounded />}
                 </IconButton>
-              </Tooltip>
-            </div>
+              </div>
+            </Tooltip>
 
             <Tooltip arrow title="Manual refresh">
-              <IconButton
-                className={classNames(
-                  styles["Dashboard__markets__header__toolbar__btn-refresh"],
-                  loadingMarketsData && styles["Dashboard__markets__header__toolbar__btn-refresh--spinning"]
-                )}
-                aria-label="clear search input"
-                size={smallScreenWidths.includes(screenWidth) ? "small" : "medium"}
-                color="primary"
-                disabled={autoRefresh || autoRefreshCountdownPerc !== 0 || loadingMarketsData}
-                onClick={() => fetchMarketsData()}
-              >
-                <CachedRounded />
-              </IconButton>
+              <span>
+                <IconButton
+                  className={classNames(
+                    styles["Dashboard__markets__header__toolbar__btn-refresh"],
+                    loadingMarketsData && styles["Dashboard__markets__header__toolbar__btn-refresh--spinning"]
+                  )}
+                  aria-label="clear search input"
+                  size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
+                  color="primary"
+                  disabled={autoRefresh || loadingMarketsData}
+                  onClick={() => fetchMarketsData()}
+                >
+                  <CachedRounded />
+                </IconButton>
+              </span>
             </Tooltip>
           </section>
 
@@ -245,8 +280,8 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             value={marketsTabIndex}
             indicatorColor="primary"
             textColor="primary"
-            variant={smallScreenWidths.includes(screenWidth) ? "fullWidth" : "standard"}
-            centered={smallScreenWidths.includes(screenWidth)}
+            variant={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "fullWidth" : "standard"}
+            centered={SMALL_SCREEN_WIDTHS.includes(screenWidth)}
             onChange={handleMarketsTabIndexChange}
           >
             <Tab icon={<StarRounded />} value={MarketsTabIndexValues.STARRED} />
@@ -256,13 +291,34 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         </AppBar>
 
         <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.STARRED} dir={theme.direction}>
-          {marketsData && JSON.stringify(filterMarketData(MarketsTabIndexValues.STARRED))}
+          {marketsData && (
+            <MarketsTable
+              marketsData={filterMarketData(MarketsTabIndexValues.STARRED)}
+              category="Starred"
+              loadingMarketsData={loadingMarketsData ?? false}
+              setMarketStar={setMarketStar}
+            />
+          )}
         </TabPanel>
         <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.INR} dir={theme.direction}>
-          {marketsData && JSON.stringify(filterMarketData(MarketsTabIndexValues.INR))}
+          {marketsData && (
+            <MarketsTable
+              marketsData={filterMarketData(MarketsTabIndexValues.INR)}
+              category="INR"
+              loadingMarketsData={loadingMarketsData ?? false}
+              setMarketStar={setMarketStar}
+            />
+          )}
         </TabPanel>
         <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.USDT} dir={theme.direction}>
-          {marketsData && JSON.stringify(filterMarketData(MarketsTabIndexValues.USDT))}
+          {marketsData && (
+            <MarketsTable
+              marketsData={filterMarketData(MarketsTabIndexValues.USDT)}
+              category="USDT"
+              loadingMarketsData={loadingMarketsData ?? false}
+              setMarketStar={setMarketStar}
+            />
+          )}
         </TabPanel>
       </Paper>
     </section>

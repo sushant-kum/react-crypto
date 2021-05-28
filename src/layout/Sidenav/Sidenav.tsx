@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import logo from "../../assets/images/logo.svg";
+import productLogo from "../../assets/images/logo.svg";
 import ListItemLink from "../../components/ListItemLink/ListItemLink";
 import SIDENAV_MENU_ITEMS from "../../constants/SideNav";
 import XsSideNavOpenContext from "../../contexts/XsSideNavOpen";
@@ -52,7 +52,13 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           onClose={() => xsSideNavOpenUpdate?.(false)}
         >
           <section className={classNames(styles.Sidenav__drawer__header, styles["Sidenav__drawer__header--xs"])}>
-            <img className={styles.Sidenav__drawer__header__logo} src={logo} width="40" height="40" alt="Crypto Info" />
+            <img
+              className={styles.Sidenav__drawer__header__logo}
+              src={productLogo}
+              width="40"
+              height="40"
+              alt="Crypto Info"
+            />
             <Typography
               className={classNames(styles.Sidenav__drawer__text, styles["Sidenav__drawer__text--xs"])}
               variant="h5"
@@ -123,7 +129,13 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               menuHovered ? styles["Sidenav__drawer__header--sidenav-hovered"] : null
             )}
           >
-            <img className={styles.Sidenav__drawer__header__logo} src={logo} width="40" height="40" alt="Crypto Info" />
+            <img
+              className={styles.Sidenav__drawer__header__logo}
+              src={productLogo}
+              width="40"
+              height="40"
+              alt="Crypto Info"
+            />
             <Typography
               className={classNames(
                 styles.Sidenav__drawer__text,
