@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date May 22 2021 14:28:10 GMT+05:30
+ * @modify date May 28 2021 21:52:48 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -38,7 +38,7 @@ import useScreenWidth from "../../hooks/useScreenWidth";
 
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
-import { MarketData, MarketDataApiResponse, parseMarketDataApiResponse } from "./models/MarketData";
+import { MarketData, BuyUCoinTickerDataApiResponse, parseMarketDataApiResponse } from "./models/MarketData";
 
 enum MarketsTabIndexValues {
   STARRED = 0,
@@ -68,9 +68,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const [marketsData, marketsDataSet]: [MarketData[], React.Dispatch<React.SetStateAction<MarketData[]>>] = useState<
     MarketData[]
   >([]);
-  // const [starredMarkets, starredMarketsSet]: [string[], React.Dispatch<React.SetStateAction<string[]>>] = useState<
-  //   string[]
-  // >([]);
 
   const handleSearchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
     searchInputvalueSet(event.target.value);
@@ -87,12 +84,12 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     loadingMarketsDataSet(true);
 
     axios
-      .get<MarketDataApiResponse>(buyUCoinApiEndpoint.tickerData)
-      .then((res: AxiosResponse<MarketDataApiResponse>) => res.data)
-      .then((res: MarketDataApiResponse) => {
-        loadingMarketsDataSet(false);
+      .get<BuyUCoinTickerDataApiResponse>(buyUCoinApiEndpoint.tickerData)
+      .then((res: AxiosResponse<BuyUCoinTickerDataApiResponse>) => res.data)
+      .then((buyUCoinMarketDataApiResponse: BuyUCoinTickerDataApiResponse) => {
+        if (buyUCoinMarketDataApiResponse.status === "success" && buyUCoinMarketDataApiResponse.data.length > 0) {
+          loadingMarketsDataSet(false);
 
-        if (res.status === "success" && res.data.length > 0) {
           marketsDataSet((currentMarketsData: MarketData[]) => {
             const starredMarkets: string[] = currentMarketsData
               ? currentMarketsData
@@ -100,9 +97,12 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   .map((marketData) => marketData.name.market)
               : [];
 
-            return parseMarketDataApiResponse(res, starredMarkets);
+            return parseMarketDataApiResponse(buyUCoinMarketDataApiResponse, starredMarkets);
           });
         }
+      })
+      .catch(() => {
+        loadingMarketsDataSet(false);
       });
   };
 

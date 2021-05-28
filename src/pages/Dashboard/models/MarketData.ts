@@ -2,17 +2,17 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 14:27:19 GMT+05:30
- * @modify date May 22 2021 14:27:19 GMT+05:30
+ * @modify date May 28 2021 21:52:40 GMT+05:30
  * @desc Data models for market ticker data and API response
  */
 
-export interface MarketDataApiResponse {
+export interface BuyUCoinTickerDataApiResponse {
   status: string;
   sub_status: null;
-  data: MarketDataMetricesApiResponse[];
+  data: BuyUCoinTickerDataMetricesApiResponse[];
 }
 
-export interface MarketDataMetricesApiResponse {
+export interface BuyUCoinTickerDataMetricesApiResponse {
   bid: number;
   ask: number;
   sprd: number;
@@ -31,13 +31,22 @@ export interface MarketDataMetricesApiResponse {
   c24: number;
   c24p: number;
   marketName: string;
+  currToName: string;
 }
 
 export interface MarketData {
   name: {
     market: string;
+    currency: string;
     exchangingCurrency: string;
     quotationCurrency: string;
+  };
+  icons: {
+    selfHosted: {
+      black: string | null;
+      white: string | null;
+    };
+    buyUCoin: string | null;
   };
   bestBid: number;
   bestAsk: number;
@@ -70,15 +79,25 @@ export interface MarketData {
 }
 
 export const parseMarketDataApiResponse: (
-  marketDataApiResponse: MarketDataApiResponse,
+  buyUCoinMarketDataApiResponse: BuyUCoinTickerDataApiResponse,
   starredMarkets: string[]
-) => MarketData[] = (marketDataApiResponse, starredMarkets) => {
-  return marketDataApiResponse.data.map((metrices: MarketDataMetricesApiResponse) => {
+) => MarketData[] = (buyUCoinMarketDataApiResponse, starredMarkets) => {
+  return buyUCoinMarketDataApiResponse.data.map((metrices: BuyUCoinTickerDataMetricesApiResponse) => {
     const marketData: MarketData = {
       name: {
         market: metrices.marketName,
+        currency: metrices.currToName,
         exchangingCurrency: metrices.marketName.split("-")[1],
         quotationCurrency: metrices.marketName.split("-")[0],
+      },
+      icons: {
+        selfHosted: {
+          black: `/assets/images/crypto-icons/svg/black/${metrices.marketName.split("-")[1].toLowerCase()}.svg`,
+          white: `/assets/images/crypto-icons/svg/white/${metrices.marketName.split("-")[1].toLowerCase()}.svg`,
+        },
+        buyUCoin: `https://d33epyjwhmr3r5.cloudfront.net/assets/images/currency/${metrices.marketName
+          .split("-")[1]
+          .toLowerCase()}.png`,
       },
       bestBid: +metrices.bid,
       bestAsk: +metrices.ask,

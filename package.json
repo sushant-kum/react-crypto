@@ -50,7 +50,6 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
-    "base64-cryptocurrency-icons": "^1.1.17",
     "chalk": "^2.4.2",
     "classnames": "^2.3.1",
     "commander": "^4.1.1",

@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date May 22 2021 16:59:29 GMT+05:30
+ * @modify date May 28 2021 21:52:29 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -17,7 +17,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { StarRounded, StarOutlineRounded } from "@material-ui/icons";
-import cryptoIcons from "base64-cryptocurrency-icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
@@ -84,10 +83,8 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             <Img
               className={styles[`MarketsTable__body__row__cell--${cellKey}__icon`]}
               src={[
-                `/assets/images/crypto-icons/svg/${
-                  darkModeSelection ? "white" : "black"
-                }/${row.name.exchangingCurrency.toLowerCase()}.svg`,
-                cryptoIcons[row.name.exchangingCurrency]?.icon ?? "",
+                (darkModeSelection ? row.icons.selfHosted.white : row.icons.selfHosted.black) ?? "",
+                row.icons.buyUCoin ?? "",
                 productLogo,
               ]}
               loader={<CircularProgress size={20} thickness={2} />}
@@ -187,8 +184,16 @@ MarketsTable.propTypes = {
     PropTypes.exact({
       name: PropTypes.exact({
         market: PropTypes.string.isRequired,
+        currency: PropTypes.string.isRequired,
         exchangingCurrency: PropTypes.string.isRequired,
         quotationCurrency: PropTypes.string.isRequired,
+      }).isRequired,
+      icons: PropTypes.exact({
+        selfHosted: PropTypes.exact({
+          black: PropTypes.string,
+          white: PropTypes.string,
+        }).isRequired,
+        buyUCoin: PropTypes.string,
       }).isRequired,
       bestBid: PropTypes.number.isRequired,
       bestAsk: PropTypes.number.isRequired,
