@@ -37,6 +37,7 @@
 
   &__content {
     grid-area: Layout__content;
+    overflow-y: auto;
   }
 }
 
@@ -50,6 +51,7 @@
 
     &__content {
       padding: 8px 16px;
+      max-height: calc(100vh - #{$header-height-sm});
 
       &__page-title {
         margin-bottom: 8px !important;
@@ -68,6 +70,7 @@
 
     &__content {
       padding: 16px 32px;
+      max-height: calc(100vh - #{$header-height});
 
       &__page-title {
         margin-bottom: 16px !important;
@@ -86,6 +89,7 @@
 
     &__content {
       padding: 16px 32px;
+      max-height: calc(100vh - #{$header-height});
 
       &__page-title {
         margin-bottom: 16px !important;
