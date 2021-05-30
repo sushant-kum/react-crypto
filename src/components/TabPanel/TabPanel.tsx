@@ -15,14 +15,17 @@ import styles from "./TabPanel.module.scss";
 
 interface TabPanelProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
-  dir?: string;
+  classes?: {
+    box?: string | null;
+  };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   index: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
+  dir?: string;
 }
 
-const TabPanel: React.FC<TabPanelProps> = ({ children, dir, index, value, ...props }) => {
+const TabPanel: React.FC<TabPanelProps> = ({ classes, children, index, value, dir, ...props }) => {
   return (
     <div
       id={`tabpanel-${index}`}
@@ -32,23 +35,31 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, dir, index, value, ...pro
       aria-labelledby={`full-width-tab-${index}`}
       data-testid="TabPanel"
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && (
+        <Box className={classNames(styles.TabPanel__box, classes?.box)} p={3}>
+          {children}
+        </Box>
+      )}
     </div>
   );
 };
 
 TabPanel.propTypes = {
   children: PropTypes.node,
-  dir: PropTypes.string,
+  classes: PropTypes.exact({
+    box: PropTypes.string,
+  }),
   // eslint-disable-next-line react/forbid-prop-types
   index: PropTypes.any.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   value: PropTypes.any.isRequired,
+  dir: PropTypes.string,
   className: PropTypes.string,
 };
 
 TabPanel.defaultProps = {
   children: undefined,
+  classes: undefined,
   dir: "ltr",
   className: undefined,
 };

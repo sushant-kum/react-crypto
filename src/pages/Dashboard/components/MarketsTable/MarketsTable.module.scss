@@ -1,12 +1,22 @@
+@import "../../../../styles/constants/screen-sizes/screen-sizes";
+
 .MarketsTable {
   &__head {
     &__row {
       &__cell {
-        &--starred {
-          width: 70px;
+        position: sticky;
+        z-index: 10;
+
+        &--dark {
+          background-color: #303030;
         }
 
-        &--marketName {
+        &--light {
+          background-color: #fafafa;
+        }
+
+        &--starred {
+          width: 70px;
         }
       }
     }
@@ -33,6 +43,54 @@
           &__text {
             margin-left: 8px;
           }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .MarketsTable {
+    &__head {
+      &__row {
+        &__cell {
+          top: calc(48px - 8px);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .MarketsTable {
+    &__head {
+      &__row {
+        &__cell {
+          top: calc(48px - 8px);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
+  .MarketsTable {
+    &__head {
+      &__row {
+        &__cell {
+          top: 48px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .MarketsTable {
+    &__head {
+      &__row {
+        &__cell {
+          top: 48px;
         }
       }
     }

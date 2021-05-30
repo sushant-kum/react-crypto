@@ -308,7 +308,15 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
           </Tabs>
         </AppBar>
 
-        <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.STARRED} dir={theme.direction}>
+        <TabPanel
+          className={styles.Dashboard__markets__tabpanel}
+          classes={{
+            box: styles.Dashboard__markets__tabpanel__box,
+          }}
+          value={marketsTabIndex}
+          index={MarketsTabIndexValues.STARRED}
+          dir={theme.direction}
+        >
           {marketsData && (
             <MarketsTable
               marketsData={filterMarketData(MarketsTabIndexValues.STARRED)}
@@ -318,7 +326,15 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             />
           )}
         </TabPanel>
-        <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.INR} dir={theme.direction}>
+        <TabPanel
+          className={styles.Dashboard__markets__tabpanel}
+          classes={{
+            box: styles.Dashboard__markets__tabpanel__box,
+          }}
+          value={marketsTabIndex}
+          index={MarketsTabIndexValues.INR}
+          dir={theme.direction}
+        >
           {marketsData && (
             <MarketsTable
               marketsData={filterMarketData(MarketsTabIndexValues.INR)}
@@ -328,7 +344,15 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             />
           )}
         </TabPanel>
-        <TabPanel value={marketsTabIndex} index={MarketsTabIndexValues.USDT} dir={theme.direction}>
+        <TabPanel
+          className={styles.Dashboard__markets__tabpanel}
+          classes={{
+            box: styles.Dashboard__markets__tabpanel__box,
+          }}
+          value={marketsTabIndex}
+          index={MarketsTabIndexValues.USDT}
+          dir={theme.direction}
+        >
           {marketsData && (
             <MarketsTable
               marketsData={filterMarketData(MarketsTabIndexValues.USDT)}

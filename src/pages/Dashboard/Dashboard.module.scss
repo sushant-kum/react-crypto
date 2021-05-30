@@ -97,10 +97,16 @@
       margin: 0 -16px;
 
       &__header {
-        top: -8px;
+        top: calc(-8px - 48px);
 
         &__toolbar {
           grid-template-columns: auto 30px 30px;
+        }
+      }
+
+      &__tabpanel {
+        &__box {
+          padding: 0 !important;
         }
       }
     }
@@ -119,10 +125,16 @@
       margin: 0 -16px;
 
       &__header {
-        top: -8px;
+        top: calc(-8px - 48px);
 
         &__toolbar {
           grid-template-columns: auto 30px 30px;
+        }
+      }
+
+      &__tabpanel {
+        &__box {
+          padding: 0 !important;
         }
       }
     }
@@ -146,6 +158,12 @@
           grid-template-columns: auto 48px 48px;
         }
       }
+
+      &__tabpanel {
+        &__box {
+          padding: 8px 16px !important;
+        }
+      }
     }
   }
 }
@@ -165,6 +183,12 @@
 
         &__toolbar {
           grid-template-columns: auto 48px 48px;
+        }
+      }
+
+      &__tabpanel {
+        &__box {
+          padding: 8px 16px !important;
         }
       }
     }

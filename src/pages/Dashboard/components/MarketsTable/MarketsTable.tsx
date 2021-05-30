@@ -136,6 +136,9 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             <TableCell
               className={classNames(
                 styles.MarketsTable__head__row__cell,
+                darkModeSelection
+                  ? styles[`MarketsTable__head__row__cell--dark`]
+                  : styles[`MarketsTable__head__row__cell--light`],
                 styles[`MarketsTable__head__row__cell--${column.key}`]
               )}
               key={column.key}
