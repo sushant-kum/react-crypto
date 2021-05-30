@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date May 28 2021 21:52:48 GMT+05:30
+ * @modify date May 30 2021 18:40:13 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -30,6 +30,7 @@ import {
 } from "@material-ui/icons";
 import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
+import localForage from "localforage";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -38,6 +39,7 @@ import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
 import DarkModeContext from "../../contexts/DarkMode";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import { DarkModeContextValue } from "../../models/DarkMode";
+import LocalForageKeys from "../../models/LocalForage";
 
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
@@ -59,7 +61,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
   const [autoRefresh, autoRefreshSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
-    useState<boolean>(true);
+    useState<boolean>(false);
   const [loadingMarketsData, loadingMarketsDataSet]: [
     boolean | undefined,
     React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -84,6 +86,12 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     marketsTabIndexSet(index);
   };
 
+  const updateAutoRefresh: (autoRefreshMarkets: boolean) => void = (autoRefreshMarkets) => {
+    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS, autoRefreshMarkets).then(() => {
+      autoRefreshSet(autoRefreshMarkets);
+    });
+  };
+
   const fetchMarketsData: () => void = () => {
     loadingMarketsDataSet(true);
 
@@ -94,15 +102,16 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         if (buyUCoinMarketDataApiResponse.status === "success" && buyUCoinMarketDataApiResponse.data.length > 0) {
           loadingMarketsDataSet(false);
 
-          marketsDataSet((currentMarketsData: MarketData[]) => {
-            const starredMarkets: string[] = currentMarketsData
-              ? currentMarketsData
-                  .filter((marketData) => marketData.starred)
-                  .map((marketData) => marketData.name.market)
-              : [];
-
-            return parseMarketDataApiResponse(buyUCoinMarketDataApiResponse, starredMarkets);
-          });
+          localForage
+            .getItem<string[]>(LocalForageKeys.SETTINGS__GLOBAL__STARRED_MARKETS)
+            .then((starredMarkets: string[] | null) => {
+              marketsDataSet(
+                parseMarketDataApiResponse(
+                  buyUCoinMarketDataApiResponse,
+                  Array.isArray(starredMarkets) ? starredMarkets : []
+                )
+              );
+            });
         }
       })
       .catch(() => {
@@ -163,9 +172,24 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         }
       });
 
+      localForage.setItem(
+        LocalForageKeys.SETTINGS__GLOBAL__STARRED_MARKETS,
+        currentMarketsDataCopy
+          .filter((marketData: MarketData) => marketData.starred)
+          .map((marketData: MarketData) => marketData.name.market)
+      );
+
       return currentMarketsDataCopy;
     });
   };
+
+  useEffect(() => {
+    localForage.getItem<boolean>(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS).then((autoRefreshMarkets) => {
+      if (typeof autoRefreshMarkets === "boolean") {
+        autoRefreshSet(autoRefreshMarkets);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (loadingMarketsData === undefined) {
@@ -267,7 +291,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
                   disabled={loadingMarketsData}
-                  onClick={() => autoRefreshSet((currentAutoRefresh: boolean) => !currentAutoRefresh)}
+                  onClick={() => updateAutoRefresh(!autoRefresh)}
                 >
                   {autoRefresh ? <PauseRounded /> : <PlayArrowRounded />}
                 </IconButton>

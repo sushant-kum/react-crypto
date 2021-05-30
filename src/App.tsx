@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date May 22 2021 14:28:27 GMT+05:30
+ * @modify date May 30 2021 18:40:22 GMT+05:30
  * @desc App root component
  */
 
@@ -44,7 +44,7 @@ const App: React.FC = () => {
 
   const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection) => {
     darkModeSelectionSet(selection);
-    localForage.setItem(LocalForageKeys.CONFIG__DARKMODE, selection);
+    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__DARK_MODE, selection);
   };
 
   const themeType: (selection: DarkMode, preference: boolean) => PaletteType | undefined = (selection, preference) => {
@@ -74,7 +74,7 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
-    localForage.getItem<DarkMode>(LocalForageKeys.CONFIG__DARKMODE).then((darkMode) => {
+    localForage.getItem<DarkMode>(LocalForageKeys.SETTINGS__GLOBAL__DARK_MODE).then((darkMode) => {
       darkModeSelectionUpdate(darkMode ?? prefersDarkMode);
     });
   }, [prefersDarkMode]);
