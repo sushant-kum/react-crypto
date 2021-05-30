@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date May 28 2021 21:52:29 GMT+05:30
+ * @modify date May 30 2021 21:21:35 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -16,7 +16,14 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import { StarRounded, StarOutlineRounded } from "@material-ui/icons";
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import {
+  StarRounded,
+  StarOutlineRounded,
+  KeyboardArrowUpRounded,
+  KeyboardArrowDownRounded,
+  CompareArrowsRounded,
+} from "@material-ui/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
@@ -24,6 +31,7 @@ import { Img } from "react-image";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import DarkModeContext from "../../../../contexts/DarkMode";
+import useScreenWidth from "../../../../hooks/useScreenWidth";
 import { DarkModeContextValue } from "../../../../models/DarkMode";
 import { MarketData } from "../../models/MarketData";
 
@@ -31,6 +39,7 @@ import styles from "./MarketsTable.module.scss";
 
 interface ColumnDef {
   key: string;
+  align: "left" | "center" | "right";
   headerText?: React.ReactNode;
 }
 
@@ -48,20 +57,54 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
   setMarketStar,
   ...props
 }) => {
+  const SMALL_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
   const COLUMNS: ColumnDef[] = [
     {
       key: "starred",
+      align: "center",
     },
     {
       key: "marketName",
+      align: "left",
       headerText: "Market",
+    },
+    {
+      key: "lastPrice",
+      align: "center",
+      headerText: "Last Price",
+    },
+    {
+      key: "twentyFourHrChange",
+      align: "center",
+      headerText: "24 hr Change",
     },
   ];
 
+  const screenWidth: Breakpoint = useScreenWidth();
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
 
-  const getTableCell: (cellKey: string, row: MarketData) => React.ReactNode = (cellKey, row) => {
+  const getTableCell: (column: ColumnDef, row: MarketData) => React.ReactNode = (column, row) => {
+    const cellKey = column.key;
     let tableCell: React.ReactNode;
+    let twentyFourChangeIcon: React.ReactNode;
+
+    if (row.twentyFourHr.priceChangePercentage > 0) {
+      twentyFourChangeIcon = (
+        <KeyboardArrowUpRounded
+          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]}
+        />
+      );
+    } else if (row.twentyFourHr.priceChangePercentage < 0) {
+      twentyFourChangeIcon = (
+        <KeyboardArrowDownRounded
+          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]}
+        />
+      );
+    } else {
+      twentyFourChangeIcon = (
+        <CompareArrowsRounded className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]} />
+      );
+    }
 
     switch (cellKey) {
       case "starred":
@@ -81,7 +124,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
         tableCell = (
           <>
             <Img
-              className={styles[`MarketsTable__body__row__cell--${cellKey}__icon`]}
+              className={styles[`MarketsTable__body__row__cell--marketName__content__icon`]}
               src={[
                 (darkModeSelection ? row.icons.selfHosted.white : row.icons.selfHosted.black) ?? "",
                 row.icons.buyUCoin ?? "",
@@ -93,14 +136,39 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
               alt={`${row.name.exchangingCurrency} icon`}
             />
 
-            <span className={styles[`MarketsTable__body__row__cell--${cellKey}__text`]}>
-              <Typography variant="body1" component="span" color="textPrimary">
+            <span className={styles[`MarketsTable__body__row__cell--marketName__content__text`]}>
+              <Typography variant="body1" component="span">
                 {row.name.exchangingCurrency}
               </Typography>
+              {SMALL_SCREEN_WIDTHS.includes(screenWidth) ? <br /> : null}
               <Typography variant="caption" component="span" color="textSecondary">
                 &nbsp;/&nbsp;{row.name.quotationCurrency}
               </Typography>
             </span>
+          </>
+        );
+        break;
+
+      case "lastPrice":
+        tableCell = (
+          <Typography variant="body1" component="span">
+            {row.lastTrade.price}
+          </Typography>
+        );
+        break;
+
+      case "twentyFourHrChange":
+        tableCell = (
+          <>
+            {twentyFourChangeIcon}
+
+            <Typography
+              className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__text`]}
+              variant="body1"
+              component="span"
+            >
+              {row.twentyFourHr.priceChangePercentage} %
+            </Typography>
           </>
         );
         break;
@@ -114,11 +182,17 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       <TableCell
         className={classNames(
           styles.MarketsTable__body__row__cell,
-          styles[`MarketsTable__body__row__cell--${cellKey}`]
+          styles[`MarketsTable__body__row__cell--${cellKey}`],
+          cellKey === "twentyFourHrChange" &&
+            row.twentyFourHr.priceChangePercentage !== 0 &&
+            (row.twentyFourHr.priceChangePercentage > 0
+              ? styles[`MarketsTable__body__row__cell--${cellKey}--green`]
+              : styles[`MarketsTable__body__row__cell--${cellKey}--red`])
         )}
+        align={column.align}
         key={cellKey}
       >
-        {tableCell}
+        <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content`]}>{tableCell}</div>
       </TableCell>
     );
   };
@@ -141,6 +215,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                   : styles[`MarketsTable__head__row__cell--light`],
                 styles[`MarketsTable__head__row__cell--${column.key}`]
               )}
+              align={column.align}
               key={column.key}
             >
               {column.headerText}
@@ -153,7 +228,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
         {marketsData.length > 0 ? (
           marketsData.map((marketData: MarketData) => (
             <TableRow className={styles.MarketsTable__body__row} key={marketData.name.market}>
-              {COLUMNS.map((column: ColumnDef) => getTableCell(column.key, marketData))}
+              {COLUMNS.map((column: ColumnDef) => getTableCell(column, marketData))}
             </TableRow>
           ))
         ) : (
@@ -163,12 +238,10 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                 styles.MarketsTable__body__row__cell,
                 styles["MarketsTable__body__row__cell--no-data"]
               )}
-              colSpan={2}
+              colSpan={COLUMNS.length}
               align="center"
             >
-              <Typography variant="subtitle1" color="textPrimary">
-                No {category} markets found
-              </Typography>
+              <Typography variant="subtitle1">No {category} markets found</Typography>
               {category === "Starred" && (
                 <Typography variant="body1" color="textSecondary">
                   You can star a market by clicking on the <StarOutlineRounded fontSize="small" /> icon.
