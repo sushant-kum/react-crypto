@@ -23,7 +23,13 @@ $page-title-height: 41.6px;
   }
 }
 
-@media screen and (min-width: $sm) and (max-width: $lg) {
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .PageLoader {
+    min-height: calc(100vh - calc(calc(calc(#{$header-height} + 32px) + #{$page-title-height}) + 16px));
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
   .PageLoader {
     min-height: calc(100vh - calc(calc(calc(#{$header-height} + 32px) + #{$page-title-height}) + 16px));
   }

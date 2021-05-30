@@ -52,15 +52,26 @@
     &__content {
       padding: 8px 16px;
       max-height: calc(100vh - #{$header-height-sm});
-
-      &__page-title {
-        margin-bottom: 8px !important;
-      }
     }
   }
 }
 
-@media screen and (min-width: $sm) and (max-width: $lg) {
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .Layout {
+    grid-template-columns: $sidenav-width 1fr;
+    grid-template-rows: $header-height 1fr;
+    grid-template-areas:
+      "Layout__sidenav Layout__header"
+      "Layout__sidenav Layout__content";
+
+    &__content {
+      padding: 8px 16px;
+      max-height: calc(100vh - #{$header-height});
+    }
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
   .Layout {
     grid-template-columns: $sidenav-width 1fr;
     grid-template-rows: $header-height 1fr;
@@ -71,10 +82,6 @@
     &__content {
       padding: 16px 32px;
       max-height: calc(100vh - #{$header-height});
-
-      &__page-title {
-        margin-bottom: 16px !important;
-      }
     }
   }
 }
@@ -90,10 +97,6 @@
     &__content {
       padding: 16px 32px;
       max-height: calc(100vh - #{$header-height});
-
-      &__page-title {
-        margin-bottom: 16px !important;
-      }
     }
   }
 }

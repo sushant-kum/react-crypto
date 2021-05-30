@@ -16,6 +16,7 @@ import {
   Tabs,
   TextField,
   Tooltip,
+  Typography,
   useTheme,
 } from "@material-ui/core";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
@@ -30,11 +31,13 @@ import {
 import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import TabPanel from "../../components/TabPanel/TabPanel";
 import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
+import DarkModeContext from "../../contexts/DarkMode";
 import useScreenWidth from "../../hooks/useScreenWidth";
+import { DarkModeContextValue } from "../../models/DarkMode";
 
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
@@ -53,6 +56,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
 
   const theme = useTheme();
   const screenWidth: Breakpoint = useScreenWidth();
+  const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
   const [autoRefresh, autoRefreshSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(true);
@@ -187,6 +191,20 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
 
   return (
     <section className={classNames(styles.Dashboard, props.className)} data-testid="Dashboard">
+      <section className={styles["Dashboard__page-title"]}>
+        <Typography variant="h4" component="h1">
+          Dashboard
+        </Typography>
+        <div
+          className={classNames(
+            styles["Dashboard__page-title__bottom-spacer"],
+            darkModeSelection
+              ? styles["Dashboard__page-title__bottom-spacer--dark"]
+              : styles["Dashboard__page-title__bottom-spacer--light"]
+          )}
+        />
+      </section>
+
       <Paper className={styles.Dashboard__markets} elevation={0}>
         <AppBar className={styles.Dashboard__markets__header} position="static" elevation={0} color="default">
           <section

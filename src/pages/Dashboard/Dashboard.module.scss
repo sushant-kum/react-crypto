@@ -9,11 +9,29 @@
 @import "../../styles/constants/screen-sizes/screen-sizes.scss";
 
 .Dashboard {
+  &__page-title {
+    position: sticky;
+    top: -57.6px;
+    z-index: 10;
+
+    &__bottom-spacer {
+      width: 100%;
+
+      &--dark {
+        background-color: #303030;
+      }
+
+      &--light {
+        background-color: #fafafa;
+      }
+    }
+  }
+
   &__markets {
     position: relative;
 
     &__header {
-      border-radius: 4px 4px 0 0;
+      position: sticky;
 
       &__toolbar {
         display: grid;
@@ -69,8 +87,18 @@
 
 @media screen and (max-width: $sm) {
   .Dashboard {
+    &__page-title {
+      &__bottom-spacer {
+        height: 8px;
+      }
+    }
+
     &__markets {
+      margin: 0 -16px;
+
       &__header {
+        top: -8px;
+
         &__toolbar {
           grid-template-columns: auto 30px 30px;
         }
@@ -81,8 +109,18 @@
 
 @media screen and (min-width: $sm) and (max-width: $md) {
   .Dashboard {
+    &__page-title {
+      &__bottom-spacer {
+        height: 8px;
+      }
+    }
+
     &__markets {
+      margin: 0 -16px;
+
       &__header {
+        top: -8px;
+
         &__toolbar {
           grid-template-columns: auto 30px 30px;
         }
@@ -93,8 +131,17 @@
 
 @media screen and (min-width: $md) and (max-width: $lg) {
   .Dashboard {
+    &__page-title {
+      &__bottom-spacer {
+        height: 16px;
+      }
+    }
+
     &__markets {
       &__header {
+        border-radius: 4px 4px 0 0;
+        top: 0;
+
         &__toolbar {
           grid-template-columns: auto 48px 48px;
         }
@@ -105,8 +152,17 @@
 
 @media screen and (min-width: $lg) {
   .Dashboard {
+    &__page-title {
+      &__bottom-spacer {
+        height: 16px;
+      }
+    }
+
     &__markets {
       &__header {
+        border-radius: 4px 4px 0 0;
+        top: 0;
+
         &__toolbar {
           grid-template-columns: auto 48px 48px;
         }
