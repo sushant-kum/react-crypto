@@ -16,11 +16,18 @@
         z-index: 10;
 
         &--dark {
-          background-color: #303030;
+          background-color: #424242;
+          box-shadow: 0px 1px 0px 0px rgba(81, 81, 81, 1) !important;
         }
 
         &--light {
-          background-color: #fafafa;
+          background-color: #fff;
+          box-shadow: 0px 1px 0px 0px rgba(224, 224, 224, 1) !important;
+        }
+
+        &__tooltip-icon {
+          vertical-align: middle;
+          margin-left: 4px;
         }
       }
     }
@@ -60,10 +67,9 @@
 
           &__content {
             display: grid;
-            column-gap: 4px;
             align-items: center;
             justify-content: center;
-            grid-template-columns: 24px auto;
+            grid-template-columns: auto auto;
             grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrChange__content__icon MarketsTable__body__row__cell--twentyFourHrChange__content__text";
 
             &__icon {
@@ -86,11 +92,11 @@
     &__head {
       &__row {
         &__cell {
-          padding: 8px 8px !important;
+          padding: 8px 4px !important;
           top: calc(48px - 8px);
 
           &--starred {
-            width: 46px;
+            width: 38px;
           }
 
           &--marketName {
@@ -98,7 +104,7 @@
           }
 
           &--lastPrice {
-            width: 116px;
+            width: 108px;
           }
         }
       }
@@ -107,14 +113,14 @@
     &__body {
       &__row {
         &__cell {
-          padding: 8px 8px !important;
+          padding: 8px 4px !important;
 
           &--no-data {
             padding: 16px !important;
           }
 
           &--starred {
-            width: 46px;
+            width: 38px;
           }
 
           &--marketName {
@@ -122,7 +128,7 @@
           }
 
           &--lastPrice {
-            width: 116px;
+            width: 108px;
           }
         }
       }
@@ -135,11 +141,11 @@
     &__head {
       &__row {
         &__cell {
-          padding: 8px 8px !important;
+          padding: 8px 4px !important;
           top: calc(48px - 8px);
 
           &--starred {
-            width: 46px;
+            width: 38px;
           }
 
           &--marketName {
@@ -147,7 +153,7 @@
           }
 
           &--lastPrice {
-            width: 116px;
+            width: 108px;
           }
         }
       }
@@ -156,14 +162,14 @@
     &__body {
       &__row {
         &__cell {
-          padding: 8px 8px !important;
+          padding: 8px 4px !important;
 
           &--no-data {
             padding: 16px !important;
           }
 
           &--starred {
-            width: 46px;
+            width: 38px;
           }
 
           &--marketName {
@@ -171,7 +177,7 @@
           }
 
           &--lastPrice {
-            width: 116px;
+            width: 108px;
           }
         }
       }
@@ -192,11 +198,23 @@
           }
 
           &--marketName {
-            width: 106px;
+            width: 155px;
           }
 
           &--lastPrice {
-            width: 132px;
+            width: 150px;
+          }
+
+          &--twentyFourHrChange {
+            width: 126px;
+          }
+
+          &--twentyFourHrHigh {
+            width: 150px;
+          }
+
+          &--twentyFourHrLow {
+            width: 150px;
           }
         }
       }
@@ -217,11 +235,23 @@
           }
 
           &--marketName {
-            width: 106px;
+            width: 155px;
           }
 
           &--lastPrice {
-            width: 132px;
+            width: 150px;
+          }
+
+          &--twentyFourHrChange {
+            width: 126px;
+          }
+
+          &--twentyFourHrHigh {
+            width: 150px;
+          }
+
+          &--twentyFourHrLow {
+            width: 150px;
           }
         }
       }
@@ -242,11 +272,23 @@
           }
 
           &--marketName {
-            width: 106px;
+            width: 155px;
           }
 
           &--lastPrice {
-            width: 132px;
+            width: 150px;
+          }
+
+          &--twentyFourHrChange {
+            width: 126px;
+          }
+
+          &--twentyFourHrHigh {
+            width: 150px;
+          }
+
+          &--twentyFourHrLow {
+            width: 150px;
           }
         }
       }
@@ -267,11 +309,23 @@
           }
 
           &--marketName {
-            width: 106px;
+            width: 155px;
           }
 
           &--lastPrice {
-            width: 132px;
+            width: 150px;
+          }
+
+          &--twentyFourHrChange {
+            width: 126px;
+          }
+
+          &--twentyFourHrHigh {
+            width: 150px;
+          }
+
+          &--twentyFourHrLow {
+            width: 150px;
           }
         }
       }

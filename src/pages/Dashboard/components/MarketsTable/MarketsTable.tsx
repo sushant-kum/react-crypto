@@ -14,6 +14,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
@@ -22,7 +23,7 @@ import {
   StarOutlineRounded,
   KeyboardArrowUpRounded,
   KeyboardArrowDownRounded,
-  CompareArrowsRounded,
+  InfoRounded,
 } from "@material-ui/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -71,17 +72,76 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
     {
       key: "lastPrice",
       align: "center",
-      headerText: "Last Price",
+      headerText: (
+        <>
+          Last Price&nbsp;
+          <Tooltip title="Last price traded from the orderbook." arrow>
+            <InfoRounded
+              className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
+              fontSize="small"
+              color="secondary"
+            />
+          </Tooltip>
+        </>
+      ),
     },
     {
       key: "twentyFourHrChange",
       align: "center",
       headerText: "24 hr Change",
     },
+    {
+      key: "twentyFourHrHigh",
+      align: "center",
+      headerText: "24 hr High",
+    },
+    {
+      key: "twentyFourHrLow",
+      align: "center",
+      headerText: "24 hr Low",
+    },
+    {
+      key: "twentyFourHrVol",
+      align: "center",
+      headerText: (
+        <>
+          24 hr Volume&nbsp;
+          <Tooltip title="Traded volume of the base currency in that market." arrow>
+            <InfoRounded
+              className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
+              fontSize="small"
+              color="secondary"
+            />
+          </Tooltip>
+        </>
+      ),
+    },
   ];
 
   const screenWidth: Breakpoint = useScreenWidth();
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
+
+  const addUnit: (content: React.ReactNode, quotationCurrency: string) => React.ReactNode = (
+    content,
+    quotationCurrency
+  ) => {
+    return (
+      <>
+        {quotationCurrency === "INR" && (
+          <Typography variant="caption" component="span" color="textSecondary">
+            &#8377;
+          </Typography>
+        )}
+        &nbsp;
+        {content}&nbsp;
+        {quotationCurrency === "USDT" && (
+          <Typography variant="caption" component="span" color="textSecondary">
+            USDT
+          </Typography>
+        )}
+      </>
+    );
+  };
 
   const getTableCell: (column: ColumnDef, row: MarketData) => React.ReactNode = (column, row) => {
     const cellKey = column.key;
@@ -99,10 +159,6 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
         <KeyboardArrowDownRounded
           className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]}
         />
-      );
-    } else {
-      twentyFourChangeIcon = (
-        <CompareArrowsRounded className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]} />
       );
     }
 
@@ -124,7 +180,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
         tableCell = (
           <>
             <Img
-              className={styles[`MarketsTable__body__row__cell--marketName__content__icon`]}
+              className={styles[`MarketsTable__body__row__cell--${cellKey}__content__icon`]}
               src={[
                 (darkModeSelection ? row.icons.selfHosted.white : row.icons.selfHosted.black) ?? "",
                 row.icons.buyUCoin ?? "",
@@ -136,7 +192,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
               alt={`${row.name.exchangingCurrency} icon`}
             />
 
-            <span className={styles[`MarketsTable__body__row__cell--marketName__content__text`]}>
+            <span className={styles[`MarketsTable__body__row__cell--${cellKey}__content__text`]}>
               <Typography variant="body1" component="span">
                 {row.name.exchangingCurrency}
               </Typography>
@@ -152,7 +208,9 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       case "lastPrice":
         tableCell = (
           <Typography variant="body1" component="span">
-            {row.lastTrade.price}
+            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+              ? row.lastTrade.price
+              : addUnit(row.lastTrade.price, row.name.quotationCurrency)}
           </Typography>
         );
         break;
@@ -163,13 +221,58 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             {twentyFourChangeIcon}
 
             <Typography
-              className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__text`]}
+              className={styles[`MarketsTable__body__row__cell--${cellKey}__content__text`]}
               variant="body1"
               component="span"
             >
               {row.twentyFourHr.priceChangePercentage} %
             </Typography>
           </>
+        );
+        break;
+
+      case "twentyFourHrHigh":
+        tableCell = (
+          <Typography
+            className={styles[`MarketsTable__body__row__cell--${cellKey}__content__text`]}
+            variant="body1"
+            component="span"
+          >
+            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+              ? row.twentyFourHr.highestPrice
+              : addUnit(row.twentyFourHr.highestPrice, row.name.quotationCurrency)}
+          </Typography>
+        );
+        break;
+
+      case "twentyFourHrLow":
+        tableCell = (
+          <Typography
+            className={styles[`MarketsTable__body__row__cell--${cellKey}__content__text`]}
+            variant="body1"
+            component="span"
+          >
+            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+              ? row.twentyFourHr.lowestPrice
+              : addUnit(row.twentyFourHr.lowestPrice, row.name.quotationCurrency)}
+          </Typography>
+        );
+        break;
+
+      case "twentyFourHrVol":
+        tableCell = (
+          <Typography
+            className={styles[`MarketsTable__body__row__cell--${cellKey}__content__text`]}
+            variant="body1"
+            component="span"
+          >
+            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+              ? parseFloat(row.twentyFourHr.tradedVolumeQuotationCurrency.toFixed(2))
+              : addUnit(
+                  parseFloat(row.twentyFourHr.tradedVolumeQuotationCurrency.toFixed(2)),
+                  row.name.quotationCurrency
+                )}
+          </Typography>
         );
         break;
 
