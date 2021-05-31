@@ -8,16 +8,20 @@
 
 import {
   AppBar,
+  Badge,
   CircularProgress,
+  createStyles,
   IconButton,
   InputAdornment,
   Paper,
   Tab,
   Tabs,
   TextField,
+  Theme,
   Tooltip,
   Typography,
   useTheme,
+  withStyles,
 } from "@material-ui/core";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 import {
@@ -56,6 +60,17 @@ enum MarketsTabIndexValues {
   INR = 1,
   USDT = 2,
 }
+
+const TabCounterBadge = withStyles((theme: Theme) =>
+  createStyles({
+    badge: {
+      color: theme.palette.background.paper,
+      fontSize: "0.8em",
+      right: -9,
+      border: `1px solid ${theme.palette.type === "dark" ? "#212121" : "#f5f5f5"}`,
+    },
+  })
+)(Badge);
 
 const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const SMALL_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
@@ -341,9 +356,33 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             centered={SMALL_SCREEN_WIDTHS.includes(screenWidth)}
             onChange={handleMarketsTabIndexChange}
           >
-            <Tab icon={<StarRounded />} value={MarketsTabIndexValues.STARRED} />
-            <Tab label="INR" value={MarketsTabIndexValues.INR} />
-            <Tab label="USDT" value={MarketsTabIndexValues.USDT} />
+            <Tab
+              icon={
+                <TabCounterBadge
+                  badgeContent={filterMarketData(MarketsTabIndexValues.STARRED).length}
+                  color="secondary"
+                >
+                  <StarRounded />
+                </TabCounterBadge>
+              }
+              value={MarketsTabIndexValues.STARRED}
+            />
+            <Tab
+              label={
+                <TabCounterBadge badgeContent={filterMarketData(MarketsTabIndexValues.INR).length} color="secondary">
+                  INR
+                </TabCounterBadge>
+              }
+              value={MarketsTabIndexValues.INR}
+            />
+            <Tab
+              label={
+                <TabCounterBadge badgeContent={filterMarketData(MarketsTabIndexValues.USDT).length} color="secondary">
+                  USDT
+                </TabCounterBadge>
+              }
+              value={MarketsTabIndexValues.USDT}
+            />
           </Tabs>
         </AppBar>
 
