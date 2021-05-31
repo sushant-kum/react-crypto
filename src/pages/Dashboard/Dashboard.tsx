@@ -149,7 +149,10 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       });
   };
 
-  const filterMarketData: (forTab: MarketsTabIndexValues) => MarketData[] = (forTab) => {
+  const filterMarketData: (forTab: MarketsTabIndexValues, skipSearchInput?: boolean) => MarketData[] = (
+    forTab,
+    skipSearchInput
+  ) => {
     return marketsData !== undefined
       ? marketsData.filter((marketData: MarketData) => {
           let filterIn = true;
@@ -177,6 +180,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
           }
 
           if (
+            !skipSearchInput &&
             searchInputvalue &&
             !(
               marketData.name.exchangingCurrency.toLowerCase().includes(searchInputvalue.toLowerCase()) ||
@@ -359,7 +363,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             <Tab
               icon={
                 <TabCounterBadge
-                  badgeContent={filterMarketData(MarketsTabIndexValues.STARRED).length}
+                  badgeContent={filterMarketData(MarketsTabIndexValues.STARRED, true).length}
                   color="secondary"
                 >
                   <StarRounded />
@@ -369,7 +373,10 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             />
             <Tab
               label={
-                <TabCounterBadge badgeContent={filterMarketData(MarketsTabIndexValues.INR).length} color="secondary">
+                <TabCounterBadge
+                  badgeContent={filterMarketData(MarketsTabIndexValues.INR, true).length}
+                  color="secondary"
+                >
                   INR
                 </TabCounterBadge>
               }
@@ -377,7 +384,10 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             />
             <Tab
               label={
-                <TabCounterBadge badgeContent={filterMarketData(MarketsTabIndexValues.USDT).length} color="secondary">
+                <TabCounterBadge
+                  badgeContent={filterMarketData(MarketsTabIndexValues.USDT, true).length}
+                  color="secondary"
+                >
                   USDT
                 </TabCounterBadge>
               }
