@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date May 30 2021 21:21:35 GMT+05:30
+ * @modify date May 31 2021 13:09:06 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -367,6 +367,7 @@ MarketsTable.propTypes = {
         exchangingCurrency: PropTypes.string.isRequired,
         quotationCurrency: PropTypes.string.isRequired,
       }).isRequired,
+      coinGeckoId: PropTypes.string.isRequired,
       icons: PropTypes.exact({
         selfHosted: PropTypes.exact({
           black: PropTypes.string,

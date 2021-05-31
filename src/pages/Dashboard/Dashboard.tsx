@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date May 30 2021 18:40:13 GMT+05:30
+ * @modify date May 31 2021 13:09:24 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -36,6 +36,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import TabPanel from "../../components/TabPanel/TabPanel";
 import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
+import coinGeckoApiEndpoint from "../../constants/CoingeckoApi";
 import DarkModeContext from "../../contexts/DarkMode";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import { DarkModeContextValue } from "../../models/DarkMode";
@@ -43,7 +44,12 @@ import LocalForageKeys from "../../models/LocalForage";
 
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
-import { MarketData, BuyUCoinTickerDataApiResponse, parseMarketDataApiResponse } from "./models/MarketData";
+import {
+  MarketData,
+  BuyUCoinTickerDataApiResponse,
+  parseMarketDataApiResponse,
+  CoinGeckoCoinsListApiElement,
+} from "./models/MarketData";
 
 enum MarketsTabIndexValues {
   STARRED = 0,
@@ -102,15 +108,24 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         if (buyUCoinMarketDataApiResponse.status === "success" && buyUCoinMarketDataApiResponse.data.length > 0) {
           loadingMarketsDataSet(false);
 
-          localForage
-            .getItem<string[]>(LocalForageKeys.SETTINGS__GLOBAL__STARRED_MARKETS)
-            .then((starredMarkets: string[] | null) => {
-              marketsDataSet(
-                parseMarketDataApiResponse(
-                  buyUCoinMarketDataApiResponse,
-                  Array.isArray(starredMarkets) ? starredMarkets : []
-                )
-              );
+          axios
+            .get<CoinGeckoCoinsListApiElement[]>(coinGeckoApiEndpoint.coinsList)
+            .then((res: AxiosResponse<CoinGeckoCoinsListApiElement[]>) => res.data)
+            .then((coinGeckoCoinsList: CoinGeckoCoinsListApiElement[]) => {
+              localForage
+                .getItem<string[]>(LocalForageKeys.SETTINGS__GLOBAL__STARRED_MARKETS)
+                .then((starredMarkets: string[] | null) => {
+                  marketsDataSet(
+                    parseMarketDataApiResponse(
+                      buyUCoinMarketDataApiResponse,
+                      coinGeckoCoinsList,
+                      Array.isArray(starredMarkets) ? starredMarkets : []
+                    )
+                  );
+                });
+            })
+            .catch(() => {
+              loadingMarketsDataSet(false);
             });
         }
       })
