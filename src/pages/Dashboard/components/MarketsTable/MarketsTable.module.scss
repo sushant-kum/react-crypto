@@ -84,6 +84,7 @@
               display: grid;
               align-items: center;
               justify-content: start;
+              column-gap: 8px;
 
               &__legend {
                 grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__legend;
@@ -143,6 +144,7 @@
               display: grid;
               align-items: center;
               justify-content: start;
+              column-gap: 8px;
               grid-template-columns: 16px auto;
               grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__high__legend MarketsTable__body__row__cell--twentyFourHrData__content__high__value";
 
@@ -163,6 +165,7 @@
               display: grid;
               align-items: center;
               justify-content: start;
+              column-gap: 8px;
               grid-template-columns: 16px auto;
               grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__low__legend MarketsTable__body__row__cell--twentyFourHrData__content__low__value";
 
@@ -183,6 +186,7 @@
               display: grid;
               align-items: center;
               justify-content: start;
+              column-gap: 8px;
               grid-template-columns: 16px auto;
               grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__vol__legend MarketsTable__body__row__cell--twentyFourHrData__content__vol__value";
 
@@ -328,15 +332,8 @@
                 "MarketsTable__body__row__cell--twentyFourHrData__content__vol";
 
               &__change {
-                column-gap: 16px;
                 grid-template-columns: 16px 90px;
                 grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__legend MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage";
-              }
-
-              &__high,
-              &__low,
-              &__vol {
-                column-gap: 16px;
               }
             }
           }
@@ -407,15 +404,8 @@
                 }
               }
               &__change {
-                column-gap: 8px;
                 grid-template-columns: 16px 90px auto;
                 grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__legend MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage MarketsTable__body__row__cell--twentyFourHrData__content__change__value";
-              }
-
-              &__high,
-              &__low,
-              &__vol {
-                column-gap: 8px;
               }
             }
           }
@@ -489,15 +479,8 @@
                 }
               }
               &__change {
-                column-gap: 8px;
                 grid-template-columns: 16px 90px auto;
                 grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__legend MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage MarketsTable__body__row__cell--twentyFourHrData__content__change__value";
-              }
-
-              &__high,
-              &__low,
-              &__vol {
-                column-gap: 8px;
               }
             }
           }
