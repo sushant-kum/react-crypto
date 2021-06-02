@@ -67,6 +67,18 @@ const App: React.FC = () => {
             dark: palette.secondaryDark,
             contrastText: palette.secondaryContrastText,
           },
+          error: {
+            light: palette.errorLight,
+            main: palette.errorMain,
+            dark: palette.errorDark,
+            contrastText: palette.errorContrastText,
+          },
+          success: {
+            light: palette.successLight,
+            main: palette.successMain,
+            dark: palette.successDark,
+            contrastText: palette.successContrastText,
+          },
           type: themeType(darkModeSelection, prefersDarkMode),
         },
       }),

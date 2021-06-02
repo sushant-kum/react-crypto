@@ -8,6 +8,7 @@
 
 import {
   CircularProgress,
+  Divider,
   IconButton,
   Table,
   TableBody,
@@ -24,6 +25,8 @@ import {
   KeyboardArrowUpRounded,
   KeyboardArrowDownRounded,
   InfoRounded,
+  AddRounded,
+  RemoveRounded,
 } from "@material-ui/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -58,8 +61,42 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
   setMarketStar,
   ...props
 }) => {
-  const SMALL_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
-  const COLUMNS: ColumnDef[] = [
+  const SM_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
+  const MD_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm", "md"];
+  const MD_AND_BELOW_COLS: ColumnDef[] = [
+    {
+      key: "starred",
+      align: "center",
+    },
+    {
+      key: "marketName",
+      align: "left",
+      headerText: "Market",
+    },
+    {
+      key: "lastPrice",
+      align: "center",
+      headerText: (
+        <>
+          Last Price&nbsp;
+          <Tooltip title="Last price traded from the orderbook." arrow>
+            <InfoRounded
+              className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
+              fontSize="small"
+              color="secondary"
+            />
+          </Tooltip>
+        </>
+      ),
+    },
+    {
+      key: "twentyFourHrData",
+      align: "center",
+      headerText: "24 hr Data",
+    },
+  ];
+
+  const LG_AND_ABOVE_COLS: ColumnDef[] = [
     {
       key: "starred",
       align: "center",
@@ -127,16 +164,15 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
   ) => {
     return (
       <>
-        {quotationCurrency === "INR" && (
-          <Typography variant="caption" component="span" color="textSecondary">
-            &#8377;
-          </Typography>
-        )}
-        &nbsp;
         {content}&nbsp;
         {quotationCurrency === "USDT" && (
           <Typography variant="caption" component="span" color="textSecondary">
             USDT
+          </Typography>
+        )}
+        {quotationCurrency === "INR" && (
+          <Typography variant="caption" component="span" color="textSecondary">
+            INR
           </Typography>
         )}
       </>
@@ -145,24 +181,40 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
 
   const getTableCell: (column: ColumnDef, row: MarketData) => React.ReactNode = (column, row) => {
     const cellKey = column.key;
+
     let tableCell: React.ReactNode;
-    let twentyFourChangeIcon: React.ReactNode;
+    let twentyFourChangeValIcon: React.ReactNode;
+    let twentyFourChangePercIcon: React.ReactNode;
 
     if (row.twentyFourHr.priceChangePercentage > 0) {
-      twentyFourChangeIcon = (
+      twentyFourChangeValIcon = (
+        <AddRounded
+          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__change__value__icon`]}
+        />
+      );
+
+      twentyFourChangePercIcon = (
         <KeyboardArrowUpRounded
-          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]}
+          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__change__percentage__icon`]}
         />
       );
     } else if (row.twentyFourHr.priceChangePercentage < 0) {
-      twentyFourChangeIcon = (
+      twentyFourChangeValIcon = (
+        <RemoveRounded
+          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__change__value__icon`]}
+        />
+      );
+
+      twentyFourChangePercIcon = (
         <KeyboardArrowDownRounded
-          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__icon`]}
+          className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__change__percentage__icon`]}
         />
       );
     }
 
     switch (cellKey) {
+      // common columns
+
       case "starred":
         tableCell = (
           <IconButton
@@ -196,7 +248,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
               <Typography variant="body1" component="span">
                 {row.name.exchangingCurrency}
               </Typography>
-              {SMALL_SCREEN_WIDTHS.includes(screenWidth) ? <br /> : null}
+              {SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? <br /> : null}
               <Typography variant="caption" component="span" color="textSecondary">
                 &nbsp;/&nbsp;{row.name.quotationCurrency}
               </Typography>
@@ -208,25 +260,202 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       case "lastPrice":
         tableCell = (
           <Typography variant="body1" component="span">
-            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+            {SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
               ? row.lastTrade.price
               : addUnit(row.lastTrade.price, row.name.quotationCurrency)}
           </Typography>
         );
         break;
 
+      // md-and-below columns
+
+      case "twentyFourHrData":
+        tableCell = (
+          <>
+            <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__change`]}>
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__change__legend`]}
+                variant="body1"
+                component="span"
+                color="secondary"
+              >
+                C
+              </Typography>
+
+              <div
+                className={classNames(
+                  styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage`],
+                  row.twentyFourHr.priceChangePercentage !== 0 &&
+                    (row.twentyFourHr.priceChangePercentage > 0
+                      ? styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--up`]
+                      : styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--down`])
+                )}
+              >
+                {twentyFourChangePercIcon}
+
+                <Typography
+                  className={classNames(
+                    styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage__text`],
+                    !twentyFourChangePercIcon
+                      ? styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage__text--zero`]
+                      : null
+                  )}
+                  variant="body1"
+                  component="span"
+                >
+                  {row.twentyFourHr.priceChangePercentage} %
+                </Typography>
+              </div>
+
+              {screenWidth !== "xs" && (
+                <>
+                  <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__change__value`]}>
+                    {twentyFourChangeValIcon}
+
+                    <Typography
+                      className={styles[`MarketsTable__body__row__cell--${cellKey}__content__change__value__text`]}
+                      variant="body1"
+                      component="span"
+                    >
+                      {addUnit(Math.abs(row.twentyFourHr.priceChange), row.name.quotationCurrency)}
+                    </Typography>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <Divider
+              className={classNames(
+                styles[`MarketsTable__body__row__cell--${cellKey}__content__divider`],
+                styles[`MarketsTable__body__row__cell--${cellKey}__content__divider--change-high`]
+              )}
+            />
+
+            <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__high`]}>
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__high__legend`]}
+                variant="body1"
+                component="span"
+                color="secondary"
+              >
+                H
+              </Typography>
+
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__high__value`]}
+                variant="body1"
+                component="span"
+              >
+                {screenWidth === "xs"
+                  ? row.twentyFourHr.highestPrice
+                  : addUnit(row.twentyFourHr.highestPrice, row.name.quotationCurrency)}
+              </Typography>
+            </div>
+
+            <Divider
+              className={classNames(
+                styles[`MarketsTable__body__row__cell--${cellKey}__content__divider`],
+                styles[`MarketsTable__body__row__cell--${cellKey}__content__divider--high-low`]
+              )}
+              orientation={screenWidth === "xs" ? "horizontal" : "vertical"}
+            />
+
+            <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__low`]}>
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__low__legend`]}
+                variant="body1"
+                component="span"
+                color="secondary"
+              >
+                L
+              </Typography>
+
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__low__value`]}
+                variant="body1"
+                component="span"
+              >
+                {screenWidth === "xs"
+                  ? row.twentyFourHr.lowestPrice
+                  : addUnit(row.twentyFourHr.lowestPrice, row.name.quotationCurrency)}
+              </Typography>
+            </div>
+
+            <Divider
+              className={classNames(
+                styles[`MarketsTable__body__row__cell--${cellKey}__content__divider`],
+                styles[`MarketsTable__body__row__cell--${cellKey}__content__divider--low-vol`]
+              )}
+            />
+
+            <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__vol`]}>
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__vol__legend`]}
+                variant="body1"
+                component="span"
+                color="secondary"
+              >
+                V
+              </Typography>
+
+              <Typography
+                className={styles[`MarketsTable__body__row__cell--${cellKey}__content__vol__value`]}
+                variant="body1"
+                component="span"
+              >
+                {screenWidth === "xs"
+                  ? parseFloat(row.twentyFourHr.tradedVolumeQuotationCurrency.toFixed(2))
+                  : addUnit(
+                      parseFloat(row.twentyFourHr.tradedVolumeQuotationCurrency.toFixed(2)),
+                      row.name.quotationCurrency
+                    )}
+              </Typography>
+            </div>
+          </>
+        );
+        break;
+
+      // lg-and-above columns
+
       case "twentyFourHrChange":
         tableCell = (
           <>
-            {twentyFourChangeIcon}
+            {!SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) && (
+              <>
+                <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__value`]}>
+                  {twentyFourChangeValIcon}
 
-            <Typography
-              className={styles[`MarketsTable__body__row__cell--${cellKey}__content__text`]}
-              variant="body1"
-              component="span"
-            >
-              {row.twentyFourHr.priceChangePercentage} %
-            </Typography>
+                  <Typography
+                    className={styles[`MarketsTable__body__row__cell--${cellKey}__content__value__text`]}
+                    variant="body1"
+                    component="span"
+                  >
+                    {addUnit(Math.abs(row.twentyFourHr.priceChange), row.name.quotationCurrency)}
+                  </Typography>
+                </div>
+
+                <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__divider`]}>
+                  <Divider orientation="vertical" />
+                </div>
+              </>
+            )}
+
+            <div className={styles[`MarketsTable__body__row__cell--${cellKey}__content__percentage`]}>
+              {twentyFourChangePercIcon}
+
+              <Typography
+                className={classNames(
+                  styles[`MarketsTable__body__row__cell--${cellKey}__content__percentage__text`],
+                  !twentyFourChangePercIcon
+                    ? styles[`MarketsTable__body__row__cell--${cellKey}__content__percentage__text--zero`]
+                    : null
+                )}
+                variant="body1"
+                component="span"
+              >
+                {row.twentyFourHr.priceChangePercentage} %
+              </Typography>
+            </div>
           </>
         );
         break;
@@ -238,7 +467,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             variant="body1"
             component="span"
           >
-            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+            {SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
               ? row.twentyFourHr.highestPrice
               : addUnit(row.twentyFourHr.highestPrice, row.name.quotationCurrency)}
           </Typography>
@@ -252,7 +481,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             variant="body1"
             component="span"
           >
-            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+            {SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
               ? row.twentyFourHr.lowestPrice
               : addUnit(row.twentyFourHr.lowestPrice, row.name.quotationCurrency)}
           </Typography>
@@ -266,7 +495,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             variant="body1"
             component="span"
           >
-            {SMALL_SCREEN_WIDTHS.includes(screenWidth)
+            {SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
               ? parseFloat(row.twentyFourHr.tradedVolumeQuotationCurrency.toFixed(2))
               : addUnit(
                   parseFloat(row.twentyFourHr.tradedVolumeQuotationCurrency.toFixed(2)),
@@ -289,8 +518,8 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
           cellKey === "twentyFourHrChange" &&
             row.twentyFourHr.priceChangePercentage !== 0 &&
             (row.twentyFourHr.priceChangePercentage > 0
-              ? styles[`MarketsTable__body__row__cell--${cellKey}--green`]
-              : styles[`MarketsTable__body__row__cell--${cellKey}--red`])
+              ? styles[`MarketsTable__body__row__cell--${cellKey}--up`]
+              : styles[`MarketsTable__body__row__cell--${cellKey}--down`])
         )}
         align={column.align}
         key={cellKey}
@@ -309,21 +538,37 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
     >
       <TableHead className={styles.MarketsTable__head}>
         <TableRow className={styles.MarketsTable__head__row}>
-          {COLUMNS.map((column: ColumnDef) => (
-            <TableCell
-              className={classNames(
-                styles.MarketsTable__head__row__cell,
-                darkModeSelection
-                  ? styles[`MarketsTable__head__row__cell--dark`]
-                  : styles[`MarketsTable__head__row__cell--light`],
-                styles[`MarketsTable__head__row__cell--${column.key}`]
-              )}
-              align={column.align}
-              key={column.key}
-            >
-              {column.headerText}
-            </TableCell>
-          ))}
+          {MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
+            ? MD_AND_BELOW_COLS.map((column: ColumnDef) => (
+                <TableCell
+                  className={classNames(
+                    styles.MarketsTable__head__row__cell,
+                    darkModeSelection
+                      ? styles[`MarketsTable__head__row__cell--dark`]
+                      : styles[`MarketsTable__head__row__cell--light`],
+                    styles[`MarketsTable__head__row__cell--${column.key}`]
+                  )}
+                  align={column.align}
+                  key={column.key}
+                >
+                  {column.headerText}
+                </TableCell>
+              ))
+            : LG_AND_ABOVE_COLS.map((column: ColumnDef) => (
+                <TableCell
+                  className={classNames(
+                    styles.MarketsTable__head__row__cell,
+                    darkModeSelection
+                      ? styles[`MarketsTable__head__row__cell--dark`]
+                      : styles[`MarketsTable__head__row__cell--light`],
+                    styles[`MarketsTable__head__row__cell--${column.key}`]
+                  )}
+                  align={column.align}
+                  key={column.key}
+                >
+                  {column.headerText}
+                </TableCell>
+              ))}
         </TableRow>
       </TableHead>
 
@@ -331,7 +576,9 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
         {marketsData.length > 0 ? (
           marketsData.map((marketData: MarketData) => (
             <TableRow className={styles.MarketsTable__body__row} key={marketData.name.market}>
-              {COLUMNS.map((column: ColumnDef) => getTableCell(column, marketData))}
+              {MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
+                ? MD_AND_BELOW_COLS.map((column: ColumnDef) => getTableCell(column, marketData))
+                : LG_AND_ABOVE_COLS.map((column: ColumnDef) => getTableCell(column, marketData))}
             </TableRow>
           ))
         ) : (
@@ -341,7 +588,9 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                 styles.MarketsTable__body__row__cell,
                 styles["MarketsTable__body__row__cell--no-data"]
               )}
-              colSpan={COLUMNS.length}
+              colSpan={
+                MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? MD_AND_BELOW_COLS.length : LG_AND_ABOVE_COLS.length
+              }
               align="center"
             >
               <Typography variant="subtitle1">No {category} markets found</Typography>

@@ -158,12 +158,6 @@
           grid-template-columns: auto 48px 48px;
         }
       }
-
-      &__tabpanel {
-        &__box {
-          padding: 8px 16px !important;
-        }
-      }
     }
   }
 }
@@ -183,12 +177,6 @@
 
         &__toolbar {
           grid-template-columns: auto 48px 48px;
-        }
-      }
-
-      &__tabpanel {
-        &__box {
-          padding: 8px 16px !important;
         }
       }
     }

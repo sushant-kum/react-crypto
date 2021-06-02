@@ -7,6 +7,7 @@
  */
 
 @import "../../../../styles/constants/screen-sizes/screen-sizes";
+@import "../../../../styles/constants/palette/palette.scss";
 
 .MarketsTable {
   &__head {
@@ -56,29 +57,212 @@
           }
         }
 
+        &--twentyFourHrData {
+          &__content {
+            display: grid;
+            align-items: center;
+            justify-content: stretch;
+
+            &__divider {
+              align-self: center;
+
+              &--change-high {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high;
+              }
+
+              &--high-low {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__divider--high-low;
+              }
+
+              &--low-vol {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol;
+              }
+            }
+
+            &__change {
+              grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change;
+              display: grid;
+              align-items: center;
+              justify-content: start;
+
+              &__legend {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__legend;
+                display: grid;
+                align-items: center;
+                justify-content: center;
+              }
+
+              &__percentage {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage;
+                border-radius: 4px;
+                display: grid;
+                align-items: center;
+                justify-content: center;
+                grid-template-columns: 24px auto;
+                grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage__icon MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage__text";
+
+                &--up {
+                  background-color: rgba($success-main, 0.2);
+                  color: $success-main;
+                }
+
+                &--down {
+                  background-color: rgba($error-main, 0.2);
+                  color: $error-main;
+                }
+
+                &__icon {
+                  grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage__icon;
+                }
+
+                &__text {
+                  grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage__text;
+                }
+              }
+
+              &__value {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__value;
+                display: grid;
+                align-items: center;
+                justify-content: start;
+                grid-template-columns: 24px auto;
+                grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__value__icon MarketsTable__body__row__cell--twentyFourHrData__content__change__value__text";
+
+                &__icon {
+                  grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__value__icon;
+                }
+
+                &__text {
+                  grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__change__value__text;
+                }
+              }
+            }
+
+            &__high {
+              grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__high;
+              display: grid;
+              align-items: center;
+              justify-content: start;
+              grid-template-columns: 16px auto;
+              grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__high__legend MarketsTable__body__row__cell--twentyFourHrData__content__high__value";
+
+              &__legend {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__high__legend;
+                display: grid;
+                align-items: center;
+                justify-content: center;
+              }
+
+              &__value {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__high__value;
+              }
+            }
+
+            &__low {
+              grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__low;
+              display: grid;
+              align-items: center;
+              justify-content: start;
+              grid-template-columns: 16px auto;
+              grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__low__legend MarketsTable__body__row__cell--twentyFourHrData__content__low__value";
+
+              &__legend {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__low__legend;
+                display: grid;
+                align-items: center;
+                justify-content: center;
+              }
+
+              &__value {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__low__value;
+              }
+            }
+
+            &__vol {
+              grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__vol;
+              display: grid;
+              align-items: center;
+              justify-content: start;
+              grid-template-columns: 16px auto;
+              grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__vol__legend MarketsTable__body__row__cell--twentyFourHrData__content__vol__value";
+
+              &__legend {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__vol__legend;
+                display: grid;
+                align-items: center;
+                justify-content: center;
+              }
+
+              &__value {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrData__content__vol__value;
+              }
+            }
+          }
+        }
+
         &--twentyFourHrChange {
-          &--green {
-            color: #4caf50;
+          &--up &__content {
+            &__percentage {
+              color: $success-main;
+            }
           }
 
-          &--red {
-            color: #f44336;
+          &--down &__content {
+            &__percentage {
+              color: $error-main;
+            }
           }
 
           &__content {
             display: grid;
-            align-items: center;
             justify-content: center;
-            grid-template-columns: auto auto;
-            grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrChange__content__icon MarketsTable__body__row__cell--twentyFourHrChange__content__text";
+            grid-template-columns: 1fr 9px 1fr;
+            grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrChange__content__value MarketsTable__body__row__cell--twentyFourHrChange__content__divider MarketsTable__body__row__cell--twentyFourHrChange__content__percentage";
 
-            &__icon {
-              grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__icon;
+            &__value {
+              display: grid;
+              align-items: center;
+              justify-content: center;
+              grid-template-columns: auto auto;
+              grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrChange__content__value__icon MarketsTable__body__row__cell--twentyFourHrChange__content__value__text";
+              justify-self: end;
+              grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__value;
+
+              &__icon {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__value__icon;
+              }
+
+              &__text {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__value__text;
+              }
             }
 
-            &__text {
-              font-weight: 500 !important;
-              grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__text;
+            &__divider {
+              justify-self: end;
+              grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__divider;
+            }
+
+            &__percentage {
+              display: grid;
+              align-items: center;
+              justify-content: center;
+              grid-template-columns: auto auto;
+              grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrChange__content__percentage__icon MarketsTable__body__row__cell--twentyFourHrChange__content__percentage__text";
+              justify-self: start;
+              grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__percentage;
+
+              &__icon {
+                grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__percentage__icon;
+              }
+
+              &__text {
+                font-weight: 500 !important;
+                grid-area: MarketsTable__body__row__cell--twentyFourHrChange__content__percentage__text;
+
+                &--zero {
+                  margin-left: 8px;
+                }
+              }
             }
           }
         }
@@ -130,6 +314,32 @@
           &--lastPrice {
             width: 108px;
           }
+
+          &--twentyFourHrData {
+            &__content {
+              grid-template-rows: auto 17px auto 17px auto 17px auto;
+              grid-template-areas:
+                "MarketsTable__body__row__cell--twentyFourHrData__content__change"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__high"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--high-low"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__low"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__vol";
+
+              &__change {
+                column-gap: 16px;
+                grid-template-columns: 16px 90px;
+                grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__legend MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage";
+              }
+
+              &__high,
+              &__low,
+              &__vol {
+                column-gap: 16px;
+              }
+            }
+          }
         }
       }
     }
@@ -179,6 +389,36 @@
           &--lastPrice {
             width: 108px;
           }
+
+          &--twentyFourHrData {
+            &__content {
+              grid-template-columns: 1fr 17px 1fr;
+              grid-template-rows: auto 17px auto 17px auto;
+              grid-template-areas:
+                "MarketsTable__body__row__cell--twentyFourHrData__content__change MarketsTable__body__row__cell--twentyFourHrData__content__change MarketsTable__body__row__cell--twentyFourHrData__content__change"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__high MarketsTable__body__row__cell--twentyFourHrData__content__divider--high-low MarketsTable__body__row__cell--twentyFourHrData__content__low"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__vol MarketsTable__body__row__cell--twentyFourHrData__content__vol MarketsTable__body__row__cell--twentyFourHrData__content__vol";
+
+              &__divider {
+                &--high-low {
+                  justify-self: center;
+                }
+              }
+              &__change {
+                column-gap: 8px;
+                grid-template-columns: 16px 90px auto;
+                grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__legend MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage MarketsTable__body__row__cell--twentyFourHrData__content__change__value";
+              }
+
+              &__high,
+              &__low,
+              &__vol {
+                column-gap: 8px;
+              }
+            }
+          }
         }
       }
     }
@@ -190,31 +430,20 @@
     &__head {
       &__row {
         &__cell {
-          padding: 8px 16px !important;
+          padding-top: 8px !important;
+          padding-bottom: 8px !important;
           top: 48px;
 
           &--starred {
-            width: 52px;
+            width: 60px;
           }
 
           &--marketName {
-            width: 155px;
+            width: 170px;
           }
 
           &--lastPrice {
-            width: 150px;
-          }
-
-          &--twentyFourHrChange {
-            width: 126px;
-          }
-
-          &--twentyFourHrHigh {
-            width: 150px;
-          }
-
-          &--twentyFourHrLow {
-            width: 150px;
+            width: 170px;
           }
         }
       }
@@ -223,7 +452,8 @@
     &__body {
       &__row {
         &__cell {
-          padding: 8px 16px !important;
+          padding-top: 8px !important;
+          padding-bottom: 8px !important;
           top: calc(48px - 8px);
 
           &--no-data {
@@ -231,27 +461,45 @@
           }
 
           &--starred {
-            width: 52px;
+            width: 60px;
           }
 
           &--marketName {
-            width: 155px;
+            width: 170px;
           }
 
           &--lastPrice {
-            width: 150px;
+            width: 170px;
           }
 
-          &--twentyFourHrChange {
-            width: 126px;
-          }
+          &--twentyFourHrData {
+            &__content {
+              grid-template-columns: 1fr 17px 1fr;
+              grid-template-rows: auto 17px auto 17px auto;
+              grid-template-areas:
+                "MarketsTable__body__row__cell--twentyFourHrData__content__change MarketsTable__body__row__cell--twentyFourHrData__content__change MarketsTable__body__row__cell--twentyFourHrData__content__change"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high MarketsTable__body__row__cell--twentyFourHrData__content__divider--change-high"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__high MarketsTable__body__row__cell--twentyFourHrData__content__divider--high-low MarketsTable__body__row__cell--twentyFourHrData__content__low"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol MarketsTable__body__row__cell--twentyFourHrData__content__divider--low-vol"
+                "MarketsTable__body__row__cell--twentyFourHrData__content__vol MarketsTable__body__row__cell--twentyFourHrData__content__vol MarketsTable__body__row__cell--twentyFourHrData__content__vol";
 
-          &--twentyFourHrHigh {
-            width: 150px;
-          }
+              &__divider {
+                &--high-low {
+                  justify-self: center;
+                }
+              }
+              &__change {
+                column-gap: 8px;
+                grid-template-columns: 16px 90px auto;
+                grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__legend MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage MarketsTable__body__row__cell--twentyFourHrData__content__change__value";
+              }
 
-          &--twentyFourHrLow {
-            width: 150px;
+              &__high,
+              &__low,
+              &__vol {
+                column-gap: 8px;
+              }
+            }
           }
         }
       }
@@ -264,31 +512,36 @@
     &__head {
       &__row {
         &__cell {
-          padding: 8px 16px !important;
+          padding-top: 8px !important;
+          padding-bottom: 8px !important;
           top: 48px;
 
           &--starred {
-            width: 52px;
+            width: 60px;
           }
 
           &--marketName {
-            width: 155px;
+            width: 170px;
           }
 
           &--lastPrice {
-            width: 150px;
+            width: 170px;
           }
 
           &--twentyFourHrChange {
-            width: 126px;
+            width: 300px;
           }
 
           &--twentyFourHrHigh {
-            width: 150px;
+            width: 170px;
           }
 
           &--twentyFourHrLow {
-            width: 150px;
+            width: 170px;
+          }
+
+          &--twentyFourHrVol {
+            width: 170px;
           }
         }
       }
@@ -297,7 +550,8 @@
     &__body {
       &__row {
         &__cell {
-          padding: 8px 16px !important;
+          padding-top: 8px !important;
+          padding-bottom: 8px !important;
           top: calc(48px - 8px);
 
           &--no-data {
@@ -305,27 +559,31 @@
           }
 
           &--starred {
-            width: 52px;
+            width: 60px;
           }
 
           &--marketName {
-            width: 155px;
+            width: 170px;
           }
 
           &--lastPrice {
-            width: 150px;
+            width: 170px;
           }
 
           &--twentyFourHrChange {
-            width: 126px;
+            width: 300px;
           }
 
           &--twentyFourHrHigh {
-            width: 150px;
+            width: 170px;
           }
 
           &--twentyFourHrLow {
-            width: 150px;
+            width: 170px;
+          }
+
+          &--twentyFourHrVol {
+            width: 170px;
           }
         }
       }
