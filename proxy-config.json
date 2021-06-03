@@ -1,0 +1,14 @@
+{
+  "/api/buyucoin/*": {
+    "target": "https://api.buyucoin.com",
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/buyucoin": "/ticker/v1.0" }
+  },
+  "/api/coigecko/*": {
+    "target": "https://api.coingecko.com",
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/coigecko": "/api/v3" }
+  }
+}

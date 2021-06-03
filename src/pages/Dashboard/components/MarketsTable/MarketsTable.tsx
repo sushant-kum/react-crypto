@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date May 31 2021 13:09:06 GMT+05:30
+ * @modify date Jun 03 2021 14:00:02 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -190,6 +190,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       twentyFourChangeValIcon = (
         <AddRounded
           className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__change__value__icon`]}
+          fontSize="inherit"
         />
       );
 
@@ -202,6 +203,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       twentyFourChangeValIcon = (
         <RemoveRounded
           className={styles[`MarketsTable__body__row__cell--twentyFourHrChange__content__change__value__icon`]}
+          fontSize="inherit"
         />
       );
 

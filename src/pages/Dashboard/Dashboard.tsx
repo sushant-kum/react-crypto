@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date May 31 2021 13:09:24 GMT+05:30
+ * @modify date Jun 03 2021 14:00:13 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -74,7 +74,7 @@ const TabCounterBadge = withStyles((theme: Theme) =>
 
 const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const SMALL_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
-  const AUTO_REFRESH_DELAY_MS = 5000;
+  const AUTO_REFRESH_DELAY_MS = 20000;
   const AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS = 200;
 
   const theme = useTheme();
