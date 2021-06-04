@@ -3,7 +3,7 @@
  * @email sushant.kum96@gmail.com
  * @create date Apr 20 2021 19:53:36 GMT+05:30
  * @modify date Apr 20 2021 19:53:36 GMT+05:30
- * @desc [description]
+ * @desc XsSideNavOpenContextValue
  */
 
 export type XsSideNavOpen = boolean;

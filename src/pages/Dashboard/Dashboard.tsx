@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 03 2021 14:00:13 GMT+05:30
+ * @modify date Jun 04 2021 19:35:59 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -42,9 +42,11 @@ import TabPanel from "../../components/TabPanel/TabPanel";
 import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
 import coinGeckoApiEndpoint from "../../constants/CoingeckoApi";
 import DarkModeContext from "../../contexts/DarkMode";
+import SnackbarContext from "../../contexts/Snackbar";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import { DarkModeContextValue } from "../../models/DarkMode";
 import LocalForageKeys from "../../models/LocalForage";
+import { SnackbarContextValue } from "../../models/Snackbar";
 
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
@@ -80,6 +82,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const theme = useTheme();
   const screenWidth: Breakpoint = useScreenWidth();
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
+  const { openSnackbar } = useContext<SnackbarContextValue>(SnackbarContext);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
   const [autoRefresh, autoRefreshSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
@@ -140,11 +143,17 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                 });
             })
             .catch(() => {
+              if (!autoRefresh) {
+                openSnackbar?.("Something went wrong. Please try again...", 6000);
+              }
               loadingMarketsDataSet(false);
             });
         }
       })
       .catch(() => {
+        if (!autoRefresh) {
+          openSnackbar?.("Something went wrong. Please try again...", 6000);
+        }
         loadingMarketsDataSet(false);
       });
   };
