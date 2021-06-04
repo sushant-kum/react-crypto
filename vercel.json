@@ -1,7 +1,0 @@
-{
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/api/buyucoin/*", "destination": "https://api.buyucoin.com/ticker/v1.0/*" },
-    { "source": "/api/coigecko/*", "destination": "https://api.coingecko.com/api/v3/*" }
-  ]
-}
