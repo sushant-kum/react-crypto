@@ -32,7 +32,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ classes, children, index, value, di
       className={classNames(styles.TabPanel, props.className)}
       role="tabpanel"
       hidden={value !== index}
-      aria-labelledby={`full-width-tab-${index}`}
+      aria-labelledby={`Tab ${index}`}
       data-testid="TabPanel"
     >
       {value === index && (
