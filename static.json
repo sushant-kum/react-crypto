@@ -3,12 +3,6 @@
   "routes": {
     "/**": "index.html"
   },
-  "https_only": true,
-  "headers": {
-    "/**": {
-      "Strict-Transport-Security": "max-age=31557600"
-    }
-  },
   "proxies": {
     "/api/buyucoin/": {
       "origin": "https://api.buyucoin.com/ticker/v1.0"
