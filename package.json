@@ -22,7 +22,8 @@
     "tool::commit": "cz",
     "tool::generate-component": "generate-react component",
     "tool::version-info-gen": "node tools/version-info-gen/version-info-gen.tool.ts",
-    "tool::bundle-analyzer": "node tools/bundle-analyzer/bundle-analyzer.tool.js"
+    "tool::bundle-analyzer": "node tools/bundle-analyzer/bundle-analyzer.tool.js",
+    "tool::release": "standard-version"
   },
   "eslintConfig": {
     "extends": [
@@ -93,6 +94,7 @@
     "prettier": "^2.3.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "serve": "^11.3.2",
+    "standard-version": "^9.3.0",
     "webpack-bundle-analyzer": "^4.4.2"
   },
   "lint-staged": {
@@ -103,5 +105,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "standard-version": {
+    "tag-prefix": ""
   }
 }
