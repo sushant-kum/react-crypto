@@ -21,13 +21,13 @@ import PropTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import productLogo from "../../assets/images/logo.svg";
-import ListItemLink from "../../components/ListItemLink/ListItemLink";
-import SIDENAV_MENU_ITEMS from "../../constants/SideNav";
-import XsSideNavOpenContext from "../../contexts/XsSideNavOpen";
-import { SideNavMenuItem } from "../../models/SideNavMenuItem";
-import { XsSideNavOpenContextValue } from "../../models/XsSideNavOpen";
+import productLogo from "../../../../assets/images/logo.svg";
+import ListItemLink from "../../../../components/ListItemLink/ListItemLink";
+import XsSideNavOpenContext from "../../../../contexts/XsSideNavOpen";
+import { XsSideNavOpenContextValue } from "../../../../models/XsSideNavOpen";
 
+import SIDENAV_MENU_ITEMS from "./constants/SideNav";
+import { SideNavMenuItem } from "./models/SideNavMenuItem";
 import styles from "./Sidenav.module.scss";
 
 const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {

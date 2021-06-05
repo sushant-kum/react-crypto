@@ -12,9 +12,9 @@ import React, { useState } from "react";
 
 import XsSideNavOpenContext, { xsSideNavOpenInitialState } from "../../contexts/XsSideNavOpen";
 import { XsSideNavOpen } from "../../models/XsSideNavOpen";
-import Header from "../Header/Header";
-import Sidenav from "../Sidenav/Sidenav";
 
+import Header from "./components/Header/Header";
+import Sidenav from "./components/Sidenav/Sidenav";
 import styles from "./Layout.module.scss";
 
 const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = ({ children, ...props }) => {

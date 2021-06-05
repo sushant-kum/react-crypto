@@ -12,11 +12,11 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 
-import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
-import DarkModeContext from "../../contexts/DarkMode";
-import XsSideNavOpenContext from "../../contexts/XsSideNavOpen";
-import { DarkModeContextValue } from "../../models/DarkMode";
-import { XsSideNavOpenContextValue } from "../../models/XsSideNavOpen";
+import CustomTooltip from "../../../../components/CustomTooltip/CustomTooltip";
+import DarkModeContext from "../../../../contexts/DarkMode";
+import XsSideNavOpenContext from "../../../../contexts/XsSideNavOpen";
+import { DarkModeContextValue } from "../../../../models/DarkMode";
+import { XsSideNavOpenContextValue } from "../../../../models/XsSideNavOpen";
 
 import styles from "./Header.module.scss";
 

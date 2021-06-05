@@ -6,10 +6,10 @@
  * @desc Styles for Header component
  */
 
-@import "../../styles/constants/screen-sizes/screen-sizes";
-@import "../../styles/constants/component-level/Header.constants";
-@import "../../styles/constants/component-level/Layout.constants";
-@import "../../styles/constants/component-level/Sidenav.constants";
+@import "../../../../styles/constants/screen-sizes/screen-sizes";
+@import "../../../../styles/constants/component-level/Header.constants";
+@import "../../../../styles/constants/component-level/Layout.constants";
+@import "../../../../styles/constants/component-level/Sidenav.constants";
 
 :export {
   headerHeightSm: $header-height-sm;
