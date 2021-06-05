@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jun 03 2021 14:00:02 GMT+05:30
+ * @modify date Jun 05 2021 13:15:47 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -15,7 +15,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
@@ -34,6 +33,7 @@ import React, { useContext } from "react";
 import { Img } from "react-image";
 
 import productLogo from "../../../../assets/images/logo.svg";
+import CustomTooltip from "../../../../components/CustomTooltip/CustomTooltip";
 import DarkModeContext from "../../../../contexts/DarkMode";
 import useScreenWidth from "../../../../hooks/useScreenWidth";
 import { DarkModeContextValue } from "../../../../models/DarkMode";
@@ -79,23 +79,135 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       headerText: (
         <>
           Last Price&nbsp;
-          <Tooltip title="Last price traded from the orderbook." arrow>
+          <CustomTooltip
+            title={
+              <Typography variant="body2" component="span">
+                Last price traded from the orderbook.
+              </Typography>
+            }
+            arrow
+          >
             <InfoRounded
               className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
               fontSize="small"
               color="secondary"
             />
-          </Tooltip>
+          </CustomTooltip>
         </>
       ),
     },
     {
       key: "twentyFourHrData",
       align: "center",
-      headerText: "24 hr Data",
+      headerText: (
+        <>
+          24 hr Data&nbsp;
+          <CustomTooltip
+            title={
+              <>
+                <Typography color="primary">Legends</Typography>
+
+                <div className={styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details`]}>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__legend`]
+                    }
+                    variant="body1"
+                    component="span"
+                    color="secondary"
+                  >
+                    C
+                  </Typography>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__details`]
+                    }
+                    variant="body2"
+                    component="span"
+                  >
+                    24 hr Change
+                  </Typography>
+                </div>
+
+                <div className={styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details`]}>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__legend`]
+                    }
+                    variant="body1"
+                    component="span"
+                    color="secondary"
+                  >
+                    H
+                  </Typography>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__details`]
+                    }
+                    variant="body2"
+                    component="span"
+                  >
+                    24 hr High
+                  </Typography>
+                </div>
+
+                <div className={styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details`]}>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__legend`]
+                    }
+                    variant="body1"
+                    component="span"
+                    color="secondary"
+                  >
+                    L
+                  </Typography>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__details`]
+                    }
+                    variant="body2"
+                    component="span"
+                  >
+                    24 hr Low
+                  </Typography>
+                </div>
+
+                <div className={styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details`]}>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__legend`]
+                    }
+                    variant="body1"
+                    component="span"
+                    color="secondary"
+                  >
+                    V
+                  </Typography>
+                  <Typography
+                    className={
+                      styles[`MarketsTable__head__row__cell--twentyFourHrData__tooltip__legend-details__details`]
+                    }
+                    variant="body2"
+                    component="span"
+                  >
+                    24 hr Volume (Traded volume of the base currency in that market.)
+                  </Typography>
+                </div>
+              </>
+            }
+            arrow
+          >
+            <InfoRounded
+              className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
+              fontSize="small"
+              color="secondary"
+            />
+          </CustomTooltip>
+        </>
+      ),
     },
   ];
-
   const LG_AND_ABOVE_COLS: ColumnDef[] = [
     {
       key: "starred",
@@ -112,13 +224,20 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       headerText: (
         <>
           Last Price&nbsp;
-          <Tooltip title="Last price traded from the orderbook." arrow>
+          <CustomTooltip
+            title={
+              <Typography variant="body2" component="span">
+                Last price traded from the orderbook.
+              </Typography>
+            }
+            arrow
+          >
             <InfoRounded
               className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
               fontSize="small"
               color="secondary"
             />
-          </Tooltip>
+          </CustomTooltip>
         </>
       ),
     },
@@ -143,13 +262,20 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       headerText: (
         <>
           24 hr Volume&nbsp;
-          <Tooltip title="Traded volume of the base currency in that market." arrow>
+          <CustomTooltip
+            title={
+              <Typography variant="body2" component="span">
+                Traded volume of the base currency in that market.
+              </Typography>
+            }
+            arrow
+          >
             <InfoRounded
               className={styles["MarketsTable__head__row__cell__tooltip-icon"]}
               fontSize="small"
               color="secondary"
             />
-          </Tooltip>
+          </CustomTooltip>
         </>
       ),
     },

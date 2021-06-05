@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 04 2021 19:35:59 GMT+05:30
+ * @modify date Jun 05 2021 13:16:02 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -18,7 +18,6 @@ import {
   Tabs,
   TextField,
   Theme,
-  Tooltip,
   Typography,
   useTheme,
   withStyles,
@@ -38,6 +37,7 @@ import localForage from "localforage";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
 
+import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
 import coinGeckoApiEndpoint from "../../constants/CoingeckoApi";
@@ -292,7 +292,14 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                 endAdornment: (
                   <InputAdornment position="end">
                     {searchInputvalue ? (
-                      <Tooltip arrow title="Clear">
+                      <CustomTooltip
+                        title={
+                          <Typography variant="body2" component="span">
+                            Clear
+                          </Typography>
+                        }
+                        arrow
+                      >
                         <IconButton
                           aria-label="clear search input"
                           size="small"
@@ -302,7 +309,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                         >
                           <ClearRounded fontSize="inherit" />
                         </IconButton>
-                      </Tooltip>
+                      </CustomTooltip>
                     ) : (
                       <SearchRounded />
                     )}
@@ -312,7 +319,14 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               onChange={handleSearchInputChange}
             />
 
-            <Tooltip arrow title={`${autoRefresh ? "Disable" : "Enable"} auto refresh`}>
+            <CustomTooltip
+              title={
+                <Typography variant="body2" component="span">
+                  {autoRefresh ? "Disable" : "Enable"} auto refresh
+                </Typography>
+              }
+              arrow
+            >
               <div className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}>
                 {(autoRefresh || autoRefreshCountdownPerc !== 0) && (
                   <CircularProgress
@@ -339,9 +353,16 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   {autoRefresh ? <PauseRounded /> : <PlayArrowRounded />}
                 </IconButton>
               </div>
-            </Tooltip>
+            </CustomTooltip>
 
-            <Tooltip arrow title="Manual refresh">
+            <CustomTooltip
+              title={
+                <Typography variant="body2" component="span">
+                  Manual refresh
+                </Typography>
+              }
+              arrow
+            >
               <span>
                 <IconButton
                   className={classNames(
@@ -357,7 +378,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   <CachedRounded />
                 </IconButton>
               </span>
-            </Tooltip>
+            </CustomTooltip>
           </section>
 
           <Tabs
