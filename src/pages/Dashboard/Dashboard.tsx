@@ -266,8 +266,8 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
           className={classNames(
             styles["Dashboard__page-title__bottom-spacer"],
             darkModeSelection
-              ? styles["Dashboard__page-title__bottom-spacer--dark"]
-              : styles["Dashboard__page-title__bottom-spacer--light"]
+              ? styles["Dashboard__page-title__bottom-spacer--theme-dark"]
+              : styles["Dashboard__page-title__bottom-spacer--theme-light"]
           )}
         />
       </section>

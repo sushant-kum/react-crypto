@@ -672,8 +672,8 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                   className={classNames(
                     styles.MarketsTable__head__row__cell,
                     darkModeSelection
-                      ? styles[`MarketsTable__head__row__cell--dark`]
-                      : styles[`MarketsTable__head__row__cell--light`],
+                      ? styles[`MarketsTable__head__row__cell--theme-dark`]
+                      : styles[`MarketsTable__head__row__cell--theme-light`],
                     styles[`MarketsTable__head__row__cell--${column.key}`]
                   )}
                   align={column.align}
@@ -687,8 +687,8 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                   className={classNames(
                     styles.MarketsTable__head__row__cell,
                     darkModeSelection
-                      ? styles[`MarketsTable__head__row__cell--dark`]
-                      : styles[`MarketsTable__head__row__cell--light`],
+                      ? styles[`MarketsTable__head__row__cell--theme-dark`]
+                      : styles[`MarketsTable__head__row__cell--theme-light`],
                     styles[`MarketsTable__head__row__cell--${column.key}`]
                   )}
                   align={column.align}
