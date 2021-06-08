@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/sushant-kum/react-crypto/compare/1.0.0...1.1.0) (2021-06-08)
+
+### Features
+
+- **dashboard:** added starred markets cards ([ab02351](https://github.com/sushant-kum/react-crypto/commit/ab0235192ede56143cd82e26c6f5681ec298bd09))
+
 ## 1.0.0 (2021-06-05)
 
 ### Features
