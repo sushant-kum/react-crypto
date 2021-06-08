@@ -2,11 +2,12 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 06 2021 14:24:07 GMT+05:30
- * @modify date Jun 08 2021 18:06:33 GMT+05:30
+ * @modify date Jun 08 2021 19:07:36 GMT+05:30
  * @desc MarketCard
  */
 
 import { Avatar, Card, CardContent, CardHeader, IconButton, Typography } from "@material-ui/core";
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 import { StarRounded, StarOutlineRounded, KeyboardArrowUpRounded, KeyboardArrowDownRounded } from "@material-ui/icons";
 import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
@@ -19,6 +20,7 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import productLogo from "../../../../assets/images/logo.svg";
 import coinGeckoApiEndpoint, { CoinGeckoApiQueryParams } from "../../../../constants/CoingeckoApi";
 import DarkModeContext from "../../../../contexts/DarkMode";
+import useScreenWidth from "../../../../hooks/useScreenWidth";
 import { DarkModeContextValue } from "../../../../models/DarkMode";
 import palette from "../../../../styles/constants/palette/palette.module.scss";
 import { MarketData } from "../../models/MarketData";
@@ -38,7 +40,10 @@ interface MarketCardProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData, setMarketStar, ...props }) => {
+  const SM_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
+
   let twentyFourChangePercIcon: React.ReactNode;
+  const screenWidth: Breakpoint = useScreenWidth();
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
   const { src: coinIconSrc } = useImage({
     srcList: [
@@ -202,7 +207,9 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
               variant="body1"
               component="span"
             >
-              {addUnit(marketData.lastTrade.price, marketData.name.quotationCurrency)}
+              {SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
+                ? marketData.lastTrade.price
+                : addUnit(marketData.lastTrade.price, marketData.name.quotationCurrency)}
             </Typography>
             <span
               className={classNames(
@@ -235,6 +242,7 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
         action={
           <IconButton
             color={marketData.starred ? "primary" : "default"}
+            size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
             disabled={loadingMarketsData}
             onClick={() => setMarketStar(marketData.name.market, !marketData.starred)}
           >
@@ -246,7 +254,11 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
       <CardContent className={styles.MarketCard__content}>
         {marketPriceChartData ? (
           <div className={styles.MarketCard__content__graph}>
-            <Sparklines data={priceChartDataPoints} width={318} height={100}>
+            <Sparklines
+              data={priceChartDataPoints}
+              width={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? 268 : 318}
+              height={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? 75 : 100}
+            >
               <SparklinesLine
                 color={
                   // eslint-disable-next-line no-nested-ternary

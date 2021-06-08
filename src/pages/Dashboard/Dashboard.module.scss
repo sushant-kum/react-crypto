@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:42 GMT+05:30
- * @modify date Jun 08 2021 18:08:13 GMT+05:30
+ * @modify date Jun 08 2021 19:08:21 GMT+05:30
  * @desc Styles for Dashboard component
  */
 
@@ -10,13 +10,11 @@
 
 .Dashboard {
   &__starred-market-tiles {
-    width: 100%;
+    padding: 0 8px;
     overflow: auto;
     display: grid;
     grid-auto-flow: column;
     column-gap: 16px;
-    grid-auto-columns: 350px;
-    grid-template-rows: 225px;
   }
 
   &__markets {
@@ -86,9 +84,6 @@
           }
         }
       }
-
-      &__tabs {
-      }
     }
   }
 }
@@ -97,6 +92,12 @@
   .Dashboard {
     &__page-title {
       margin-bottom: 8px;
+    }
+
+    &__starred-market-tiles {
+      margin: 0 -16px;
+      grid-auto-columns: 300px;
+      grid-template-rows: 200px;
     }
 
     &__markets {
@@ -125,6 +126,12 @@
       margin-bottom: 8px;
     }
 
+    &__starred-market-tiles {
+      margin: 0 -16px;
+      grid-auto-columns: 300px;
+      grid-template-rows: 200px;
+    }
+
     &__markets {
       margin: 0 -16px;
 
@@ -151,6 +158,12 @@
       margin-bottom: 16px;
     }
 
+    &__starred-market-tiles {
+      margin: 0 -32px;
+      grid-auto-columns: 350px;
+      grid-template-rows: 225px;
+    }
+
     &__markets {
       &__header {
         border-radius: 4px 4px 0 0;
@@ -168,6 +181,12 @@
   .Dashboard {
     &__page-title {
       margin-bottom: 16px;
+    }
+
+    &__starred-market-tiles {
+      margin: 0 -32px;
+      grid-auto-columns: 350px;
+      grid-template-rows: 225px;
     }
 
     &__markets {

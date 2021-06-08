@@ -2,11 +2,12 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 06 2021 14:24:19 GMT+05:30
- * @modify date Jun 08 2021 18:06:41 GMT+05:30
+ * @modify date Jun 08 2021 19:07:30 GMT+05:30
  * @desc Styles for MarketCard
  */
 
 @import "../../../../styles/constants/palette/palette";
+@import "../../../../styles/constants/screen-sizes/screen-sizes";
 
 .MarketCard {
   &__header {
@@ -88,6 +89,62 @@
       bottom: 0px;
       right: 16px;
       transform: translateY(calc(50% - 12px));
+    }
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .MarketCard {
+    &__header {
+      &__content {
+        &__subheader {
+          &__change-perc {
+            padding: 0 4px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .MarketCard {
+    &__header {
+      &__content {
+        &__subheader {
+          &__change-perc {
+            padding: 0 4px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
+  .MarketCard {
+    &__header {
+      &__content {
+        &__subheader {
+          &__change-perc {
+            padding: 0 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .MarketCard {
+    &__header {
+      &__content {
+        &__subheader {
+          &__change-perc {
+            padding: 0 8px;
+          }
+        }
+      }
     }
   }
 }

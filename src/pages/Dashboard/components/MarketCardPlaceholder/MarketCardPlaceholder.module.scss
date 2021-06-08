@@ -2,22 +2,63 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 08 2021 18:07:07 GMT+05:30
- * @modify date Jun 08 2021 18:07:07 GMT+05:30
+ * @modify date Jun 08 2021 19:07:47 GMT+05:30
  * @desc Styles for MarketCardPlaceholder
  */
+
+@import "../../../../styles/constants/screen-sizes/screen-sizes";
 
 .MarketCardPlaceholder {
   &__content {
     text-align: center;
 
-    &__illustration {
-      height: 134.5px;
-      width: 134.5px;
-    }
-
     &__text {
       &__star-icon {
         vertical-align: middle;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .MarketCardPlaceholder {
+    &__content {
+      &__illustration {
+        height: 95px;
+        width: 95px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .MarketCardPlaceholder {
+    &__content {
+      &__illustration {
+        height: 95px;
+        width: 95px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
+  .MarketCardPlaceholder {
+    &__content {
+      &__illustration {
+        height: 134.5px;
+        width: 134.5px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .MarketCardPlaceholder {
+    &__content {
+      &__illustration {
+        height: 134.5px;
+        width: 134.5px;
       }
     }
   }
