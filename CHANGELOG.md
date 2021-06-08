@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/sushant-kum/react-crypto/compare/1.1.0...1.1.1) (2021-06-08)
+
+### Bug Fixes
+
+- made market cards responsive ([9080c6d](https://github.com/sushant-kum/react-crypto/commit/9080c6d85380b239181f58bd10b6bd287c2cc60b))
+
 ## [1.1.0](https://github.com/sushant-kum/react-crypto/compare/1.0.0...1.1.0) (2021-06-08)
 
 ### Features
