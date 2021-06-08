@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 05 2021 13:16:02 GMT+05:30
+ * @modify date Jun 08 2021 18:08:21 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -48,6 +48,8 @@ import { DarkModeContextValue } from "../../models/DarkMode";
 import LocalForageKeys from "../../models/LocalForage";
 import { SnackbarContextValue } from "../../models/Snackbar";
 
+import MarketCard from "./components/MarketCard/MarketCard";
+import MarketCardPlaceholder from "./components/MarketCardPlaceholder/MarketCardPlaceholder";
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
 import {
@@ -75,7 +77,7 @@ const TabCounterBadge = withStyles((theme: Theme) =>
 )(Badge);
 
 const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
-  const SMALL_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
+  const SM_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
   const AUTO_REFRESH_DELAY_MS = 20000;
   const AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS = 200;
 
@@ -262,22 +264,40 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         <Typography variant="h4" component="h1">
           Dashboard
         </Typography>
-        <div
-          className={classNames(
-            styles["Dashboard__page-title__bottom-spacer"],
-            darkModeSelection
-              ? styles["Dashboard__page-title__bottom-spacer--theme-dark"]
-              : styles["Dashboard__page-title__bottom-spacer--theme-light"]
-          )}
-        />
       </section>
+
+      <section className={styles["Dashboard__starred-market-tiles"]}>
+        {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
+          <MarketCardPlaceholder />
+        ) : (
+          marketsData
+            .filter((marketData: MarketData) => marketData.starred)
+            .map((starredMarketData: MarketData) => (
+              <MarketCard
+                marketData={starredMarketData}
+                loadingMarketsData={loadingMarketsData ?? false}
+                setMarketStar={setMarketStar}
+                key={starredMarketData.name.market}
+              />
+            ))
+        )}
+      </section>
+
+      <div
+        className={classNames(
+          styles["Dashboard__markets-top-spacer"],
+          darkModeSelection
+            ? styles["Dashboard__markets-top-spacer--theme-dark"]
+            : styles["Dashboard__markets-top-spacer--theme-light"]
+        )}
+      />
 
       <Paper className={styles.Dashboard__markets} elevation={0}>
         <AppBar className={styles.Dashboard__markets__header} position="static" elevation={0} color="default">
           <section
             className={classNames(
               styles.Dashboard__markets__header__toolbar,
-              SMALL_SCREEN_WIDTHS.includes(screenWidth)
+              SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
                 ? styles["Dashboard__markets__header__toolbar--small-screen"]
                 : styles["Dashboard__markets__header__toolbar--large-screen"]
             )}
@@ -287,7 +307,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               label="Search"
               size="small"
               value={searchInputvalue}
-              variant={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "outlined" : "standard"}
+              variant={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "outlined" : "standard"}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -332,10 +352,10 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   <CircularProgress
                     className={classNames(
                       styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress"],
-                      !SMALL_SCREEN_WIDTHS.includes(screenWidth) &&
+                      !SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) &&
                         styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress--large-screen"]
                     )}
-                    size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? 30 : 40}
+                    size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? 30 : 40}
                     thickness={3}
                     variant="determinate"
                     value={autoRefreshCountdownPerc}
@@ -345,7 +365,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                 <IconButton
                   className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}
                   aria-label="clear search input"
-                  size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
+                  size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
                   disabled={loadingMarketsData}
                   onClick={() => updateAutoRefresh(!autoRefresh)}
@@ -370,7 +390,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                     loadingMarketsData && styles["Dashboard__markets__header__toolbar__btn-refresh--spinning"]
                   )}
                   aria-label="clear search input"
-                  size={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
+                  size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
                   disabled={autoRefresh || loadingMarketsData}
                   onClick={() => fetchMarketsData()}
@@ -386,8 +406,8 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             value={marketsTabIndex}
             indicatorColor="primary"
             textColor="primary"
-            variant={SMALL_SCREEN_WIDTHS.includes(screenWidth) ? "fullWidth" : "standard"}
-            centered={SMALL_SCREEN_WIDTHS.includes(screenWidth)}
+            variant={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "fullWidth" : "standard"}
+            centered={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)}
             onChange={handleMarketsTabIndexChange}
           >
             <Tab

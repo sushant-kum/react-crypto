@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jun 05 2021 13:15:47 GMT+05:30
+ * @modify date Jun 08 2021 18:08:01 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -416,7 +416,10 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                   row.twentyFourHr.priceChangePercentage !== 0 &&
                     (row.twentyFourHr.priceChangePercentage > 0
                       ? styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--up`]
-                      : styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--down`])
+                      : styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--down`]),
+                  darkModeSelection
+                    ? styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--theme-dark`]
+                    : styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--theme-light`]
                 )}
               >
                 {twentyFourChangePercIcon}

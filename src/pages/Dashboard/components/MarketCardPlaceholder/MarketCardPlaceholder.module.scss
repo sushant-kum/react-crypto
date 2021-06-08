@@ -1,0 +1,24 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date Jun 08 2021 18:07:07 GMT+05:30
+ * @modify date Jun 08 2021 18:07:07 GMT+05:30
+ * @desc Styles for MarketCardPlaceholder
+ */
+
+.MarketCardPlaceholder {
+  &__content {
+    text-align: center;
+
+    &__illustration {
+      height: 134.5px;
+      width: 134.5px;
+    }
+
+    &__text {
+      &__star-icon {
+        vertical-align: middle;
+      }
+    }
+  }
+}

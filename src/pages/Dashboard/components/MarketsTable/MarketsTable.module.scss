@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jun 05 2021 13:15:40 GMT+05:30
+ * @modify date Jun 08 2021 18:07:54 GMT+05:30
  * @desc Styles for MarketsTable component
  */
 
@@ -121,8 +121,15 @@
                 display: grid;
                 align-items: center;
                 justify-content: center;
-                grid-template-columns: 24px auto;
                 grid-template-areas: "MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage__icon MarketsTable__body__row__cell--twentyFourHrData__content__change__percentage__text";
+
+                &--theme-dark {
+                  background-color: rgba(#ffffff, 0.2);
+                }
+
+                &--theme-light {
+                  background-color: rgba(#000000, 0.2);
+                }
 
                 &--up {
                   background-color: rgba($success-main, 0.2);
