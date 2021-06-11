@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/sushant-kum/react-crypto/compare/1.1.1...1.2.0) (2021-06-11)
+
+### Features
+
+- **dashboard:** scroll buttons for starred market tiles ([c53822b](https://github.com/sushant-kum/react-crypto/commit/c53822b2c436d80c1ccb3ba422aec9faa2d92863))
+
 ### [1.1.1](https://github.com/sushant-kum/react-crypto/compare/1.1.0...1.1.1) (2021-06-08)
 
 ### Bug Fixes
