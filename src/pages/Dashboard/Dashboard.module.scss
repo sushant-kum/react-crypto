@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:42 GMT+05:30
- * @modify date Jun 08 2021 19:08:21 GMT+05:30
+ * @modify date Jun 11 2021 17:33:37 GMT+05:30
  * @desc Styles for Dashboard component
  */
 
@@ -10,11 +10,33 @@
 
 .Dashboard {
   &__starred-market-tiles {
-    padding: 0 8px;
-    overflow: auto;
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 16px;
+    position: relative;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+
+    &__btn-navigate {
+      position: sticky;
+      top: 50%;
+      z-index: 10;
+
+      &--previous {
+        left: -4px;
+        transform: translateX(-4px);
+      }
+
+      &--next {
+        left: calc(100% - 64px);
+        transform: translateX(4px);
+      }
+    }
+
+    &__container {
+      padding: 0 8px;
+      display: grid;
+      grid-auto-flow: column;
+      column-gap: 16px;
+      width: fit-content;
+    }
   }
 
   &__markets {
@@ -96,8 +118,12 @@
 
     &__starred-market-tiles {
       margin: 0 -16px;
-      grid-auto-columns: 300px;
-      grid-template-rows: 200px;
+      width: calc(100% + 32px);
+
+      &__container {
+        grid-auto-columns: 300px;
+        grid-template-rows: 200px;
+      }
     }
 
     &__markets {
@@ -128,8 +154,12 @@
 
     &__starred-market-tiles {
       margin: 0 -16px;
-      grid-auto-columns: 300px;
-      grid-template-rows: 200px;
+      width: calc(100% + 32px);
+
+      &__container {
+        grid-auto-columns: 300px;
+        grid-template-rows: 200px;
+      }
     }
 
     &__markets {
@@ -160,8 +190,12 @@
 
     &__starred-market-tiles {
       margin: 0 -32px;
-      grid-auto-columns: 350px;
-      grid-template-rows: 225px;
+      width: calc(100% + 64px);
+
+      &__container {
+        grid-auto-columns: 350px;
+        grid-template-rows: 225px;
+      }
     }
 
     &__markets {
@@ -185,8 +219,12 @@
 
     &__starred-market-tiles {
       margin: 0 -32px;
-      grid-auto-columns: 350px;
-      grid-template-rows: 225px;
+      width: calc(100% + 64px);
+
+      &__container {
+        grid-auto-columns: 350px;
+        grid-template-rows: 225px;
+      }
     }
 
     &__markets {

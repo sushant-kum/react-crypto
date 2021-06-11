@@ -2,13 +2,14 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 08 2021 18:08:21 GMT+05:30
+ * @modify date Jun 11 2021 17:33:06 GMT+05:30
  * @desc Dashboard component
  */
 
 import {
   AppBar,
   Badge,
+  Button,
   CircularProgress,
   createStyles,
   IconButton,
@@ -24,6 +25,8 @@ import {
 } from "@material-ui/core";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 import {
+  ArrowBackRounded,
+  ArrowForwardRounded,
   CachedRounded,
   ClearRounded,
   PauseRounded,
@@ -35,7 +38,7 @@ import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import localForage from "localforage";
 import PropTypes from "prop-types";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
 import TabPanel from "../../components/TabPanel/TabPanel";
@@ -85,6 +88,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const screenWidth: Breakpoint = useScreenWidth();
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
   const { openSnackbar } = useContext<SnackbarContextValue>(SnackbarContext);
+  const refStarredMarketTiles: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
   const [autoRefresh, autoRefreshSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
@@ -100,6 +104,19 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const [marketsData, marketsDataSet]: [MarketData[], React.Dispatch<React.SetStateAction<MarketData[]>>] = useState<
     MarketData[]
   >([]);
+
+  const scrollStarrtedMarketsTiles: (direction: "previous" | "next") => void = (direction) => {
+    const offset: number = (SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? 300 : 350) + 16;
+
+    if (refStarredMarketTiles?.current) {
+      if (direction === "next") {
+        refStarredMarketTiles.current.scrollLeft += offset;
+      }
+      if (direction === "previous") {
+        refStarredMarketTiles.current.scrollLeft -= offset;
+      }
+    }
+  };
 
   const handleSearchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
     searchInputvalueSet(event.target.value);
@@ -266,21 +283,49 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         </Typography>
       </section>
 
-      <section className={styles["Dashboard__starred-market-tiles"]}>
-        {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
-          <MarketCardPlaceholder />
-        ) : (
-          marketsData
-            .filter((marketData: MarketData) => marketData.starred)
-            .map((starredMarketData: MarketData) => (
-              <MarketCard
-                marketData={starredMarketData}
-                loadingMarketsData={loadingMarketsData ?? false}
-                setMarketStar={setMarketStar}
-                key={starredMarketData.name.market}
-              />
-            ))
-        )}
+      <section className={styles["Dashboard__starred-market-tiles"]} ref={refStarredMarketTiles}>
+        <Button
+          className={classNames(
+            styles["Dashboard__starred-market-tiles__btn-navigate"],
+            styles["Dashboard__starred-market-tiles__btn-navigate--previous"]
+          )}
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={() => scrollStarrtedMarketsTiles("previous")}
+        >
+          <ArrowBackRounded />
+        </Button>
+
+        <Button
+          className={classNames(
+            styles["Dashboard__starred-market-tiles__btn-navigate"],
+            styles["Dashboard__starred-market-tiles__btn-navigate--next"]
+          )}
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={() => scrollStarrtedMarketsTiles("next")}
+        >
+          <ArrowForwardRounded />
+        </Button>
+
+        <div className={styles["Dashboard__starred-market-tiles__container"]}>
+          {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
+            <MarketCardPlaceholder />
+          ) : (
+            marketsData
+              .filter((marketData: MarketData) => marketData.starred)
+              .map((starredMarketData: MarketData) => (
+                <MarketCard
+                  marketData={starredMarketData}
+                  loadingMarketsData={loadingMarketsData ?? false}
+                  setMarketStar={setMarketStar}
+                  key={starredMarketData.name.market}
+                />
+              ))
+          )}
+        </div>
       </section>
 
       <div
