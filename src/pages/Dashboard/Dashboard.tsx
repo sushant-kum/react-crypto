@@ -2,16 +2,16 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 11 2021 17:33:06 GMT+05:30
+ * @modify date Jun 11 2021 18:59:29 GMT+05:30
  * @desc Dashboard component
  */
 
 import {
   AppBar,
   Badge,
-  Button,
   CircularProgress,
   createStyles,
+  Fab,
   IconButton,
   InputAdornment,
   Paper,
@@ -284,32 +284,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       </section>
 
       <section className={styles["Dashboard__starred-market-tiles"]} ref={refStarredMarketTiles}>
-        <Button
-          className={classNames(
-            styles["Dashboard__starred-market-tiles__btn-navigate"],
-            styles["Dashboard__starred-market-tiles__btn-navigate--previous"]
-          )}
-          variant="outlined"
-          color="primary"
-          size="large"
-          onClick={() => scrollStarrtedMarketsTiles("previous")}
-        >
-          <ArrowBackRounded />
-        </Button>
-
-        <Button
-          className={classNames(
-            styles["Dashboard__starred-market-tiles__btn-navigate"],
-            styles["Dashboard__starred-market-tiles__btn-navigate--next"]
-          )}
-          variant="outlined"
-          color="primary"
-          size="large"
-          onClick={() => scrollStarrtedMarketsTiles("next")}
-        >
-          <ArrowForwardRounded />
-        </Button>
-
         <div className={styles["Dashboard__starred-market-tiles__container"]}>
           {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
             <MarketCardPlaceholder />
@@ -326,6 +300,32 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               ))
           )}
         </div>
+      </section>
+
+      <section className={styles["Dashboard__starred-market-tiles-nav-btns"]}>
+        <Fab
+          className={classNames(
+            styles["Dashboard__starred-market-tiles-nav-btns__btn-navigate"],
+            styles["Dashboard__starred-market-tiles-nav-btns__btn-navigate--previous"]
+          )}
+          color="primary"
+          size="small"
+          onClick={() => scrollStarrtedMarketsTiles("previous")}
+        >
+          <ArrowBackRounded />
+        </Fab>
+
+        <Fab
+          className={classNames(
+            styles["Dashboard__starred-market-tiles-nav-btns__btn-navigate"],
+            styles["Dashboard__starred-market-tiles-nav-btns__btn-navigate--next"]
+          )}
+          color="primary"
+          size="small"
+          onClick={() => scrollStarrtedMarketsTiles("next")}
+        >
+          <ArrowForwardRounded />
+        </Fab>
       </section>
 
       <div

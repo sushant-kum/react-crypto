@@ -2,36 +2,59 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:42 GMT+05:30
- * @modify date Jun 11 2021 17:33:37 GMT+05:30
+ * @modify date Jun 11 2021 19:00:18 GMT+05:30
  * @desc Styles for Dashboard component
  */
 
 @import "../../styles/constants/screen-sizes/screen-sizes";
+@import "../../styles/constants/palette/palette";
 
 .Dashboard {
   &__starred-market-tiles {
     position: relative;
-    overflow-x: hidden;
+    overflow-x: auto;
     scroll-behavior: smooth;
 
-    &__btn-navigate {
-      position: sticky;
-      top: 50%;
-      z-index: 10;
+    &::-webkit-scrollbar {
+      height: 3px;
+      background: transparent;
+    }
 
-      &--previous {
-        left: -4px;
-        transform: translateX(-4px);
-      }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($primary-main, 0.5);
+      border-radius: 1.5px;
+    }
 
-      &--next {
-        left: calc(100% - 64px);
-        transform: translateX(4px);
+    &::-webkit-scrollbar-track-piece:end {
+      background: transparent;
+      margin-right: 50px;
+    }
+
+    &::-webkit-scrollbar-track-piece:start {
+      background: transparent;
+      margin-left: 50px;
+    }
+
+    &-nav-btns {
+      position: relative;
+
+      &__btn-navigate {
+        position: absolute;
+        z-index: 10;
+        transform: translateY(-100%);
+
+        &--previous {
+          left: 0;
+        }
+
+        &--next {
+          right: 0;
+        }
       }
     }
 
     &__container {
-      padding: 0 8px;
+      padding: 0 8px 2px 8px;
       display: grid;
       grid-auto-flow: column;
       column-gap: 16px;
@@ -120,6 +143,11 @@
       margin: 0 -16px;
       width: calc(100% + 32px);
 
+      &-nav-btns {
+        margin: 0 -16px;
+        width: calc(100% + 32px);
+      }
+
       &__container {
         grid-auto-columns: 300px;
         grid-template-rows: 200px;
@@ -155,6 +183,11 @@
     &__starred-market-tiles {
       margin: 0 -16px;
       width: calc(100% + 32px);
+
+      &-nav-btns {
+        margin: 0 -16px;
+        width: calc(100% + 32px);
+      }
 
       &__container {
         grid-auto-columns: 300px;
@@ -192,6 +225,11 @@
       margin: 0 -32px;
       width: calc(100% + 64px);
 
+      &-nav-btns {
+        margin: 0 -32px;
+        width: calc(100% + 64px);
+      }
+
       &__container {
         grid-auto-columns: 350px;
         grid-template-rows: 225px;
@@ -220,6 +258,11 @@
     &__starred-market-tiles {
       margin: 0 -32px;
       width: calc(100% + 64px);
+
+      &-nav-btns {
+        margin: 0 -32px;
+        width: calc(100% + 64px);
+      }
 
       &__container {
         grid-auto-columns: 350px;
