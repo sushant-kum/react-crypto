@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:42 GMT+05:30
- * @modify date Jun 11 2021 19:00:18 GMT+05:30
+ * @modify date Jun 16 2021 12:13:55 GMT+05:30
  * @desc Styles for Dashboard component
  */
 
@@ -40,7 +40,7 @@
 
       &__btn-navigate {
         position: absolute;
-        z-index: 10;
+        z-index: 110;
         transform: translateY(-100%);
 
         &--previous {
