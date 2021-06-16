@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/sushant-kum/react-crypto/compare/1.2.1...1.2.2) (2021-06-16)
+
+### Bug Fixes
+
+- **dashboard:** fixed box shadow of starred cards nav buttons ([b259d3d](https://github.com/sushant-kum/react-crypto/commit/b259d3daf385697754e395288d26bcc90e03a04d))
+
 ### [1.2.1](https://github.com/sushant-kum/react-crypto/compare/1.2.0...1.2.1) (2021-06-11)
 
 ### Bug Fixes
