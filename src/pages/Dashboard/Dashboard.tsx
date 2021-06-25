@@ -302,7 +302,16 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         </div>
       </section>
 
-      <section className={styles["Dashboard__starred-market-tiles-nav-btns"]}>
+      <section
+        className={styles["Dashboard__starred-market-tiles-nav-btns"]}
+        hidden={
+          marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ||
+          (refStarredMarketTiles?.current !== null &&
+            refStarredMarketTiles.current.offsetWidth >=
+              marketsData.filter((marketData: MarketData) => marketData.starred).length *
+                ((SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? 300 : 350) + 16))
+        }
+      >
         <Fab
           className={classNames(
             styles["Dashboard__starred-market-tiles-nav-btns__btn-navigate"],
