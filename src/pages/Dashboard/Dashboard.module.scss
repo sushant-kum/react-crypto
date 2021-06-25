@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:42 GMT+05:30
- * @modify date Jun 16 2021 12:13:55 GMT+05:30
+ * @modify date Jun 25 2021 13:03:13 GMT+05:30
  * @desc Styles for Dashboard component
  */
 
@@ -58,7 +58,17 @@
       display: grid;
       grid-auto-flow: column;
       column-gap: 16px;
-      width: fit-content;
+
+      &:not(&--loading-data) {
+        width: fit-content;
+      }
+
+      &__loader {
+        width: 100%;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 
@@ -149,8 +159,11 @@
       }
 
       &__container {
-        grid-auto-columns: 300px;
         grid-template-rows: 200px;
+
+        &:not(&--loading-data) {
+          grid-auto-columns: 300px;
+        }
       }
     }
 
@@ -190,8 +203,11 @@
       }
 
       &__container {
-        grid-auto-columns: 300px;
         grid-template-rows: 200px;
+
+        &:not(&--loading-data) {
+          grid-auto-columns: 300px;
+        }
       }
     }
 
@@ -231,8 +247,11 @@
       }
 
       &__container {
-        grid-auto-columns: 350px;
         grid-template-rows: 225px;
+
+        &:not(&--loading-data) {
+          grid-auto-columns: 350px;
+        }
       }
     }
 
@@ -265,8 +284,11 @@
       }
 
       &__container {
-        grid-auto-columns: 350px;
         grid-template-rows: 225px;
+
+        &:not(&--loading-data) {
+          grid-auto-columns: 350px;
+        }
       }
     }
 

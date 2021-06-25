@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jun 08 2021 18:07:54 GMT+05:30
+ * @modify date Jun 25 2021 13:02:25 GMT+05:30
  * @desc Styles for MarketsTable component
  */
 
@@ -59,6 +59,14 @@
   &__body {
     &__row {
       &__cell {
+        &--no-data {
+          &__body {
+            &__star-icon {
+              vertical-align: middle;
+            }
+          }
+        }
+
         &--marketName {
           &__content {
             display: grid;
@@ -332,7 +340,8 @@
         &__cell {
           padding: 8px 4px !important;
 
-          &--no-data {
+          &--no-data,
+          &--loading-data {
             padding: 16px !important;
           }
 
@@ -400,7 +409,8 @@
         &__cell {
           padding: 8px 4px !important;
 
-          &--no-data {
+          &--no-data,
+          &--loading-data {
             padding: 16px !important;
           }
 
@@ -475,7 +485,8 @@
           padding-bottom: 8px !important;
           top: calc(48px - 8px);
 
-          &--no-data {
+          &--no-data,
+          &--loading-data {
             padding: 16px 32px !important;
           }
 
@@ -566,7 +577,8 @@
           padding-bottom: 8px !important;
           top: calc(48px - 8px);
 
-          &--no-data {
+          &--no-data,
+          &--loading-data {
             padding: 16px 32px !important;
           }
 

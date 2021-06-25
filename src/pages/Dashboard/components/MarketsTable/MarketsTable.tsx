@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jun 08 2021 18:08:01 GMT+05:30
+ * @modify date Jun 25 2021 13:03:03 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -51,6 +51,7 @@ interface MarketsTableProps extends React.HTMLAttributes<HTMLElement> {
   marketsData: MarketData[];
   category: "Starred" | "INR" | "USDT";
   loadingMarketsData: boolean;
+  showLoader?: boolean;
   setMarketStar: (market: string, starred: boolean) => void;
 }
 
@@ -58,6 +59,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
   marketsData,
   category,
   loadingMarketsData,
+  showLoader,
   setMarketStar,
   ...props
 }) => {
@@ -717,18 +719,31 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             <TableCell
               className={classNames(
                 styles.MarketsTable__body__row__cell,
-                styles["MarketsTable__body__row__cell--no-data"]
+                showLoader
+                  ? styles["MarketsTable__body__row__cell--loading-data"]
+                  : styles["MarketsTable__body__row__cell--no-data"]
               )}
               colSpan={
                 MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? MD_AND_BELOW_COLS.length : LG_AND_ABOVE_COLS.length
               }
               align="center"
             >
-              <Typography variant="subtitle1">No {category} markets found</Typography>
-              {category === "Starred" && (
-                <Typography variant="body1" color="textSecondary">
-                  You can star a market by clicking on the <StarOutlineRounded fontSize="small" /> icon.
-                </Typography>
+              {showLoader ? (
+                <CircularProgress size={47} thickness={3} />
+              ) : (
+                <>
+                  <Typography variant="subtitle1">No {category} markets found</Typography>
+                  {category === "Starred" && (
+                    <Typography variant="body1" color="textSecondary">
+                      You can star a market by clicking on the{" "}
+                      <StarOutlineRounded
+                        className={styles["MarketsTable__body__row__cell--no-data__body__star-icon"]}
+                        fontSize="small"
+                      />{" "}
+                      icon.
+                    </Typography>
+                  )}
+                </>
               )}
             </TableCell>
           </TableRow>
@@ -787,11 +802,13 @@ MarketsTable.propTypes = {
   ).isRequired,
   category: PropTypes.oneOf<"Starred" | "INR" | "USDT">(["Starred", "INR", "USDT"]).isRequired,
   loadingMarketsData: PropTypes.bool.isRequired,
+  showLoader: PropTypes.bool,
   setMarketStar: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 
 MarketsTable.defaultProps = {
+  showLoader: false,
   className: undefined,
 };
 

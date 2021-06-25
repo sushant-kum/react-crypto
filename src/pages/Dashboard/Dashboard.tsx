@@ -143,8 +143,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       .then((res: AxiosResponse<BuyUCoinTickerDataApiResponse>) => res.data)
       .then((buyUCoinMarketDataApiResponse: BuyUCoinTickerDataApiResponse) => {
         if (buyUCoinMarketDataApiResponse.status === "success" && buyUCoinMarketDataApiResponse.data.length > 0) {
-          loadingMarketsDataSet(false);
-
           axios
             .get<CoinGeckoCoinsListApiElement[]>(coinGeckoApiEndpoint.coinsList)
             .then((res: AxiosResponse<CoinGeckoCoinsListApiElement[]>) => res.data)
@@ -159,6 +157,8 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                       Array.isArray(starredMarkets) ? starredMarkets : []
                     )
                   );
+
+                  loadingMarketsDataSet(false);
                 });
             })
             .catch(() => {
@@ -284,20 +284,35 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       </section>
 
       <section className={styles["Dashboard__starred-market-tiles"]} ref={refStarredMarketTiles}>
-        <div className={styles["Dashboard__starred-market-tiles__container"]}>
-          {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
-            <MarketCardPlaceholder />
+        <div
+          className={classNames(
+            styles["Dashboard__starred-market-tiles__container"],
+            marketsData.length === 0 &&
+              loadingMarketsData &&
+              styles["Dashboard__starred-market-tiles__container--loading-data"]
+          )}
+        >
+          {marketsData.length === 0 && loadingMarketsData ? (
+            <div className={styles["Dashboard__starred-market-tiles__container__loader"]}>
+              <CircularProgress />
+            </div>
           ) : (
-            marketsData
-              .filter((marketData: MarketData) => marketData.starred)
-              .map((starredMarketData: MarketData) => (
-                <MarketCard
-                  marketData={starredMarketData}
-                  loadingMarketsData={loadingMarketsData ?? false}
-                  setMarketStar={setMarketStar}
-                  key={starredMarketData.name.market}
-                />
-              ))
+            <>
+              {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
+                <MarketCardPlaceholder />
+              ) : (
+                marketsData
+                  .filter((marketData: MarketData) => marketData.starred)
+                  .map((starredMarketData: MarketData) => (
+                    <MarketCard
+                      marketData={starredMarketData}
+                      loadingMarketsData={loadingMarketsData ?? false}
+                      setMarketStar={setMarketStar}
+                      key={starredMarketData.name.market}
+                    />
+                  ))
+              )}
+            </>
           )}
         </div>
       </section>
@@ -514,6 +529,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               marketsData={filterMarketData(MarketsTabIndexValues.STARRED)}
               category="Starred"
               loadingMarketsData={loadingMarketsData ?? false}
+              showLoader={marketsData.length === 0 && loadingMarketsData}
               setMarketStar={setMarketStar}
             />
           )}
@@ -532,6 +548,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               marketsData={filterMarketData(MarketsTabIndexValues.INR)}
               category="INR"
               loadingMarketsData={loadingMarketsData ?? false}
+              showLoader={marketsData.length === 0 && loadingMarketsData}
               setMarketStar={setMarketStar}
             />
           )}
@@ -550,6 +567,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               marketsData={filterMarketData(MarketsTabIndexValues.USDT)}
               category="USDT"
               loadingMarketsData={loadingMarketsData ?? false}
+              showLoader={marketsData.length === 0 && loadingMarketsData}
               setMarketStar={setMarketStar}
             />
           )}
