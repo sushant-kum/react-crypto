@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date Jun 04 2021 19:36:06 GMT+05:30
+ * @modify date Jun 25 2021 15:00:44 GMT+05:30
  * @desc App root component
  */
 
@@ -22,6 +22,7 @@ import axios, { AxiosResponse } from "axios";
 import localForage from "localforage";
 import React, { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { QueryParamProvider } from "use-query-params";
 
 import "./App.scss";
 import DarkModeContext, { darkModeContextInitialState } from "./contexts/DarkMode";
@@ -142,21 +143,23 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <DarkModeContext.Provider value={{ darkModeSelection, darkModeSelectionUpdate }}>
-          <SnackbarContext.Provider
-            value={{ snackbarOpen, snackbarMessage, snackbarDurationMS, openSnackbar, closeSnackbar }}
-          >
-            <Layout>
-              <Switch>
-                <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+        <QueryParamProvider ReactRouterRoute={Route}>
+          <DarkModeContext.Provider value={{ darkModeSelection, darkModeSelectionUpdate }}>
+            <SnackbarContext.Provider
+              value={{ snackbarOpen, snackbarMessage, snackbarDurationMS, openSnackbar, closeSnackbar }}
+            >
+              <Layout>
+                <Switch>
+                  <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
 
-                <Route exact path="/dashboard">
-                  <DashboardLazy />
-                </Route>
-              </Switch>
-            </Layout>
-          </SnackbarContext.Provider>
-        </DarkModeContext.Provider>
+                  <Route exact path="/dashboard">
+                    <DashboardLazy />
+                  </Route>
+                </Switch>
+              </Layout>
+            </SnackbarContext.Provider>
+          </DarkModeContext.Provider>
+        </QueryParamProvider>
       </BrowserRouter>
 
       <Snackbar

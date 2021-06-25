@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 11 2021 18:59:29 GMT+05:30
+ * @modify date Jun 25 2021 15:00:09 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -39,6 +39,7 @@ import classNames from "classnames";
 import localForage from "localforage";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { StringParam, useQueryParam } from "use-query-params";
 
 import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
 import TabPanel from "../../components/TabPanel/TabPanel";
@@ -85,6 +86,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS = 200;
 
   const theme = useTheme();
+  const [queryParamTab, queryParamTabSet] = useQueryParam("tab", StringParam);
   const screenWidth: Breakpoint = useScreenWidth();
   const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
   const { openSnackbar } = useContext<SnackbarContextValue>(SnackbarContext);
@@ -100,7 +102,11 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     number,
     React.Dispatch<React.SetStateAction<number>>
   ] = useState<number>(0);
-  const [marketsTabIndex, marketsTabIndexSet] = useState<MarketsTabIndexValues>(MarketsTabIndexValues.STARRED);
+  const [marketsTabIndex, marketsTabIndexSet] = useState<MarketsTabIndexValues>(
+    (queryParamTab &&
+      (MarketsTabIndexValues[queryParamTab.toUpperCase() as never] as unknown as MarketsTabIndexValues)) ||
+      MarketsTabIndexValues.STARRED
+  );
   const [marketsData, marketsDataSet]: [MarketData[], React.Dispatch<React.SetStateAction<MarketData[]>>] = useState<
     MarketData[]
   >([]);
@@ -274,6 +280,16 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh, loadingMarketsData]);
+
+  useEffect(() => {
+    if (marketsTabIndex !== undefined) {
+      const selectedTab: string = MarketsTabIndexValues[marketsTabIndex].toLowerCase();
+
+      queryParamTabSet(selectedTab);
+    } else {
+      queryParamTabSet(undefined);
+    }
+  }, [marketsTabIndex, queryParamTab, queryParamTabSet]);
 
   return (
     <section className={classNames(styles.Dashboard, props.className)} data-testid="Dashboard">
