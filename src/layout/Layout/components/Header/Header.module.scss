@@ -2,10 +2,11 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:15:12 GMT+05:30
- * @modify date May 16 2021 21:17:04 GMT+05:30
+ * @modify date Jun 25 2021 17:44:19 GMT+05:30
  * @desc Styles for Header component
  */
 
+@use "sass:math";
 @import "../../../../styles/constants/screen-sizes/screen-sizes";
 @import "../../../../styles/constants/component-level/Header.constants";
 @import "../../../../styles/constants/component-level/Layout.constants";
@@ -25,10 +26,12 @@
     height: $header-height-sm;
 
     &--xs-sidenav-open {
-      top: -((($xs-sidenav-open-header-background-scale-ratio - $xs-sidenav-open-layout-scale-ratio) / 4) * 100vh);
+      top: -((math.div(($xs-sidenav-open-header-background-scale-ratio - $xs-sidenav-open-layout-scale-ratio), 4)) *
+            100vh);
       height: calc(
         #{$header-height-sm} + #{(
-            (($xs-sidenav-open-header-background-scale-ratio - $xs-sidenav-open-layout-scale-ratio) / 4) * 100vh
+            (math.div(($xs-sidenav-open-header-background-scale-ratio - $xs-sidenav-open-layout-scale-ratio), 4)) *
+              100vh
           )}
       );
       transform: scale($xs-sidenav-open-header-background-scale-ratio);
