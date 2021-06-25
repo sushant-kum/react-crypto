@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/sushant-kum/react-crypto/compare/1.2.2...1.2.3) (2021-06-25)
+
+### Bug Fixes
+
+- **dashboard:** added loader to indicate first loading ([7d6ed2d](https://github.com/sushant-kum/react-crypto/commit/7d6ed2d689a3ec419a4008638a09a84bcffc8fc2))
+- **dashboard:** not showing tile nav buttons when less number of tiles ([8c6508b](https://github.com/sushant-kum/react-crypto/commit/8c6508b4d64569dd95451724a12da35325646b81))
+
 ### [1.2.2](https://github.com/sushant-kum/react-crypto/compare/1.2.1...1.2.2) (2021-06-16)
 
 ### Bug Fixes
