@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/sushant-kum/react-crypto/compare/1.4.0...1.4.1) (2021-07-26)
+
+### Bug Fixes
+
+- used React.Children.toArray to auto assign keys to children ([0c15f0a](https://github.com/sushant-kum/react-crypto/commit/0c15f0a2ca43561de7388ea34dbc3d3336363faa))
+
 ## [1.4.0](https://github.com/sushant-kum/react-crypto/compare/1.3.0...1.4.0) (2021-07-26)
 
 ### Features
