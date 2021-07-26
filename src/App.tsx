@@ -2,15 +2,14 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date Jun 25 2021 15:00:44 GMT+05:30
+ * @modify date Jul 26 2021 10:36:16 GMT+05:30
  * @desc App root component
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   CssBaseline,
   IconButton,
-  PaletteType,
   Slide,
   Snackbar,
   Theme,
@@ -20,17 +19,18 @@ import {
 import { CloseRounded } from "@material-ui/icons";
 import axios, { AxiosResponse } from "axios";
 import localForage from "localforage";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Dispatch, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { QueryParamProvider } from "use-query-params";
 
 import "./App.scss";
-import DarkModeContext, { darkModeContextInitialState } from "./contexts/DarkMode";
 import SnackbarContext, { snackbarInitialState } from "./contexts/Snackbar";
 import Layout from "./layout/Layout/Layout";
-import { DarkMode } from "./models/DarkMode";
 import LocalForageKeys from "./models/LocalForage";
 import DashboardLazy from "./pages/Dashboard/Dashboard.lazy";
+import { StoreDispatch } from "./store";
+import { getThemeType, setThemeType, ThemeType } from "./store/settings/themeType";
 import palette from "./styles/constants/palette/palette.module.scss";
 
 interface VersionInfo {
@@ -40,20 +40,14 @@ interface VersionInfo {
 
 const App: React.FC = () => {
   const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
-  const [darkModeSelection, darkModeSelectionSet]: [DarkMode, React.Dispatch<React.SetStateAction<DarkMode>>] =
-    useState<DarkMode>(darkModeContextInitialState.darkModeSelection ?? prefersDarkMode);
+  const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
+  const themeType: ThemeType = useSelector(getThemeType);
   const [snackbarOpen, snackbarOpenSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
-
   const [snackbarMessage, snackbarMessageSet]: [string, React.Dispatch<React.SetStateAction<string>>] =
     useState<string>("");
   const [snackbarDurationMS, snackbarDurationMSSet]: [number, React.Dispatch<React.SetStateAction<number>>] =
     useState<number>(0);
-
-  const darkModeSelectionUpdate: (selection: DarkMode) => void = (selection) => {
-    darkModeSelectionSet(selection);
-    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__DARK_MODE, selection);
-  };
 
   const closeSnackbar: () => void = () => {
     snackbarOpenSet(snackbarInitialState.snackbarOpen);
@@ -78,13 +72,9 @@ const App: React.FC = () => {
     }
   };
 
-  const themeType: (selection: DarkMode, preference: boolean) => PaletteType | undefined = (selection, preference) => {
-    return selection ?? preference ? "dark" : "light";
-  };
-
   const theme: Theme = useMemo(
     () =>
-      createMuiTheme({
+      createTheme({
         palette: {
           primary: {
             light: palette.primaryLight,
@@ -110,16 +100,17 @@ const App: React.FC = () => {
             dark: palette.successDark,
             contrastText: palette.successContrastText,
           },
-          type: themeType(darkModeSelection, prefersDarkMode),
+          type: themeType,
         },
       }),
-    [darkModeSelection, prefersDarkMode]
+    [themeType]
   );
 
   useEffect(() => {
-    localForage.getItem<DarkMode>(LocalForageKeys.SETTINGS__GLOBAL__DARK_MODE).then((darkMode) => {
-      darkModeSelectionUpdate(darkMode ?? prefersDarkMode);
+    localForage.getItem<ThemeType>(LocalForageKeys.SETTINGS__GLOBAL__THEME_TYPE).then((type: ThemeType | null) => {
+      dispatch(setThemeType(type ?? (prefersDarkMode ? "dark" : "light")));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prefersDarkMode]);
 
   useEffect(() => {
@@ -144,21 +135,19 @@ const App: React.FC = () => {
       <CssBaseline />
       <BrowserRouter>
         <QueryParamProvider ReactRouterRoute={Route}>
-          <DarkModeContext.Provider value={{ darkModeSelection, darkModeSelectionUpdate }}>
-            <SnackbarContext.Provider
-              value={{ snackbarOpen, snackbarMessage, snackbarDurationMS, openSnackbar, closeSnackbar }}
-            >
-              <Layout>
-                <Switch>
-                  <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+          <SnackbarContext.Provider
+            value={{ snackbarOpen, snackbarMessage, snackbarDurationMS, openSnackbar, closeSnackbar }}
+          >
+            <Layout>
+              <Switch>
+                <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
 
-                  <Route exact path="/dashboard">
-                    <DashboardLazy />
-                  </Route>
-                </Switch>
-              </Layout>
-            </SnackbarContext.Provider>
-          </DarkModeContext.Provider>
+                <Route exact path="/dashboard">
+                  <DashboardLazy />
+                </Route>
+              </Switch>
+            </Layout>
+          </SnackbarContext.Provider>
         </QueryParamProvider>
       </BrowserRouter>
 

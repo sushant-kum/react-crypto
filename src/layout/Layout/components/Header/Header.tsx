@@ -2,27 +2,38 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:15:30 GMT+05:30
- * @modify date Jun 05 2021 13:15:15 GMT+05:30
+ * @modify date Jul 26 2021 10:38:41 GMT+05:30
  * @desc Header component
  */
 
 import { AppBar, Hidden, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { Brightness4Rounded, Brightness7Rounded, MenuRounded } from "@material-ui/icons";
 import classNames from "classnames";
+import localForage from "localforage";
 import PropTypes from "prop-types";
-import React, { useContext } from "react";
+import React, { Dispatch, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CustomTooltip from "../../../../components/CustomTooltip/CustomTooltip";
-import DarkModeContext from "../../../../contexts/DarkMode";
 import XsSideNavOpenContext from "../../../../contexts/XsSideNavOpen";
-import { DarkModeContextValue } from "../../../../models/DarkMode";
+import LocalForageKeys from "../../../../models/LocalForage";
 import { XsSideNavOpenContextValue } from "../../../../models/XsSideNavOpen";
+import { StoreDispatch } from "../../../../store";
+import { ThemeType, getThemeType, setThemeType } from "../../../../store/settings/themeType";
 
 import styles from "./Header.module.scss";
 
 const Header: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
-  const { darkModeSelection, darkModeSelectionUpdate } = useContext<DarkModeContextValue>(DarkModeContext);
+  const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
+  const themeType: ThemeType = useSelector(getThemeType);
   const { xsSideNavOpen, xsSideNavOpenUpdate } = useContext<XsSideNavOpenContextValue>(XsSideNavOpenContext);
+
+  const toggleThemeType: () => void = () => {
+    const newThemeType: ThemeType = themeType === "dark" ? "light" : "dark";
+
+    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__THEME_TYPE, newThemeType);
+    dispatch(setThemeType(newThemeType));
+  };
 
   return (
     <>
@@ -33,14 +44,14 @@ const Header: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
             xsSideNavOpen
               ? styles["Header-background--xs-sidenav-open"]
               : styles["Header-background--xs-sidenav-close"],
-            darkModeSelection ? "MuiAppBar-colorDefault" : "MuiAppBar-colorPrimary"
+            themeType === "dark" ? "MuiAppBar-colorDefault" : "MuiAppBar-colorPrimary"
           )}
         />
       </Hidden>
 
       <AppBar
         className={classNames(styles.Header, props.className)}
-        color={darkModeSelection ? "default" : "primary"}
+        color={themeType === "dark" ? "default" : "primary"}
         position="sticky"
         elevation={0}
         data-testid="Header"
@@ -70,18 +81,13 @@ const Header: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           <CustomTooltip
             title={
               <Typography variant="body2" component="span">
-                Switch to {darkModeSelection ? "light" : "dark"} mode
+                Switch to {themeType === "dark" ? "light" : "dark"} mode
               </Typography>
             }
             arrow
           >
-            <IconButton
-              color="inherit"
-              edge="end"
-              aria-label="Toggle dark mode"
-              onClick={() => darkModeSelectionUpdate?.(!darkModeSelection)}
-            >
-              {darkModeSelection ? <Brightness7Rounded /> : <Brightness4Rounded />}
+            <IconButton color="inherit" edge="end" aria-label="Toggle dark mode" onClick={() => toggleThemeType()}>
+              {themeType === "dark" ? <Brightness7Rounded /> : <Brightness4Rounded />}
             </IconButton>
           </CustomTooltip>
         </Toolbar>

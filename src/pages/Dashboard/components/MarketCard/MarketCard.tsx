@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 06 2021 14:24:07 GMT+05:30
- * @modify date Jun 08 2021 19:07:36 GMT+05:30
+ * @modify date Jul 26 2021 10:38:18 GMT+05:30
  * @desc MarketCard
  */
 
@@ -13,15 +13,15 @@ import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import * as dateFns from "date-fns";
 import PropTypes from "prop-types";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useImage } from "react-image";
+import { useSelector } from "react-redux";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import coinGeckoApiEndpoint, { CoinGeckoApiQueryParams } from "../../../../constants/CoingeckoApi";
-import DarkModeContext from "../../../../contexts/DarkMode";
 import useScreenWidth from "../../../../hooks/useScreenWidth";
-import { DarkModeContextValue } from "../../../../models/DarkMode";
+import { getThemeType, ThemeType } from "../../../../store/settings/themeType";
 import palette from "../../../../styles/constants/palette/palette.module.scss";
 import { MarketData } from "../../models/MarketData";
 
@@ -44,10 +44,10 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
 
   let twentyFourChangePercIcon: React.ReactNode;
   const screenWidth: Breakpoint = useScreenWidth();
-  const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
+  const themeType: ThemeType = useSelector(getThemeType);
   const { src: coinIconSrc } = useImage({
     srcList: [
-      (darkModeSelection ? marketData.icons.selfHosted.white : marketData.icons.selfHosted.black) ?? "",
+      (themeType === "dark" ? marketData.icons.selfHosted.white : marketData.icons.selfHosted.black) ?? "",
       marketData.icons.buyUCoin ?? "",
       productLogo,
     ],
@@ -218,7 +218,7 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
                   (marketData.twentyFourHr.priceChangePercentage > 0
                     ? styles["MarketCard__header__content__subheader__change-perc--up"]
                     : styles["MarketCard__header__content__subheader__change-perc--down"]),
-                darkModeSelection
+                themeType === "dark"
                   ? styles["MarketCard__header__content__subheader__change-perc--theme-dark"]
                   : styles["MarketCard__header__content__subheader__change-perc--theme-light"]
               )}
@@ -263,7 +263,7 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
                 color={
                   // eslint-disable-next-line no-nested-ternary
                   priceChartDataPoints[0] === priceChartDataPoints[priceChartDataPoints.length - 1]
-                    ? darkModeSelection
+                    ? themeType === "dark"
                       ? "#ffffff"
                       : "#000000"
                     : priceChartDataPoints[0] < priceChartDataPoints[priceChartDataPoints.length - 1]

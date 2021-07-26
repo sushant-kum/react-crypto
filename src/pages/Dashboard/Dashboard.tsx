@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jun 25 2021 15:00:09 GMT+05:30
+ * @modify date Jul 26 2021 10:37:34 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -39,18 +39,18 @@ import classNames from "classnames";
 import localForage from "localforage";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { StringParam, useQueryParam } from "use-query-params";
 
 import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
 import coinGeckoApiEndpoint from "../../constants/CoingeckoApi";
-import DarkModeContext from "../../contexts/DarkMode";
 import SnackbarContext from "../../contexts/Snackbar";
 import useScreenWidth from "../../hooks/useScreenWidth";
-import { DarkModeContextValue } from "../../models/DarkMode";
 import LocalForageKeys from "../../models/LocalForage";
 import { SnackbarContextValue } from "../../models/Snackbar";
+import { getThemeType, ThemeType } from "../../store/settings/themeType";
 
 import MarketCard from "./components/MarketCard/MarketCard";
 import MarketCardPlaceholder from "./components/MarketCardPlaceholder/MarketCardPlaceholder";
@@ -88,7 +88,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const theme = useTheme();
   const [queryParamTab, queryParamTabSet] = useQueryParam("tab", StringParam);
   const screenWidth: Breakpoint = useScreenWidth();
-  const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
+  const themeType: ThemeType = useSelector(getThemeType);
   const { openSnackbar } = useContext<SnackbarContextValue>(SnackbarContext);
   const refStarredMarketTiles: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
@@ -371,7 +371,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       <div
         className={classNames(
           styles["Dashboard__markets-top-spacer"],
-          darkModeSelection
+          themeType === "dark"
             ? styles["Dashboard__markets-top-spacer--theme-dark"]
             : styles["Dashboard__markets-top-spacer--theme-light"]
         )}

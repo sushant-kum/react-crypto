@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jun 25 2021 13:03:03 GMT+05:30
+ * @modify date Jul 26 2021 10:37:56 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -29,14 +29,14 @@ import {
 } from "@material-ui/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useContext } from "react";
+import React from "react";
 import { Img } from "react-image";
+import { useSelector } from "react-redux";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import CustomTooltip from "../../../../components/CustomTooltip/CustomTooltip";
-import DarkModeContext from "../../../../contexts/DarkMode";
 import useScreenWidth from "../../../../hooks/useScreenWidth";
-import { DarkModeContextValue } from "../../../../models/DarkMode";
+import { ThemeType, getThemeType } from "../../../../store/settings/themeType";
 import { MarketData } from "../../models/MarketData";
 
 import styles from "./MarketsTable.module.scss";
@@ -284,7 +284,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
   ];
 
   const screenWidth: Breakpoint = useScreenWidth();
-  const { darkModeSelection } = useContext<DarkModeContextValue>(DarkModeContext);
+  const themeType: ThemeType = useSelector(getThemeType);
 
   const addUnit: (content: React.ReactNode, quotationCurrency: string) => React.ReactNode = (
     content,
@@ -364,7 +364,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             <Img
               className={styles[`MarketsTable__body__row__cell--${cellKey}__content__icon`]}
               src={[
-                (darkModeSelection ? row.icons.selfHosted.white : row.icons.selfHosted.black) ?? "",
+                (themeType === "dark" ? row.icons.selfHosted.white : row.icons.selfHosted.black) ?? "",
                 row.icons.buyUCoin ?? "",
                 productLogo,
               ]}
@@ -419,7 +419,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                     (row.twentyFourHr.priceChangePercentage > 0
                       ? styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--up`]
                       : styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--down`]),
-                  darkModeSelection
+                  themeType === "dark"
                     ? styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--theme-dark`]
                     : styles[`MarketsTable__body__row__cell--${cellKey}__content__change__percentage--theme-light`]
                 )}
@@ -676,7 +676,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                 <TableCell
                   className={classNames(
                     styles.MarketsTable__head__row__cell,
-                    darkModeSelection
+                    themeType === "dark"
                       ? styles[`MarketsTable__head__row__cell--theme-dark`]
                       : styles[`MarketsTable__head__row__cell--theme-light`],
                     styles[`MarketsTable__head__row__cell--${column.key}`]
@@ -691,7 +691,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
                 <TableCell
                   className={classNames(
                     styles.MarketsTable__head__row__cell,
-                    darkModeSelection
+                    themeType === "dark"
                       ? styles[`MarketsTable__head__row__cell--theme-dark`]
                       : styles[`MarketsTable__head__row__cell--theme-light`],
                     styles[`MarketsTable__head__row__cell--${column.key}`]
