@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jul 26 2021 10:37:56 GMT+05:30
+ * @modify date Jul 26 2021 11:50:27 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -672,48 +672,52 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
       <TableHead className={styles.MarketsTable__head}>
         <TableRow className={styles.MarketsTable__head__row}>
           {MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
-            ? MD_AND_BELOW_COLS.map((column: ColumnDef) => (
-                <TableCell
-                  className={classNames(
-                    styles.MarketsTable__head__row__cell,
-                    themeType === "dark"
-                      ? styles[`MarketsTable__head__row__cell--theme-dark`]
-                      : styles[`MarketsTable__head__row__cell--theme-light`],
-                    styles[`MarketsTable__head__row__cell--${column.key}`]
-                  )}
-                  align={column.align}
-                  key={column.key}
-                >
-                  {column.headerText}
-                </TableCell>
-              ))
-            : LG_AND_ABOVE_COLS.map((column: ColumnDef) => (
-                <TableCell
-                  className={classNames(
-                    styles.MarketsTable__head__row__cell,
-                    themeType === "dark"
-                      ? styles[`MarketsTable__head__row__cell--theme-dark`]
-                      : styles[`MarketsTable__head__row__cell--theme-light`],
-                    styles[`MarketsTable__head__row__cell--${column.key}`]
-                  )}
-                  align={column.align}
-                  key={column.key}
-                >
-                  {column.headerText}
-                </TableCell>
-              ))}
+            ? React.Children.toArray(
+                MD_AND_BELOW_COLS.map((column: ColumnDef) => (
+                  <TableCell
+                    className={classNames(
+                      styles.MarketsTable__head__row__cell,
+                      themeType === "dark"
+                        ? styles[`MarketsTable__head__row__cell--theme-dark`]
+                        : styles[`MarketsTable__head__row__cell--theme-light`],
+                      styles[`MarketsTable__head__row__cell--${column.key}`]
+                    )}
+                    align={column.align}
+                  >
+                    {column.headerText}
+                  </TableCell>
+                ))
+              )
+            : React.Children.toArray(
+                LG_AND_ABOVE_COLS.map((column: ColumnDef) => (
+                  <TableCell
+                    className={classNames(
+                      styles.MarketsTable__head__row__cell,
+                      themeType === "dark"
+                        ? styles[`MarketsTable__head__row__cell--theme-dark`]
+                        : styles[`MarketsTable__head__row__cell--theme-light`],
+                      styles[`MarketsTable__head__row__cell--${column.key}`]
+                    )}
+                    align={column.align}
+                  >
+                    {column.headerText}
+                  </TableCell>
+                ))
+              )}
         </TableRow>
       </TableHead>
 
       <TableBody className={styles.MarketsTable__body}>
         {marketsData.length > 0 ? (
-          marketsData.map((marketData: MarketData) => (
-            <TableRow className={styles.MarketsTable__body__row} key={marketData.name.market}>
-              {MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
-                ? MD_AND_BELOW_COLS.map((column: ColumnDef) => getTableCell(column, marketData))
-                : LG_AND_ABOVE_COLS.map((column: ColumnDef) => getTableCell(column, marketData))}
-            </TableRow>
-          ))
+          React.Children.toArray(
+            marketsData.map((marketData: MarketData) => (
+              <TableRow className={styles.MarketsTable__body__row}>
+                {MD_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth)
+                  ? MD_AND_BELOW_COLS.map((column: ColumnDef) => getTableCell(column, marketData))
+                  : LG_AND_ABOVE_COLS.map((column: ColumnDef) => getTableCell(column, marketData))}
+              </TableRow>
+            ))
+          )
         ) : (
           <TableRow className={styles.MarketsTable__body__row}>
             <TableCell

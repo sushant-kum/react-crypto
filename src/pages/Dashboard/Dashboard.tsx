@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jul 26 2021 10:37:34 GMT+05:30
+ * @modify date Jul 26 2021 11:50:35 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -317,16 +317,17 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
               {marketsData.filter((marketData: MarketData) => marketData.starred).length === 0 ? (
                 <MarketCardPlaceholder />
               ) : (
-                marketsData
-                  .filter((marketData: MarketData) => marketData.starred)
-                  .map((starredMarketData: MarketData) => (
-                    <MarketCard
-                      marketData={starredMarketData}
-                      loadingMarketsData={loadingMarketsData ?? false}
-                      setMarketStar={setMarketStar}
-                      key={starredMarketData.name.market}
-                    />
-                  ))
+                React.Children.toArray(
+                  marketsData
+                    .filter((marketData: MarketData) => marketData.starred)
+                    .map((starredMarketData: MarketData) => (
+                      <MarketCard
+                        marketData={starredMarketData}
+                        loadingMarketsData={loadingMarketsData ?? false}
+                        setMarketStar={setMarketStar}
+                      />
+                    ))
+                )
               )}
             </>
           )}

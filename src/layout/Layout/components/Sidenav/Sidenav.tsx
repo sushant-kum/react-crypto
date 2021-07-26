@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:58 GMT+05:30
- * @modify date May 16 2021 21:18:44 GMT+05:30
+ * @modify date Jul 26 2021 11:50:19 GMT+05:30
  * @desc Sidenav component
  */
 
@@ -71,36 +71,37 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           <Divider />
 
           <List className={classNames(styles.Sidenav__drawer__menu)}>
-            {SIDENAV_MENU_ITEMS.map((sideNavMenuItem: SideNavMenuItem) => {
-              return (
-                <ListItemLink
-                  className={classNames(
-                    styles.Sidenav__drawer__menu__item,
-                    styles["Sidenav__drawer__menu__item--xs"],
-                    location.pathname === sideNavMenuItem.path
-                      ? styles["Sidenav__drawer__menu__item--active-item"]
-                      : null
-                  )}
-                  to={sideNavMenuItem.path}
-                  selected={location.pathname === sideNavMenuItem.path}
-                  key={sideNavMenuItem.path}
-                >
-                  <ListItemIcon
+            {React.Children.toArray(
+              SIDENAV_MENU_ITEMS.map((sideNavMenuItem: SideNavMenuItem) => {
+                return (
+                  <ListItemLink
                     className={classNames(
-                      styles.Sidenav__drawer__menu__item__icon,
-                      styles["Sidenav__drawer__menu__item__icon--xs"]
+                      styles.Sidenav__drawer__menu__item,
+                      styles["Sidenav__drawer__menu__item--xs"],
+                      location.pathname === sideNavMenuItem.path
+                        ? styles["Sidenav__drawer__menu__item--active-item"]
+                        : null
                     )}
+                    to={sideNavMenuItem.path}
+                    selected={location.pathname === sideNavMenuItem.path}
                   >
-                    {sideNavMenuItem.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    className={classNames(styles.Sidenav__drawer__text, styles["Sidenav__drawer__text--xs"])}
-                  >
-                    {sideNavMenuItem.text}
-                  </ListItemText>
-                </ListItemLink>
-              );
-            })}
+                    <ListItemIcon
+                      className={classNames(
+                        styles.Sidenav__drawer__menu__item__icon,
+                        styles["Sidenav__drawer__menu__item__icon--xs"]
+                      )}
+                    >
+                      {sideNavMenuItem.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      className={classNames(styles.Sidenav__drawer__text, styles["Sidenav__drawer__text--xs"])}
+                    >
+                      {sideNavMenuItem.text}
+                    </ListItemText>
+                  </ListItemLink>
+                );
+              })
+            )}
           </List>
         </SwipeableDrawer>
       </Hidden>
@@ -156,40 +157,41 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               menuHovered ? styles["Sidenav__drawer__menu--sidenav-hovered"] : null
             )}
           >
-            {SIDENAV_MENU_ITEMS.map((sideNavMenuItem: SideNavMenuItem) => {
-              return (
-                <ListItemLink
-                  className={classNames(
-                    styles.Sidenav__drawer__menu__item,
-                    menuHovered ? styles["Sidenav__drawer__menu__item--sidenav-hovered"] : null,
-                    location.pathname === sideNavMenuItem.path
-                      ? styles["Sidenav__drawer__menu__item--active-item"]
-                      : null
-                  )}
-                  to={sideNavMenuItem.path}
-                  selected={location.pathname === sideNavMenuItem.path}
-                  key={sideNavMenuItem.path}
-                >
-                  <ListItemIcon
+            {React.Children.toArray(
+              SIDENAV_MENU_ITEMS.map((sideNavMenuItem: SideNavMenuItem) => {
+                return (
+                  <ListItemLink
                     className={classNames(
-                      styles.Sidenav__drawer__menu__item__icon,
-                      menuHovered ? styles["Sidenav__drawer__menu__item__icon--sidenav-hovered"] : null
+                      styles.Sidenav__drawer__menu__item,
+                      menuHovered ? styles["Sidenav__drawer__menu__item--sidenav-hovered"] : null,
+                      location.pathname === sideNavMenuItem.path
+                        ? styles["Sidenav__drawer__menu__item--active-item"]
+                        : null
                     )}
+                    to={sideNavMenuItem.path}
+                    selected={location.pathname === sideNavMenuItem.path}
                   >
-                    {sideNavMenuItem.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    className={classNames(
-                      styles.Sidenav__drawer__menu__item__text,
-                      styles.Sidenav__drawer__text,
-                      menuHovered ? styles["Sidenav__drawer__text--sidenav-hovered"] : null
-                    )}
-                  >
-                    {sideNavMenuItem.text}
-                  </ListItemText>
-                </ListItemLink>
-              );
-            })}
+                    <ListItemIcon
+                      className={classNames(
+                        styles.Sidenav__drawer__menu__item__icon,
+                        menuHovered ? styles["Sidenav__drawer__menu__item__icon--sidenav-hovered"] : null
+                      )}
+                    >
+                      {sideNavMenuItem.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      className={classNames(
+                        styles.Sidenav__drawer__menu__item__text,
+                        styles.Sidenav__drawer__text,
+                        menuHovered ? styles["Sidenav__drawer__text--sidenav-hovered"] : null
+                      )}
+                    >
+                      {sideNavMenuItem.text}
+                    </ListItemText>
+                  </ListItemLink>
+                );
+              })
+            )}
           </List>
         </Drawer>
       </Hidden>
