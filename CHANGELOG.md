@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/sushant-kum/react-crypto/compare/1.3.0...1.4.0) (2021-07-26)
+
+### Features
+
+- **store:** introduced app-wide store ([9d40762](https://github.com/sushant-kum/react-crypto/commit/9d40762b09f25f32420759d43bac98fc3d31c5de))
+
 ## [1.3.0](https://github.com/sushant-kum/react-crypto/compare/1.2.3...1.3.0) (2021-06-25)
 
 ### Features
