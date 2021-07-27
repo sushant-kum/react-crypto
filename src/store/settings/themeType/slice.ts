@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jul 26 2021 10:43:56 GMT+05:30
- * @modify date Jul 27 2021 11:27:14 GMT+05:30
+ * @modify date Jul 27 2021 11:55:56 GMT+05:30
  * @desc Theme type slice
  */
 
@@ -15,8 +15,8 @@ import {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { ThemeTypeSetPayload } from "./data-models/Payload";
-import { ThemeType } from "./data-models/ThemeType";
+import { ThemeTypeSetPayload } from "./models/Payload";
+import { ThemeType } from "./models/ThemeType";
 
 const initialState: ThemeType = "dark";
 const SET: CaseReducer<ThemeType, PayloadAction<ThemeTypeSetPayload>> = (themeType, action) => action.payload.themeType;

@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jul 26 2021 11:57:19 GMT+05:30
- * @modify date Jul 26 2021 11:57:19 GMT+05:30
+ * @modify date Jul 27 2021 11:56:10 GMT+05:30
  * @desc XsSideNavState slice
  */
 
@@ -15,7 +15,7 @@ import {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { XsSideNavState, XsSideNavStateSetPayload } from "./data-models";
+import { XsSideNavState, XsSideNavStateSetPayload } from "./models";
 
 const initialState: XsSideNavState = "close";
 const SET: CaseReducer<XsSideNavState, PayloadAction<XsSideNavStateSetPayload>> = (xsSideNavState, action) =>
