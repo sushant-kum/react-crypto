@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jul 26 2021 11:50:35 GMT+05:30
+ * @modify date Jul 27 2021 16:24:31 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -38,8 +38,8 @@ import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import localForage from "localforage";
 import PropTypes from "prop-types";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { Dispatch, useContext, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StringParam, useQueryParam } from "use-query-params";
 
 import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
@@ -50,6 +50,8 @@ import SnackbarContext from "../../contexts/Snackbar";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import LocalForageKeys from "../../models/LocalForage";
 import { SnackbarContextValue } from "../../models/Snackbar";
+import { StoreDispatch } from "../../store";
+import { getAutoRefreshMarkets, setAutoRefreshMarkets } from "../../store/settings/autoRefreshMarkets";
 import { getThemeType, ThemeType } from "../../store/settings/themeType";
 
 import MarketCard from "./components/MarketCard/MarketCard";
@@ -86,14 +88,14 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   const AUTO_REFRESH_COUNTDOWN_UPDATE_INTERVAL_MS = 200;
 
   const theme = useTheme();
+  const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
   const [queryParamTab, queryParamTabSet] = useQueryParam("tab", StringParam);
   const screenWidth: Breakpoint = useScreenWidth();
   const themeType: ThemeType = useSelector(getThemeType);
+  const autoRefreshMarkets: boolean = useSelector(getAutoRefreshMarkets);
   const { openSnackbar } = useContext<SnackbarContextValue>(SnackbarContext);
   const refStarredMarketTiles: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
-  const [autoRefresh, autoRefreshSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
-    useState<boolean>(false);
   const [loadingMarketsData, loadingMarketsDataSet]: [
     boolean | undefined,
     React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -135,9 +137,9 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
     marketsTabIndexSet(index);
   };
 
-  const updateAutoRefresh: (autoRefreshMarkets: boolean) => void = (autoRefreshMarkets) => {
-    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS, autoRefreshMarkets).then(() => {
-      autoRefreshSet(autoRefreshMarkets);
+  const updateAutoRefresh: (autoRefresh: boolean) => void = (autoRefresh) => {
+    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS, autoRefresh).then(() => {
+      dispatch(setAutoRefreshMarkets(autoRefresh));
     });
   };
 
@@ -168,7 +170,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                 });
             })
             .catch(() => {
-              if (!autoRefresh) {
+              if (!autoRefreshMarkets) {
                 openSnackbar?.("Something went wrong. Please try again...", 6000);
               }
               loadingMarketsDataSet(false);
@@ -176,7 +178,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         }
       })
       .catch(() => {
-        if (!autoRefresh) {
+        if (!autoRefreshMarkets) {
           openSnackbar?.("Something went wrong. Please try again...", 6000);
         }
         loadingMarketsDataSet(false);
@@ -252,11 +254,12 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   };
 
   useEffect(() => {
-    localForage.getItem<boolean>(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS).then((autoRefreshMarkets) => {
-      if (typeof autoRefreshMarkets === "boolean") {
-        autoRefreshSet(autoRefreshMarkets);
+    localForage.getItem<boolean>(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS).then((autoRefresh) => {
+      if (autoRefresh !== undefined && autoRefresh !== null) {
+        dispatch(setAutoRefreshMarkets(autoRefresh));
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -264,7 +267,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       fetchMarketsData();
     }
 
-    if (autoRefresh && loadingMarketsData === false) {
+    if (autoRefreshMarkets && loadingMarketsData === false) {
       autoRefreshCountdownPercSet(100);
 
       const autoRefreshCountdownPercInterval: NodeJS.Timeout = setInterval(() => {
@@ -279,7 +282,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       }, AUTO_REFRESH_DELAY_MS);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoRefresh, loadingMarketsData]);
+  }, [autoRefreshMarkets, loadingMarketsData]);
 
   useEffect(() => {
     if (marketsTabIndex !== undefined) {
@@ -428,13 +431,13 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
             <CustomTooltip
               title={
                 <Typography variant="body2" component="span">
-                  {autoRefresh ? "Disable" : "Enable"} auto refresh
+                  {autoRefreshMarkets ? "Disable" : "Enable"} auto refresh
                 </Typography>
               }
               arrow
             >
               <div className={styles["Dashboard__markets__header__toolbar__btn-auto-refresh"]}>
-                {(autoRefresh || autoRefreshCountdownPerc !== 0) && (
+                {(autoRefreshMarkets || autoRefreshCountdownPerc !== 0) && (
                   <CircularProgress
                     className={classNames(
                       styles["Dashboard__markets__header__toolbar__btn-auto-refresh__progress"],
@@ -454,9 +457,9 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
                   disabled={loadingMarketsData}
-                  onClick={() => updateAutoRefresh(!autoRefresh)}
+                  onClick={() => updateAutoRefresh(!autoRefreshMarkets)}
                 >
-                  {autoRefresh ? <PauseRounded /> : <PlayArrowRounded />}
+                  {autoRefreshMarkets ? <PauseRounded /> : <PlayArrowRounded />}
                 </IconButton>
               </div>
             </CustomTooltip>
@@ -478,7 +481,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   aria-label="clear search input"
                   size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
-                  disabled={autoRefresh || loadingMarketsData}
+                  disabled={autoRefreshMarkets || loadingMarketsData}
                   onClick={() => fetchMarketsData()}
                 >
                   <CachedRounded />
