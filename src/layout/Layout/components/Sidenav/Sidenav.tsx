@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:58 GMT+05:30
- * @modify date Jul 26 2021 11:50:19 GMT+05:30
+ * @modify date Jul 27 2021 11:28:03 GMT+05:30
  * @desc Sidenav component
  */
 
@@ -18,13 +18,14 @@ import {
 } from "@material-ui/core";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React, { useContext, useState } from "react";
+import React, { Dispatch, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import ListItemLink from "../../../../components/ListItemLink/ListItemLink";
-import XsSideNavOpenContext from "../../../../contexts/XsSideNavOpen";
-import { XsSideNavOpenContextValue } from "../../../../models/XsSideNavOpen";
+import { StoreDispatch } from "../../../../store";
+import { XsSideNavState, getXsSideNavState, setXsSideNavState } from "../../../../store/appStates/xsSideNavState";
 
 import SIDENAV_MENU_ITEMS from "./constants/SideNav";
 import { SideNavMenuItem } from "./models/SideNavMenuItem";
@@ -32,7 +33,8 @@ import styles from "./Sidenav.module.scss";
 
 const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const location = useLocation();
-  const { xsSideNavOpen, xsSideNavOpenUpdate } = useContext<XsSideNavOpenContextValue>(XsSideNavOpenContext);
+  const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
+  const xsSideNavState: XsSideNavState = useSelector(getXsSideNavState);
   const [menuHovered, menuHoveredSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
   const sidenavExpansionDuration: number = +styles.sidenavExpansionDuration.split("ms")[0];
@@ -47,9 +49,9 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
           }}
           anchor="left"
           transitionDuration={sidenavExpansionDuration}
-          open={xsSideNavOpen}
-          onOpen={() => xsSideNavOpenUpdate?.(true)}
-          onClose={() => xsSideNavOpenUpdate?.(false)}
+          open={xsSideNavState === "open"}
+          onOpen={() => dispatch(setXsSideNavState("open"))}
+          onClose={() => dispatch(setXsSideNavState("close"))}
         >
           <section className={classNames(styles.Sidenav__drawer__header, styles["Sidenav__drawer__header--xs"])}>
             <img

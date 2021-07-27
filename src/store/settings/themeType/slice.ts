@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jul 26 2021 10:43:56 GMT+05:30
- * @modify date Jul 26 2021 10:43:56 GMT+05:30
+ * @modify date Jul 27 2021 11:27:14 GMT+05:30
  * @desc Theme type slice
  */
 
@@ -36,8 +36,7 @@ const themeTypeSet: ActionCreatorWithPayload<ThemeTypeSetPayload, string> | Acti
 export const setThemeType =
   (themeType: ThemeType) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-  (dispatch: any): any => {
-    return dispatch(themeTypeSet({ themeType }));
-  };
+  (dispatch: any): any =>
+    dispatch(themeTypeSet({ themeType }));
 
 export default slice.reducer;
