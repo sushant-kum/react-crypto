@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/sushant-kum/react-crypto/compare/1.4.1...1.5.0) (2021-08-11)
+
+### Features
+
+- **store:** added appStates/xsSideNavState to store ([fed050c](https://github.com/sushant-kum/react-crypto/commit/fed050c6f17e5195b9b985162b0d04d2f4bb3841))
+- **store:** added data/marketsData to store ([cfe0b39](https://github.com/sushant-kum/react-crypto/commit/cfe0b393d271f977b262efcd31f2f8b0a0efe0af))
+- **store:** added settings/autoRefreshMarkets to store ([30fc7ce](https://github.com/sushant-kum/react-crypto/commit/30fc7ceea1b34b7136a21745da2f5ae40e19a59b))
+
 ### [1.4.1](https://github.com/sushant-kum/react-crypto/compare/1.4.0...1.4.1) (2021-07-26)
 
 ### Bug Fixes
