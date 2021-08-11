@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jul 27 2021 11:58:09 GMT+05:30
- * @modify date Jul 27 2021 11:58:09 GMT+05:30
+ * @modify date Aug 11 2021 21:16:04 GMT+05:30
  * @desc autoRefreshMarkets slice
  */
 
@@ -14,6 +14,9 @@ import {
   PayloadAction,
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
+import localforage from "localforage";
+
+import LocalForageKeys from "../../../models/LocalForage";
 
 import { AutoRefreshMarketsSetPayload } from "./models/AutoRefreshMarketsSetPayload";
 
@@ -35,7 +38,10 @@ const autoRefreshMarketsSet:
 export const setAutoRefreshMarkets =
   (autoRefreshMarkets: boolean) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-  (dispatch: any): any =>
-    dispatch(autoRefreshMarketsSet({ autoRefreshMarkets }));
+  (dispatch: any): any => {
+    localforage.setItem(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS, autoRefreshMarkets).then(() => {
+      dispatch(autoRefreshMarketsSet({ autoRefreshMarkets }));
+    });
+  };
 
 export default slice.reducer;

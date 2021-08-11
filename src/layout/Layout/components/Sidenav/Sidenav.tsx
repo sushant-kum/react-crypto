@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:58 GMT+05:30
- * @modify date Jul 27 2021 11:28:03 GMT+05:30
+ * @modify date Aug 11 2021 21:04:16 GMT+05:30
  * @desc Sidenav component
  */
 
@@ -25,7 +25,11 @@ import { useLocation } from "react-router-dom";
 import productLogo from "../../../../assets/images/logo.svg";
 import ListItemLink from "../../../../components/ListItemLink/ListItemLink";
 import { StoreDispatch } from "../../../../store";
-import { XsSideNavState, getXsSideNavState, setXsSideNavState } from "../../../../store/appStates/xsSideNavState";
+import {
+  XsSideNavState,
+  getXsSideNavStateSelector,
+  setXsSideNavState,
+} from "../../../../store/appStates/xsSideNavState";
 
 import SIDENAV_MENU_ITEMS from "./constants/SideNav";
 import { SideNavMenuItem } from "./models/SideNavMenuItem";
@@ -34,7 +38,7 @@ import styles from "./Sidenav.module.scss";
 const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
   const location = useLocation();
   const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
-  const xsSideNavState: XsSideNavState = useSelector(getXsSideNavState);
+  const xsSideNavState: XsSideNavState = useSelector(getXsSideNavStateSelector);
   const [menuHovered, menuHoveredSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
   const sidenavExpansionDuration: number = +styles.sidenavExpansionDuration.split("ms")[0];

@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date Jul 26 2021 10:36:16 GMT+05:30
+ * @modify date Aug 11 2021 21:18:04 GMT+05:30
  * @desc App root component
  */
 
@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
 import axios, { AxiosResponse } from "axios";
-import localForage from "localforage";
+import localforage from "localforage";
 import React, { Dispatch, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -30,7 +30,7 @@ import Layout from "./layout/Layout/Layout";
 import LocalForageKeys from "./models/LocalForage";
 import DashboardLazy from "./pages/Dashboard/Dashboard.lazy";
 import { StoreDispatch } from "./store";
-import { getThemeType, setThemeType, ThemeType } from "./store/settings/themeType";
+import { getThemeTypeSelector, setThemeType, ThemeType } from "./store/settings/themeType";
 import palette from "./styles/constants/palette/palette.module.scss";
 
 interface VersionInfo {
@@ -41,7 +41,7 @@ interface VersionInfo {
 const App: React.FC = () => {
   const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
   const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
-  const themeType: ThemeType = useSelector(getThemeType);
+  const themeType: ThemeType = useSelector(getThemeTypeSelector);
   const [snackbarOpen, snackbarOpenSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
   const [snackbarMessage, snackbarMessageSet]: [string, React.Dispatch<React.SetStateAction<string>>] =
@@ -107,7 +107,7 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
-    localForage.getItem<ThemeType>(LocalForageKeys.SETTINGS__GLOBAL__THEME_TYPE).then((type: ThemeType | null) => {
+    localforage.getItem<ThemeType>(LocalForageKeys.SETTINGS__GLOBAL__THEME_TYPE).then((type: ThemeType | null) => {
       dispatch(setThemeType(type ?? (prefersDarkMode ? "dark" : "light")));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

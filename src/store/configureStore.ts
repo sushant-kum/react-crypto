@@ -2,11 +2,12 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jul 26 2021 10:40:34 GMT+05:30
- * @modify date Jul 26 2021 10:40:34 GMT+05:30
+ * @modify date Aug 11 2021 21:17:19 GMT+05:30
  * @desc Store configurateion
  */
 
 import { configureStore as reduxConfigureStore } from "@reduxjs/toolkit";
+import { apiMiddleware } from "redux-api-middleware";
 
 import rootReducer from "./reducer";
 
@@ -14,7 +15,7 @@ import rootReducer from "./reducer";
 const configureStore = () =>
   reduxConfigureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiMiddleware),
   });
 
 export default configureStore;

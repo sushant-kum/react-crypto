@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Jul 27 2021 16:24:31 GMT+05:30
+ * @modify date Aug 11 2021 21:11:05 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -34,36 +34,31 @@ import {
   SearchRounded,
   StarRounded,
 } from "@material-ui/icons";
-import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
-import localForage from "localforage";
+import localforage from "localforage";
 import PropTypes from "prop-types";
-import React, { Dispatch, useContext, useEffect, useRef, useState } from "react";
+import React, { Dispatch, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StringParam, useQueryParam } from "use-query-params";
 
 import CustomTooltip from "../../components/CustomTooltip/CustomTooltip";
 import TabPanel from "../../components/TabPanel/TabPanel";
-import buyUCoinApiEndpoint from "../../constants/BuyUCoinApi";
-import coinGeckoApiEndpoint from "../../constants/CoingeckoApi";
-import SnackbarContext from "../../contexts/Snackbar";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import LocalForageKeys from "../../models/LocalForage";
-import { SnackbarContextValue } from "../../models/Snackbar";
 import { StoreDispatch } from "../../store";
-import { getAutoRefreshMarkets, setAutoRefreshMarkets } from "../../store/settings/autoRefreshMarkets";
-import { getThemeType, ThemeType } from "../../store/settings/themeType";
+import {
+  fetchMarketsData,
+  getAllMarketsDataSelector,
+  getMarketsDataLoadingSelector,
+} from "../../store/data/marketsData";
+import { getAutoRefreshMarketsSelector, setAutoRefreshMarkets } from "../../store/settings/autoRefreshMarkets";
+import { getThemeTypeSelector, ThemeType } from "../../store/settings/themeType";
 
 import MarketCard from "./components/MarketCard/MarketCard";
 import MarketCardPlaceholder from "./components/MarketCardPlaceholder/MarketCardPlaceholder";
 import MarketsTable from "./components/MarketsTable/MarketsTable";
 import styles from "./Dashboard.module.scss";
-import {
-  MarketData,
-  BuyUCoinTickerDataApiResponse,
-  parseMarketDataApiResponse,
-  CoinGeckoCoinsListApiElement,
-} from "./models/MarketData";
+import { MarketData } from "./models/MarketData";
 
 enum MarketsTabIndexValues {
   STARRED = 0,
@@ -89,17 +84,14 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
 
   const theme = useTheme();
   const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
+  const marketsData: MarketData[] = useSelector(getAllMarketsDataSelector);
+  const loadingMarketsData: boolean | undefined = useSelector(getMarketsDataLoadingSelector);
   const [queryParamTab, queryParamTabSet] = useQueryParam("tab", StringParam);
   const screenWidth: Breakpoint = useScreenWidth();
-  const themeType: ThemeType = useSelector(getThemeType);
-  const autoRefreshMarkets: boolean = useSelector(getAutoRefreshMarkets);
-  const { openSnackbar } = useContext<SnackbarContextValue>(SnackbarContext);
+  const themeType: ThemeType = useSelector(getThemeTypeSelector);
+  const autoRefreshMarkets: boolean = useSelector(getAutoRefreshMarketsSelector);
   const refStarredMarketTiles: React.MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
   const [searchInputvalue, searchInputvalueSet] = useState<string>("");
-  const [loadingMarketsData, loadingMarketsDataSet]: [
-    boolean | undefined,
-    React.Dispatch<React.SetStateAction<boolean | undefined>>
-  ] = useState<boolean | undefined>(undefined);
   const [autoRefreshCountdownPerc, autoRefreshCountdownPercSet]: [
     number,
     React.Dispatch<React.SetStateAction<number>>
@@ -109,9 +101,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       (MarketsTabIndexValues[queryParamTab.toUpperCase() as never] as unknown as MarketsTabIndexValues)) ||
       MarketsTabIndexValues.STARRED
   );
-  const [marketsData, marketsDataSet]: [MarketData[], React.Dispatch<React.SetStateAction<MarketData[]>>] = useState<
-    MarketData[]
-  >([]);
 
   const scrollStarrtedMarketsTiles: (direction: "previous" | "next") => void = (direction) => {
     const offset: number = (SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? 300 : 350) + 16;
@@ -138,51 +127,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
   };
 
   const updateAutoRefresh: (autoRefresh: boolean) => void = (autoRefresh) => {
-    localForage.setItem(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS, autoRefresh).then(() => {
-      dispatch(setAutoRefreshMarkets(autoRefresh));
-    });
-  };
-
-  const fetchMarketsData: () => void = () => {
-    loadingMarketsDataSet(true);
-
-    axios
-      .get<BuyUCoinTickerDataApiResponse>(buyUCoinApiEndpoint.tickerData)
-      .then((res: AxiosResponse<BuyUCoinTickerDataApiResponse>) => res.data)
-      .then((buyUCoinMarketDataApiResponse: BuyUCoinTickerDataApiResponse) => {
-        if (buyUCoinMarketDataApiResponse.status === "success" && buyUCoinMarketDataApiResponse.data.length > 0) {
-          axios
-            .get<CoinGeckoCoinsListApiElement[]>(coinGeckoApiEndpoint.coinsList)
-            .then((res: AxiosResponse<CoinGeckoCoinsListApiElement[]>) => res.data)
-            .then((coinGeckoCoinsList: CoinGeckoCoinsListApiElement[]) => {
-              localForage
-                .getItem<string[]>(LocalForageKeys.SETTINGS__GLOBAL__STARRED_MARKETS)
-                .then((starredMarkets: string[] | null) => {
-                  marketsDataSet(
-                    parseMarketDataApiResponse(
-                      buyUCoinMarketDataApiResponse,
-                      coinGeckoCoinsList,
-                      Array.isArray(starredMarkets) ? starredMarkets : []
-                    )
-                  );
-
-                  loadingMarketsDataSet(false);
-                });
-            })
-            .catch(() => {
-              if (!autoRefreshMarkets) {
-                openSnackbar?.("Something went wrong. Please try again...", 6000);
-              }
-              loadingMarketsDataSet(false);
-            });
-        }
-      })
-      .catch(() => {
-        if (!autoRefreshMarkets) {
-          openSnackbar?.("Something went wrong. Please try again...", 6000);
-        }
-        loadingMarketsDataSet(false);
-      });
+    dispatch(setAutoRefreshMarkets(autoRefresh));
   };
 
   const filterMarketData: (forTab: MarketsTabIndexValues, skipSearchInput?: boolean) => MarketData[] = (
@@ -231,30 +176,56 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
       : [];
   };
 
-  const setMarketStar: (market: string, starred: boolean) => void = (market, starred) => {
-    marketsDataSet((currentMarketsData: MarketData[] | undefined) => {
-      const currentMarketsDataCopy: MarketData[] = JSON.parse(JSON.stringify(currentMarketsData));
+  const filterMarketNames: (forTab: MarketsTabIndexValues, skipSearchInput?: boolean) => string[] = (
+    forTab,
+    skipSearchInput
+  ) => {
+    return marketsData !== undefined
+      ? marketsData
+          .filter((marketData: MarketData) => {
+            let filterIn = true;
 
-      currentMarketsDataCopy.forEach((marketData: MarketData) => {
-        if (marketData.name.market === market) {
-          // eslint-disable-next-line no-param-reassign
-          marketData.starred = starred;
-        }
-      });
+            switch (forTab) {
+              case MarketsTabIndexValues.STARRED:
+                if (!marketData.starred) {
+                  filterIn = false;
+                }
+                break;
 
-      localForage.setItem(
-        LocalForageKeys.SETTINGS__GLOBAL__STARRED_MARKETS,
-        currentMarketsDataCopy
-          .filter((marketData: MarketData) => marketData.starred)
-          .map((marketData: MarketData) => marketData.name.market)
-      );
+              case MarketsTabIndexValues.INR:
+                if (marketData.name.quotationCurrency !== "INR") {
+                  filterIn = false;
+                }
+                break;
 
-      return currentMarketsDataCopy;
-    });
+              case MarketsTabIndexValues.USDT:
+                if (marketData.name.quotationCurrency !== "USDT") {
+                  filterIn = false;
+                }
+                break;
+
+              default:
+            }
+
+            if (
+              !skipSearchInput &&
+              searchInputvalue &&
+              !(
+                marketData.name.exchangingCurrency.toLowerCase().includes(searchInputvalue.toLowerCase()) ||
+                marketData.name.quotationCurrency.toLowerCase().includes(searchInputvalue.toLowerCase())
+              )
+            ) {
+              filterIn = false;
+            }
+
+            return filterIn;
+          })
+          .map((filteredMarketData: MarketData) => filteredMarketData.name.market)
+      : [];
   };
 
   useEffect(() => {
-    localForage.getItem<boolean>(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS).then((autoRefresh) => {
+    localforage.getItem<boolean>(LocalForageKeys.SETTINGS__GLOBAL__AUTO_REFRESH_MARKETS).then((autoRefresh) => {
       if (autoRefresh !== undefined && autoRefresh !== null) {
         dispatch(setAutoRefreshMarkets(autoRefresh));
       }
@@ -264,7 +235,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
 
   useEffect(() => {
     if (loadingMarketsData === undefined) {
-      fetchMarketsData();
+      dispatch(fetchMarketsData());
     }
 
     if (autoRefreshMarkets && loadingMarketsData === false) {
@@ -278,7 +249,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
 
       setTimeout(() => {
         clearInterval(autoRefreshCountdownPercInterval);
-        fetchMarketsData();
+        dispatch(fetchMarketsData());
       }, AUTO_REFRESH_DELAY_MS);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -323,13 +294,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                 React.Children.toArray(
                   marketsData
                     .filter((marketData: MarketData) => marketData.starred)
-                    .map((starredMarketData: MarketData) => (
-                      <MarketCard
-                        marketData={starredMarketData}
-                        loadingMarketsData={loadingMarketsData ?? false}
-                        setMarketStar={setMarketStar}
-                      />
-                    ))
+                    .map((starredMarketData: MarketData) => <MarketCard marketName={starredMarketData.name.market} />)
                 )
               )}
             </>
@@ -482,7 +447,7 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
                   size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
                   color="primary"
                   disabled={autoRefreshMarkets || loadingMarketsData}
-                  onClick={() => fetchMarketsData()}
+                  onClick={() => dispatch(fetchMarketsData())}
                 >
                   <CachedRounded />
                 </IconButton>
@@ -546,11 +511,9 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         >
           {marketsData && (
             <MarketsTable
-              marketsData={filterMarketData(MarketsTabIndexValues.STARRED)}
+              marketNames={filterMarketNames(MarketsTabIndexValues.STARRED)}
               category="Starred"
-              loadingMarketsData={loadingMarketsData ?? false}
               showLoader={marketsData.length === 0 && loadingMarketsData}
-              setMarketStar={setMarketStar}
             />
           )}
         </TabPanel>
@@ -565,11 +528,9 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         >
           {marketsData && (
             <MarketsTable
-              marketsData={filterMarketData(MarketsTabIndexValues.INR)}
+              marketNames={filterMarketNames(MarketsTabIndexValues.INR)}
               category="INR"
-              loadingMarketsData={loadingMarketsData ?? false}
               showLoader={marketsData.length === 0 && loadingMarketsData}
-              setMarketStar={setMarketStar}
             />
           )}
         </TabPanel>
@@ -584,11 +545,9 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         >
           {marketsData && (
             <MarketsTable
-              marketsData={filterMarketData(MarketsTabIndexValues.USDT)}
+              marketNames={filterMarketNames(MarketsTabIndexValues.USDT)}
               category="USDT"
-              loadingMarketsData={loadingMarketsData ?? false}
               showLoader={marketsData.length === 0 && loadingMarketsData}
-              setMarketStar={setMarketStar}
             />
           )}
         </TabPanel>

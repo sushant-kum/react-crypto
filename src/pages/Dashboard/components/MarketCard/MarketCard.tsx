@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 06 2021 14:24:07 GMT+05:30
- * @modify date Jul 26 2021 10:38:18 GMT+05:30
+ * @modify date Aug 11 2021 21:05:28 GMT+05:30
  * @desc MarketCard
  */
 
@@ -13,15 +13,21 @@ import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import * as dateFns from "date-fns";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { useImage } from "react-image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import coinGeckoApiEndpoint, { CoinGeckoApiQueryParams } from "../../../../constants/CoingeckoApi";
 import useScreenWidth from "../../../../hooks/useScreenWidth";
-import { getThemeType, ThemeType } from "../../../../store/settings/themeType";
+import { StoreDispatch } from "../../../../store";
+import {
+  getMarketsDataLoadingSelector,
+  setMarketStarValue,
+  getSingleMarketDataSelector,
+} from "../../../../store/data/marketsData";
+import { getThemeTypeSelector, ThemeType } from "../../../../store/settings/themeType";
 import palette from "../../../../styles/constants/palette/palette.module.scss";
 import { MarketData } from "../../models/MarketData";
 
@@ -34,17 +40,19 @@ import {
 } from "./models/MarketChartData";
 
 interface MarketCardProps extends React.HTMLAttributes<HTMLElement> {
-  marketData: MarketData;
-  loadingMarketsData: boolean;
-  setMarketStar: (market: string, starred: boolean) => void;
+  marketName: string;
 }
 
-const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData, setMarketStar, ...props }) => {
+const MarketCard: React.FC<MarketCardProps> = ({ marketName, ...props }) => {
   const SM_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
 
   let twentyFourChangePercIcon: React.ReactNode;
+
   const screenWidth: Breakpoint = useScreenWidth();
-  const themeType: ThemeType = useSelector(getThemeType);
+  const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
+  const marketData: MarketData = useSelector(getSingleMarketDataSelector(marketName));
+  const loadingMarketsData: boolean | undefined = useSelector(getMarketsDataLoadingSelector);
+  const themeType: ThemeType = useSelector(getThemeTypeSelector);
   const { src: coinIconSrc } = useImage({
     srcList: [
       (themeType === "dark" ? marketData.icons.selfHosted.white : marketData.icons.selfHosted.black) ?? "",
@@ -244,7 +252,7 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
             color={marketData.starred ? "primary" : "default"}
             size={SM_AND_BELOW_SCREEN_WIDTHS.includes(screenWidth) ? "small" : "medium"}
             disabled={loadingMarketsData}
-            onClick={() => setMarketStar(marketData.name.market, !marketData.starred)}
+            onClick={() => dispatch(setMarketStarValue(marketData.name.market, !marketData.starred))}
           >
             {marketData.starred ? <StarRounded /> : <StarOutlineRounded />}
           </IconButton>
@@ -294,52 +302,7 @@ const MarketCard: React.FC<MarketCardProps> = ({ marketData, loadingMarketsData,
 };
 
 MarketCard.propTypes = {
-  marketData: PropTypes.exact({
-    name: PropTypes.exact({
-      market: PropTypes.string.isRequired,
-      currency: PropTypes.string.isRequired,
-      exchangingCurrency: PropTypes.string.isRequired,
-      quotationCurrency: PropTypes.string.isRequired,
-    }).isRequired,
-    coinGeckoId: PropTypes.string.isRequired,
-    icons: PropTypes.exact({
-      selfHosted: PropTypes.exact({
-        black: PropTypes.string,
-        white: PropTypes.string,
-      }).isRequired,
-      buyUCoin: PropTypes.string,
-    }).isRequired,
-    bestBid: PropTypes.number.isRequired,
-    bestAsk: PropTypes.number.isRequired,
-    bidAskDiffPerc: PropTypes.number.isRequired,
-    totalLimitOrderVolume: PropTypes.exact({
-      bid: PropTypes.number.isRequired,
-      ask: PropTypes.number.isRequired,
-    }).isRequired,
-    twentyFourHr: PropTypes.exact({
-      highestPrice: PropTypes.number.isRequired,
-      lowestPrice: PropTypes.number.isRequired,
-      tradedVolume: PropTypes.number.isRequired,
-      tradedVolumeQuotationCurrency: PropTypes.number.isRequired,
-      priceChange: PropTypes.number.isRequired,
-      priceChangePercentage: PropTypes.number.isRequired,
-    }).isRequired,
-    lastTrade: PropTypes.exact({
-      price: PropTypes.number.isRequired,
-      volume: PropTypes.number.isRequired,
-    }).isRequired,
-    lastBuy: PropTypes.exact({
-      price: PropTypes.number.isRequired,
-      volume: PropTypes.number.isRequired,
-    }).isRequired,
-    lastSell: PropTypes.exact({
-      price: PropTypes.number.isRequired,
-      volume: PropTypes.number.isRequired,
-    }).isRequired,
-    starred: PropTypes.bool.isRequired,
-  }).isRequired,
-  loadingMarketsData: PropTypes.bool.isRequired,
-  setMarketStar: PropTypes.func.isRequired,
+  marketName: PropTypes.string.isRequired,
   className: PropTypes.string,
 };
 

@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 08 2021 18:06:55 GMT+05:30
- * @modify date Jul 26 2021 10:38:10 GMT+05:30
+ * @modify date Aug 11 2021 21:06:04 GMT+05:30
  * @desc MarketCardPlaceholder
  */
 
@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import addStarThemeDarkImg from "../../../../assets/images/addStarThemeDark.svg";
 import addStarThemeLightImg from "../../../../assets/images/addStarThemeLight.svg";
 import useScreenWidth from "../../../../hooks/useScreenWidth";
-import { getThemeType, ThemeType } from "../../../../store/settings/themeType";
+import { getThemeTypeSelector, ThemeType } from "../../../../store/settings/themeType";
 
 import styles from "./MarketCardPlaceholder.module.scss";
 
@@ -25,7 +25,7 @@ const MarketCardPlaceholder: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ..
   const SM_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
 
   const screenWidth: Breakpoint = useScreenWidth();
-  const themeType: ThemeType = useSelector(getThemeType);
+  const themeType: ThemeType = useSelector(getThemeTypeSelector);
 
   return (
     <Card

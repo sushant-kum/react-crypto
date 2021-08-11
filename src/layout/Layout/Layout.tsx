@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:16:12 GMT+05:30
- * @modify date Jul 27 2021 11:27:54 GMT+05:30
+ * @modify date Aug 11 2021 21:04:31 GMT+05:30
  * @desc Layout component
  */
 
@@ -11,14 +11,14 @@ import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { getXsSideNavState, XsSideNavState } from "../../store/appStates/xsSideNavState";
+import { getXsSideNavStateSelector, XsSideNavState } from "../../store/appStates/xsSideNavState";
 
 import Header from "./components/Header/Header";
 import Sidenav from "./components/Sidenav/Sidenav";
 import styles from "./Layout.module.scss";
 
 const Layout: React.FC<React.HTMLAttributes<HTMLElement>> = ({ children, ...props }) => {
-  const xsSideNavState: XsSideNavState = useSelector(getXsSideNavState);
+  const xsSideNavState: XsSideNavState = useSelector(getXsSideNavStateSelector);
 
   return (
     <section

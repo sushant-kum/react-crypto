@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 22 2021 16:59:29 GMT+05:30
- * @modify date Jul 26 2021 11:50:27 GMT+05:30
+ * @modify date Aug 11 2021 21:08:59 GMT+05:30
  * @desc MarketsTable component
  */
 
@@ -29,14 +29,20 @@ import {
 } from "@material-ui/icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Dispatch } from "react";
 import { Img } from "react-image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import CustomTooltip from "../../../../components/CustomTooltip/CustomTooltip";
 import useScreenWidth from "../../../../hooks/useScreenWidth";
-import { ThemeType, getThemeType } from "../../../../store/settings/themeType";
+import { StoreDispatch } from "../../../../store";
+import {
+  getMarketsDataLoadingSelector,
+  getMultipleMarketsDataSelector,
+  setMarketStarValue,
+} from "../../../../store/data/marketsData";
+import { ThemeType, getThemeTypeSelector } from "../../../../store/settings/themeType";
 import { MarketData } from "../../models/MarketData";
 
 import styles from "./MarketsTable.module.scss";
@@ -48,21 +54,12 @@ interface ColumnDef {
 }
 
 interface MarketsTableProps extends React.HTMLAttributes<HTMLElement> {
-  marketsData: MarketData[];
+  marketNames: string[];
   category: "Starred" | "INR" | "USDT";
-  loadingMarketsData: boolean;
   showLoader?: boolean;
-  setMarketStar: (market: string, starred: boolean) => void;
 }
 
-const MarketsTable: React.FC<MarketsTableProps> = ({
-  marketsData,
-  category,
-  loadingMarketsData,
-  showLoader,
-  setMarketStar,
-  ...props
-}) => {
+const MarketsTable: React.FC<MarketsTableProps> = ({ marketNames, category, showLoader, ...props }) => {
   const SM_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm"];
   const MD_AND_BELOW_SCREEN_WIDTHS: Breakpoint[] = ["xs", "sm", "md"];
   const MD_AND_BELOW_COLS: ColumnDef[] = [
@@ -284,7 +281,10 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
   ];
 
   const screenWidth: Breakpoint = useScreenWidth();
-  const themeType: ThemeType = useSelector(getThemeType);
+  const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
+  const themeType: ThemeType = useSelector(getThemeTypeSelector);
+  const loadingMarketsData: boolean | undefined = useSelector(getMarketsDataLoadingSelector);
+  const marketsData: MarketData[] = useSelector(getMultipleMarketsDataSelector(marketNames));
 
   const addUnit: (content: React.ReactNode, quotationCurrency: string) => React.ReactNode = (
     content,
@@ -351,7 +351,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
             size="small"
             color={row.starred ? "primary" : "default"}
             disabled={loadingMarketsData}
-            onClick={() => setMarketStar(row.name.market, !row.starred)}
+            onClick={() => dispatch(setMarketStarValue(row.name.market, !row.starred))}
           >
             {row.starred ? <StarRounded /> : <StarOutlineRounded />}
           </IconButton>
@@ -758,56 +758,9 @@ const MarketsTable: React.FC<MarketsTableProps> = ({
 };
 
 MarketsTable.propTypes = {
-  marketsData: PropTypes.arrayOf(
-    PropTypes.exact({
-      name: PropTypes.exact({
-        market: PropTypes.string.isRequired,
-        currency: PropTypes.string.isRequired,
-        exchangingCurrency: PropTypes.string.isRequired,
-        quotationCurrency: PropTypes.string.isRequired,
-      }).isRequired,
-      coinGeckoId: PropTypes.string.isRequired,
-      icons: PropTypes.exact({
-        selfHosted: PropTypes.exact({
-          black: PropTypes.string,
-          white: PropTypes.string,
-        }).isRequired,
-        buyUCoin: PropTypes.string,
-      }).isRequired,
-      bestBid: PropTypes.number.isRequired,
-      bestAsk: PropTypes.number.isRequired,
-      bidAskDiffPerc: PropTypes.number.isRequired,
-      totalLimitOrderVolume: PropTypes.exact({
-        bid: PropTypes.number.isRequired,
-        ask: PropTypes.number.isRequired,
-      }).isRequired,
-      twentyFourHr: PropTypes.exact({
-        highestPrice: PropTypes.number.isRequired,
-        lowestPrice: PropTypes.number.isRequired,
-        tradedVolume: PropTypes.number.isRequired,
-        tradedVolumeQuotationCurrency: PropTypes.number.isRequired,
-        priceChange: PropTypes.number.isRequired,
-        priceChangePercentage: PropTypes.number.isRequired,
-      }).isRequired,
-      lastTrade: PropTypes.exact({
-        price: PropTypes.number.isRequired,
-        volume: PropTypes.number.isRequired,
-      }).isRequired,
-      lastBuy: PropTypes.exact({
-        price: PropTypes.number.isRequired,
-        volume: PropTypes.number.isRequired,
-      }).isRequired,
-      lastSell: PropTypes.exact({
-        price: PropTypes.number.isRequired,
-        volume: PropTypes.number.isRequired,
-      }).isRequired,
-      starred: PropTypes.bool.isRequired,
-    }).isRequired
-  ).isRequired,
+  marketNames: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   category: PropTypes.oneOf<"Starred" | "INR" | "USDT">(["Starred", "INR", "USDT"]).isRequired,
-  loadingMarketsData: PropTypes.bool.isRequired,
   showLoader: PropTypes.bool,
-  setMarketStar: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 
