@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date Aug 12 2021 14:06:59 GMT+05:30
+ * @modify date Aug 12 2021 14:53:42 GMT+05:30
  * @desc App root component
  */
 
@@ -136,8 +136,8 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Helmet titleTemplate={`${process.env.NODE_ENV === "development" && "*Dev* "}${titleBase}%s`}>
-        <title> {appSubtitle && `- ${appSubtitle}`}</title>
+      <Helmet titleTemplate={`${process.env.NODE_ENV === "development" ? "*Dev* " : ""}${titleBase}%s`}>
+        <title> {appSubtitle ? `- ${appSubtitle}` : ""}</title>
       </Helmet>
 
       <CssBaseline />
