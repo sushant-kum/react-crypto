@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jul 26 2021 11:57:19 GMT+05:30
- * @modify date Jul 27 2021 11:56:10 GMT+05:30
+ * @modify date Aug 12 2021 14:06:45 GMT+05:30
  * @desc XsSideNavState slice
  */
 
@@ -33,7 +33,6 @@ const xsSideNavStateSet:
   | ActionCreatorWithPayload<XsSideNavStateSetPayload, string>
   | ActionCreatorWithoutPayload<string> = slice.actions.SET;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export const setXsSideNavState =
   (xsSideNavState: XsSideNavState) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types

@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 17 2021 21:24:27 GMT+05:30
- * @modify date Aug 11 2021 21:18:04 GMT+05:30
+ * @modify date Aug 12 2021 14:06:59 GMT+05:30
  * @desc App root component
  */
 
@@ -20,16 +20,19 @@ import { CloseRounded } from "@material-ui/icons";
 import axios, { AxiosResponse } from "axios";
 import localforage from "localforage";
 import React, { Dispatch, useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { QueryParamProvider } from "use-query-params";
 
 import "./App.scss";
+import titleBase from "./constants/AppStates";
 import SnackbarContext, { snackbarInitialState } from "./contexts/Snackbar";
 import Layout from "./layout/Layout/Layout";
 import LocalForageKeys from "./models/LocalForage";
 import DashboardLazy from "./pages/Dashboard/Dashboard.lazy";
 import { StoreDispatch } from "./store";
+import { getAppSubtitleSelector } from "./store/appStates/appSubTitle";
 import { getThemeTypeSelector, setThemeType, ThemeType } from "./store/settings/themeType";
 import palette from "./styles/constants/palette/palette.module.scss";
 
@@ -42,6 +45,7 @@ const App: React.FC = () => {
   const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
   const dispatch: Dispatch<StoreDispatch> = useDispatch<Dispatch<StoreDispatch>>();
   const themeType: ThemeType = useSelector(getThemeTypeSelector);
+  const appSubtitle: string = useSelector(getAppSubtitleSelector);
   const [snackbarOpen, snackbarOpenSet]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
   const [snackbarMessage, snackbarMessageSet]: [string, React.Dispatch<React.SetStateAction<string>>] =
@@ -132,6 +136,10 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Helmet titleTemplate={`${process.env.NODE_ENV === "development" && "*Dev* "}${titleBase}%s`}>
+        <title> {appSubtitle && `- ${appSubtitle}`}</title>
+      </Helmet>
+
       <CssBaseline />
       <BrowserRouter>
         <QueryParamProvider ReactRouterRoute={Route}>

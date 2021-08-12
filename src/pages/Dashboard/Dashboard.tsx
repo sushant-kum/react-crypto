@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date May 16 2021 21:23:21 GMT+05:30
- * @modify date Aug 11 2021 21:11:05 GMT+05:30
+ * @modify date Aug 12 2021 14:05:59 GMT+05:30
  * @desc Dashboard component
  */
 
@@ -46,6 +46,7 @@ import TabPanel from "../../components/TabPanel/TabPanel";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import LocalForageKeys from "../../models/LocalForage";
 import { StoreDispatch } from "../../store";
+import { setAppSubtitle } from "../../store/appStates/appSubTitle";
 import {
   fetchMarketsData,
   getAllMarketsDataSelector,
@@ -230,6 +231,8 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) =>
         dispatch(setAutoRefreshMarkets(autoRefresh));
       }
     });
+
+    dispatch(setAppSubtitle("Dashboard"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
