@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/sushant-kum/react-crypto/compare/1.5.0...1.6.0) (2021-08-12)
+
+### Features
+
+- change app title dynamically ([da42924](https://github.com/sushant-kum/react-crypto/commit/da42924cbd35707aca7014aa4f8b328759d342d8))
+
 ## [1.5.0](https://github.com/sushant-kum/react-crypto/compare/1.4.1...1.5.0) (2021-08-11)
 
 ### Features
