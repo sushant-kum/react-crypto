@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/sushant-kum/react-crypto/compare/1.6.0...1.6.1) (2021-08-12)
+
+### Bug Fixes
+
+- fixed app title in prod mode ([bd574df](https://github.com/sushant-kum/react-crypto/commit/bd574df04ea089d9cfb76847ecf1f87c2e518094))
+
 ## [1.6.0](https://github.com/sushant-kum/react-crypto/compare/1.5.0...1.6.0) (2021-08-12)
 
 ### Features
