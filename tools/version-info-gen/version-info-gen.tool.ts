@@ -6,10 +6,10 @@
  * @desc Version info generation tool
  */
 
+/* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { resolve, relative } = require("path");
-
 const chalk = require("chalk");
 const { Command } = require("commander");
 const { writeFileSync } = require("fs-extra");
