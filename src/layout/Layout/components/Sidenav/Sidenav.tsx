@@ -24,6 +24,7 @@ import { useLocation } from "react-router-dom";
 
 import productLogo from "../../../../assets/images/logo.svg";
 import ListItemLink from "../../../../components/ListItemLink/ListItemLink";
+import titleBase from "../../../../constants/AppStates";
 import { StoreDispatch } from "../../../../store";
 import {
   XsSideNavState,
@@ -63,14 +64,14 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               src={productLogo}
               width="40"
               height="40"
-              alt="Crypto Info"
+              alt={titleBase}
             />
             <Typography
               className={classNames(styles.Sidenav__drawer__text, styles["Sidenav__drawer__text--xs"])}
               variant="h5"
               color="primary"
             >
-              Crypto Info
+              {titleBase}
             </Typography>
           </section>
 
@@ -141,7 +142,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               src={productLogo}
               width="40"
               height="40"
-              alt="Crypto Info"
+              alt={titleBase}
             />
             <Typography
               className={classNames(
@@ -151,7 +152,7 @@ const Sidenav: React.FC<React.HTMLAttributes<HTMLElement>> = ({ ...props }) => {
               variant="h5"
               color="primary"
             >
-              Crypto Info
+              {titleBase}
             </Typography>
           </section>
 

@@ -1,0 +1,32 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date Aug 20 2021 17:30:57 GMT+05:30
+ * @modify date Aug 20 2021 17:30:57 GMT+05:30
+ * @desc loading-shimmer animation and styles
+ */
+
+@mixin loading-shimmer($lightcolor: $primary-light, $darkcolor: $primary-main) {
+  background: linear-gradient(
+    to right,
+    rgba($lightcolor, 0.3) 8%,
+    rgba($darkcolor, 0.3) 50%,
+    rgba($lightcolor, 0.3) 92%
+  );
+  background-size: 1000px 640px;
+  animation-duration: 1.8s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: loading-shimmer;
+  animation-timing-function: linear;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+
+  100% {
+    background-position: 468px 0;
+  }
+}

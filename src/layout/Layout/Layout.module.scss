@@ -2,7 +2,7 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Apr 19 2021 18:15:51 GMT+05:30
- * @modify date May 09 2021 18:34:39 GMT+05:30
+ * @modify date Aug 20 2021 17:28:21 GMT+05:30
  * @desc Styles for Layout component
  */
 
@@ -50,7 +50,7 @@
       "Layout__content";
 
     &__content {
-      padding: 8px 16px;
+      padding: $xs-sm-content-padding-vertical $xs-sm-content-padding-horizontal;
       max-height: calc(100vh - #{$header-height-sm});
     }
   }
@@ -65,7 +65,7 @@
       "Layout__sidenav Layout__content";
 
     &__content {
-      padding: 8px 16px;
+      padding: $xs-sm-content-padding-vertical $xs-sm-content-padding-horizontal;
       max-height: calc(100vh - #{$header-height});
     }
   }
@@ -80,7 +80,7 @@
       "Layout__sidenav Layout__content";
 
     &__content {
-      padding: 16px 32px;
+      padding: $md-lg-content-padding-vertical $md-lg-content-padding-horizontal;
       max-height: calc(100vh - #{$header-height});
     }
   }
@@ -95,7 +95,7 @@
       "Layout__sidenav Layout__content";
 
     &__content {
-      padding: 16px 32px;
+      padding: $md-lg-content-padding-vertical $md-lg-content-padding-horizontal;
       max-height: calc(100vh - #{$header-height});
     }
   }

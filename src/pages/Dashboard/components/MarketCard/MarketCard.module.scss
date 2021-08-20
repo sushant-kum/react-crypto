@@ -2,12 +2,13 @@
  * @author Sushant Kumar
  * @email sushant.kum96@gmail.com
  * @create date Jun 06 2021 14:24:19 GMT+05:30
- * @modify date Jun 08 2021 19:07:30 GMT+05:30
+ * @modify date Aug 20 2021 17:31:48 GMT+05:30
  * @desc Styles for MarketCard
  */
 
 @import "../../../../styles/constants/palette/palette";
 @import "../../../../styles/constants/screen-sizes/screen-sizes";
+@import "../../../../styles/mixins/loading-shimmer";
 
 .MarketCard {
   &__header {
@@ -69,18 +70,7 @@
       height: 100px;
 
       border-radius: 4px;
-      background: linear-gradient(
-        to right,
-        rgba($primary-light, 0.3) 8%,
-        rgba($primary-main, 0.3) 50%,
-        rgba($primary-light, 0.3) 92%
-      );
-      background-size: 1000px 640px;
-      animation-duration: 1.8s;
-      animation-fill-mode: forwards;
-      animation-iteration-count: infinite;
-      animation-name: loading-shimmer;
-      animation-timing-function: linear;
+      @include loading-shimmer();
       content: " ";
     }
 
@@ -146,15 +136,5 @@
         }
       }
     }
-  }
-}
-
-@keyframes loading-shimmer {
-  0% {
-    background-position: -468px 0;
-  }
-
-  100% {
-    background-position: 468px 0;
   }
 }

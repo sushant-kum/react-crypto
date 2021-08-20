@@ -27,6 +27,7 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "no-plusplus": "off",
     "linebreak-style": "off",
     "no-unused-vars": "error",
     "prettier/prettier": [
