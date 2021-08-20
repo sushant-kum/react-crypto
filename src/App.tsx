@@ -31,6 +31,7 @@ import SnackbarContext, { snackbarInitialState } from "./contexts/Snackbar";
 import Layout from "./layout/Layout/Layout";
 import LocalForageKeys from "./models/LocalForage";
 import DashboardLazy from "./pages/Dashboard/Dashboard.lazy";
+import ErrorNotFoundLazy from "./pages/ErrorNotFound/ErrorNotFound.lazy";
 import { StoreDispatch } from "./store";
 import { getAppSubtitleSelector } from "./store/appStates/appSubTitle";
 import { getThemeTypeSelector, setThemeType, ThemeType } from "./store/settings/themeType";
@@ -152,6 +153,10 @@ const App: React.FC = () => {
 
                 <Route exact path="/dashboard">
                   <DashboardLazy />
+                </Route>
+
+                <Route path="*">
+                  <ErrorNotFoundLazy />
                 </Route>
               </Switch>
             </Layout>

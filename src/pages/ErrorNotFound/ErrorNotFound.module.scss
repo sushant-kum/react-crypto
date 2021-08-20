@@ -1,0 +1,127 @@
+/**
+ * @author Sushant Kumar
+ * @email sushant.kum96@gmail.com
+ * @create date Jul 01 2021 16:48:25 GMT+05:30
+ * @modify date Aug 20 2021 17:33:51 GMT+05:30
+ * @desc Styles for ErrorNotFound
+ */
+
+@import "../../styles/constants/component-level/Header.constants";
+@import "../../styles/constants/screen-sizes/screen-sizes";
+
+.ErrorNotFound {
+  position: relative;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+
+  &__content {
+    z-index: 10;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    &__title {
+      grid-area: ErrorNotFound__content__title;
+      display: grid;
+      column-gap: 12px;
+      align-items: center;
+      grid-template-columns: 40px auto;
+    }
+
+    &__404 {
+      grid-area: ErrorNotFound__content__404;
+      justify-self: end;
+    }
+
+    &__divider {
+      grid-area: ErrorNotFound__content__divider;
+    }
+
+    &__body {
+      grid-area: ErrorNotFound__content__body;
+      display: grid;
+      row-gap: 8px;
+
+      &__actions {
+        display: grid;
+        grid-template-columns: auto auto;
+        column-gap: 8px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .ErrorNotFound {
+    min-height: calc(100vh - calc(#{$header-height-sm} + 16px));
+
+    &__content {
+      row-gap: 16px;
+      grid-template-rows: auto auto 1px auto;
+      grid-template-areas:
+        "ErrorNotFound__content__title"
+        "ErrorNotFound__content__404"
+        "ErrorNotFound__content__divider"
+        "ErrorNotFound__content__body";
+
+      &__title {
+        justify-self: center;
+      }
+
+      &__404 {
+        justify-self: center;
+      }
+
+      &__body {
+        justify-items: center;
+
+        &__text {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .ErrorNotFound {
+    min-height: calc(100vh - calc(#{$header-height} + 16px));
+
+    &__content {
+      column-gap: 16px;
+      grid-template-columns: auto 1px auto;
+      grid-template-areas:
+        "ErrorNotFound__content__title ErrorNotFound__content__divider ErrorNotFound__content__body"
+        "ErrorNotFound__content__404 ErrorNotFound__content__divider ErrorNotFound__content__body";
+    }
+  }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
+  .ErrorNotFound {
+    min-height: calc(100vh - calc(#{$header-height} + 32px));
+
+    &__content {
+      column-gap: 16px;
+      grid-template-columns: auto 1px auto;
+      grid-template-areas:
+        "ErrorNotFound__content__title ErrorNotFound__content__divider ErrorNotFound__content__body"
+        "ErrorNotFound__content__404 ErrorNotFound__content__divider ErrorNotFound__content__body";
+    }
+  }
+}
+
+@media screen and (min-width: $lg) {
+  .ErrorNotFound {
+    min-height: calc(100vh - calc(#{$header-height} + 32px));
+
+    &__content {
+      column-gap: 16px;
+      grid-template-columns: auto 1px auto;
+      grid-template-areas:
+        "ErrorNotFound__content__title ErrorNotFound__content__divider ErrorNotFound__content__body"
+        "ErrorNotFound__content__404 ErrorNotFound__content__divider ErrorNotFound__content__body";
+    }
+  }
+}
